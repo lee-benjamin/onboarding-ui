@@ -7,7 +7,7 @@ Ensure you have node installed on your machine. You can verify this by running `
 
 Once you are confident node is installed, `cd` into the repo and run this command:
 
-`node src/main.js`. 
+`node src/main.js`
 
 
 #### Node Version
