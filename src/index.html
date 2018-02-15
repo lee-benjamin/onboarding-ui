@@ -4,61 +4,59 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Hello, World!</p>
     <button type="button" onclick="getHomeTimeline()">Get Home Timeline</button>
     <div id="divTimeline">
-      <p id="pTimeline"></p>
-      <script>
-        function appendTweet(tweet, color) {
-          console.log(tweet);
-          var tweetDiv = document.createElement("div");
-          if (color) {
-            tweetDiv.style.backgroundColor = "DarkSeaGreen";
-          }
-          // Append the image
-          var tweetImg = document.createElement("img");
-          tweetImg.src = tweet.user.profileImageURL;
-          tweetDiv.appendChild(tweetImg);
+    </div>
+    <script>
+      function appendTweet(tweet, color) {
+        console.log(tweet);
+        var tweetDiv = document.createElement("div");
+        if (color) {
+          tweetDiv.style.backgroundColor = "DarkSeaGreen";
+        }
+        // Append the image
+        var tweetImg = document.createElement("img");
+        tweetImg.src = tweet.user.profileImageURL;
+        tweetDiv.appendChild(tweetImg);
 
-          // Append the timestamp
-          var tweetSpan = document.createElement("span");
-          var createdAt = document.createTextNode(new Date(tweet.createdAt));
-          tweetSpan.appendChild(createdAt);
-          tweetDiv.appendChild(tweetSpan);
+        // Append the timestamp
+        var tweetSpan = document.createElement("span");
+        var createdAt = document.createTextNode(new Date(tweet.createdAt));
+        tweetSpan.appendChild(createdAt);
+        tweetDiv.appendChild(tweetSpan);
 
-          // Append the body of the tweet
-          var text = document.createTextNode(tweet.text);
-          tweetDiv.appendChild(text);
+        // Append the body of the tweet
+        var text = document.createTextNode(tweet.text);
+        tweetDiv.appendChild(text);
 
-          // Link the div to Twitter
-          tweetDiv.onclick = function() {
-            var urlPrefix = "https://twitter.com/TwitterAPI/status/";
-            window.open(urlPrefix + tweet.id);
-          }
-
-          var element = document.getElementById("divTimeline");
-          element.appendChild(tweetDiv);
+        // Link the div to Twitter
+        tweetDiv.onclick = function() {
+          var urlPrefix = "https://twitter.com/TwitterAPI/status/";
+          window.open(urlPrefix + tweet.id);
         }
 
-        function getHomeTimeline() {
-          var xhttp = new XMLHttpRequest();
-          xhttp.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE)  {
-              if (this.status == 200) {
-                var obj = JSON.parse(this.responseText);
-                for (var i=0;i<obj.length;i++) {
-                    appendTweet(obj[i], i % 2 == 0);
-                }
-              }
-              else {
-                document.getElementById("pTimeline").innerHTML = "Unable to get home timeline, please try again later.";
+        var element = document.getElementById("divTimeline");
+        element.appendChild(tweetDiv);
+      }
+
+      function getHomeTimeline() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == XMLHttpRequest.DONE)  {
+            if (this.status == 200) {
+              var obj = JSON.parse(this.responseText);
+              for (var i=0;i<obj.length;i++) {
+                  appendTweet(obj[i], i % 2 == 0);
               }
             }
-          };
-          xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
-          xhttp.send();
-        }
-      </script>
-    </div>
+            else {
+              document.getElementById("divTimeline").innerHTML = "Unable to get home timeline, please try again later.";
+            }
+          }
+        };
+        xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
+        xhttp.send();
+      }
+    </script>
   </body>
 </html>
