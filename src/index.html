@@ -12,8 +12,14 @@
       <script>
         function appendTweet(tweet) {
             console.log(tweet);
-            var div = document.createElement("div");
-            //var node = document.create
+            var tweetDiv = document.createElement("div");
+            var createdAt = document.createTextNode(new Date(tweet.createdAt));
+            var text = document.createTextNode(tweet.text);
+            tweetDiv.appendChild(createdAt);
+            tweetDiv.appendChild(text);
+
+            var element = document.getElementById("divTimeline");
+            element.appendChild(tweetDiv);
         }
 
         function getHomeTimeline() {
@@ -25,7 +31,6 @@
                 for (var i=0;i<obj.length;i++) {
                     appendTweet(obj[i]);
                 }
-                //document.getElementById("timeline").innerHTML = obj;
               }
               else {
                 document.getElementById("pTimeline").innerHTML = "Unable to get home timeline, please try again later.";
