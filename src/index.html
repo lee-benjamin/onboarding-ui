@@ -13,8 +13,11 @@
         function getHomeTimeline() {
           var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("timeline").innerHTML = this.responseText;
+            if (this.readyState == XMLHttpRequest.DONE)  {
+              if (this.status == 200)
+                document.getElementById("timeline").innerHTML = this.responseText;
+              else
+                alert("Unable to fetch home timeline.\n");
             }
           };
           xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
