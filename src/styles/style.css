@@ -15,5 +15,16 @@
 
 .img-circle {
     border-radius: 50%;
+    height: 75px;
+    width: 75px;
 }
 
+.imageCaption {
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+#screenName {
+    font-size: 10pt;
+    font-weight: normal;
+}

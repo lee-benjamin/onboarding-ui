@@ -13,10 +13,27 @@ http.createServer(function (request, response) {
     }
 
     else if (request.url.indexOf(".css") != -1) { // request url contains css
-        console.log("CSS");
         fs.readFile("src/styles/style.css", function (err,data) {
             if (err) console.log(err);
             response.writeHead(200, {"Content-Type": "text/css"});
+            response.write(data);
+            response.end();
+        });
+    }
+
+    else if (request.url == "/src/js/twitter.js") {
+        fs.readFile("src/js/twitter.js", function (err, data) {
+            if (err) console.log(err);
+            response.writeHead(200, {"Content-Type": "text/javascript"});
+            response.write(data);
+            response.end();
+        });
+    }
+
+    else if (request.url == "/assets/favicon.ico") {
+        fs.readFile("assets/favicon.ico", function (err, data) {
+            if (err) console.log(err);
+            response.writeHead(200, {"Content-Type": "image/png"});
             response.write(data);
             response.end();
         });

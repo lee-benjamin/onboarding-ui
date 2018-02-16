@@ -1,8 +1,10 @@
 <!doctype HTML>
 <html>
   <head>
-    <link id="stylesheet" rel="stylesheet" href="styles/style.css" type="text/css">
     <meta charset="utf-8">
+    <script type="text/javascript" src="src/js/twitter.js" asnyc></script>
+    <link rel="shortcut icon" type"image/x-con" href="assets/favicon.ico"/>
+    <link id="stylesheet" rel="stylesheet" href="styles/style.css" type="text/css">
   </head>
   <body>
     <div id="title">Lab for Ben Lee</div>
@@ -13,8 +15,9 @@
       function addImage(tweetDiv, tweet) {
         // Append the image within a figure tag
         var figure = document.createElement("figure");
+        figure.setAttribute("class", "userContent");
         var figCaption = document.createElement("figcaption");
-        figCaption.innerHTML = "<div>" + tweet.user.name + "</div><div>" + tweet.user.screenName +"</div>";
+        figCaption.innerHTML = "<div class='imageCaption'>" + tweet.user.screenName + "<div id='screenName'>" + tweet.user.name +"</div></div>";
         var tweetImg = document.createElement("img");
         tweetImg.setAttribute("class", "img-circle");
         tweetImg.src = tweet.user.profileImageURL;
