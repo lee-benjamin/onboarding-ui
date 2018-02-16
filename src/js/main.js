@@ -21,4 +21,9 @@ http.createServer(function (request, response) {
             response.end();
         });
     }
+
+    else {
+        response.writeHead(500, {"Content-Type": "text/html"});
+        response.end();
+    }
 }).listen(9000);
