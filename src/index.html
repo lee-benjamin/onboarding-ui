@@ -22,6 +22,7 @@
 
         // Append the image
         var tweetImg = document.createElement("img");
+        tweetImg.setAttribute("class", "img-circle");
         tweetImg.src = tweet.user.profileImageURL;
         tweetDiv.appendChild(tweetImg);
 
