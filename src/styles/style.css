@@ -1,9 +1,7 @@
-body {
-    background-color: lightblue;
-}
-
-div {
+#title {
     text-align: center;
-    font-size: 40px;
+    font-size: 40pt;
+    font-weight: bold;
+    font-family: "Times New Roman", Arial, sans-serif;
 }
 
