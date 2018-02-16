@@ -20,11 +20,17 @@
           tweetDiv.setAttribute("class", "darkTweet");
         }
 
-        // Append the image
+        // Append the image within a figure tag
+        var figure = document.createElement("figure");
+        var figCaption = document.createElement("figcaption");
+        figCaption.innerHTML = tweet.user.name + " " + tweet.user.screenName;
         var tweetImg = document.createElement("img");
         tweetImg.setAttribute("class", "img-circle");
         tweetImg.src = tweet.user.profileImageURL;
-        tweetDiv.appendChild(tweetImg);
+
+        figure.appendChild(tweetImg);
+        figure.appendChild(figCaption);
+        tweetDiv.appendChild(figure);
 
         // Append the timestamp
         var tweetSpan = document.createElement("span");
