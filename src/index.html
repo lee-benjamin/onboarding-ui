@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
   <head>
-    <link rel="stylesheet" href="styles/style.css" type="text/css">
+    <link id="stylesheet" rel="stylesheet" href="styles/style.css" type="text/css">
     <meta charset="utf-8">
   </head>
   <body>
@@ -51,7 +51,9 @@
       function getHomeTimeline() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-          document.getElementById("divTimeline").innerHTML = "";
+         document.getElementById("divTimeline").innerHTML = "";
+          var stylesheet = document.styleSheets[0];
+          stylesheet.insertRule("#divTimeline {border-style: solid; border-width: medium;}", 0);
           if (this.readyState == XMLHttpRequest.DONE)  {
             if (this.status == 200) {
               var obj = JSON.parse(this.responseText);
