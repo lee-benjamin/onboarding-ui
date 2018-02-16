@@ -14,7 +14,10 @@
         // Each tweet will live in a <div>
         var tweetDiv = document.createElement("div");
         if (color) {
-          tweetDiv.style.backgroundColor = "DarkSeaGreen";
+          tweetDiv.setAttribute("class", "lightTweet");
+        }
+        else {
+          tweetDiv.setAttribute("class", "darkTweet");
         }
 
         // Append the image
