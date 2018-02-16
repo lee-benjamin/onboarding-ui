@@ -10,20 +10,11 @@
     <div id="divTimeline">
     </div>
     <script>
-      function appendTweet(tweet, color) {
-        // Each tweet will live in a <div>
-        var tweetDiv = document.createElement("div");
-        if (color) {
-          tweetDiv.setAttribute("class", "lightTweet");
-        }
-        else {
-          tweetDiv.setAttribute("class", "darkTweet");
-        }
-
+      function addImage(tweetDiv, tweet) {
         // Append the image within a figure tag
         var figure = document.createElement("figure");
         var figCaption = document.createElement("figcaption");
-        figCaption.innerHTML = tweet.user.name + " " + tweet.user.screenName;
+        figCaption.innerHTML = "<div>" + tweet.user.name + "</div><div>" + tweet.user.screenName +"</div>";
         var tweetImg = document.createElement("img");
         tweetImg.setAttribute("class", "img-circle");
         tweetImg.src = tweet.user.profileImageURL;
@@ -31,27 +22,48 @@
         figure.appendChild(tweetImg);
         figure.appendChild(figCaption);
         tweetDiv.appendChild(figure);
+      }
 
+      function addTime(tweetDiv, tweet) {
         // Append the timestamp
         var tweetSpan = document.createElement("span");
         var createdAt = document.createTextNode(new Date(tweet.createdAt));
         tweetSpan.appendChild(createdAt);
         tweetDiv.appendChild(tweetSpan);
+      }
 
-        // Append the body of the tweet
-        var text = document.createTextNode(tweet.text);
-        tweetDiv.appendChild(text);
-
+      function addText(tweetDiv, tweet) {
         // Link the div to Twitter
         var a  = document.createElement("a");
         var urlPrefix = "https://twitter.com/TwitterAPI/status/";
         a.setAttribute("href", urlPrefix + tweet.id);
         a.setAttribute("target", "_blank");
-        a.appendChild(tweetDiv);
+
+        // Append the body of the tweet
+        var bodyDiv = document.createElement("div");
+        bodyDiv.innerHTML = tweet.text;
+        a.appendChild(bodyDiv);
+        tweetDiv.appendChild(a);
+      }
+
+
+      function appendTweet(tweet, color) {
+        // Each tweet will live in a <div>
+        var tweetDiv = document.createElement("div"); // The root element of the tweet
+        if (color) {
+          tweetDiv.setAttribute("class", "lightTweet");
+        }
+        else {
+          tweetDiv.setAttribute("class", "darkTweet");
+        }
+
+        addImage(tweetDiv, tweet);
+        addTime(tweetDiv, tweet);
+        addText(tweetDiv, tweet);
 
         // Append the new tweet block to the DOM
         var element = document.getElementById("divTimeline");
-        element.appendChild(a);
+        element.appendChild(tweetDiv);
       }
 
       function getHomeTimeline() {
