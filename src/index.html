@@ -9,11 +9,12 @@
     </div>
     <script>
       function appendTweet(tweet, color) {
-        console.log(tweet);
+        // Each tweet will live in a <div>
         var tweetDiv = document.createElement("div");
         if (color) {
           tweetDiv.style.backgroundColor = "DarkSeaGreen";
         }
+
         // Append the image
         var tweetImg = document.createElement("img");
         tweetImg.src = tweet.user.profileImageURL;
@@ -30,18 +31,21 @@
         tweetDiv.appendChild(text);
 
         // Link the div to Twitter
-        tweetDiv.onclick = function() {
-          var urlPrefix = "https://twitter.com/TwitterAPI/status/";
-          window.open(urlPrefix + tweet.id);
-        }
+        var a  = document.createElement("a");
+        var urlPrefix = "https://twitter.com/TwitterAPI/status/";
+        a.setAttribute("href", urlPrefix + tweet.id);
+        a.setAttribute("target", "_blank");
+        a.appendChild(tweetDiv);
 
+        // Append the new tweet block to the DOM
         var element = document.getElementById("divTimeline");
-        element.appendChild(tweetDiv);
+        element.appendChild(a);
       }
 
       function getHomeTimeline() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
+          document.getElementById("divTimeline").innerHTML = "";
           if (this.readyState == XMLHttpRequest.DONE)  {
             if (this.status == 200) {
               var obj = JSON.parse(this.responseText);
