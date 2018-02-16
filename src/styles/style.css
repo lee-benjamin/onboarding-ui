@@ -19,6 +19,13 @@
     width: 75px;
 }
 
+figure {
+    display: inline-block;
+}
+
+.tweetContent {
+}
+
 .imageCaption {
     font-size: 15pt;
     font-weight: bold;
