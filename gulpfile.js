@@ -31,11 +31,17 @@ gulp.task("js", function () {
     .pipe(connect.reload());
 });
 
+gulp.task("icons", function () {
+   gulp.src("./app/assets/*.ico")
+    .pipe(gulp.dest("./app/assets"))
+    .pipe(connect.reload());
+});
+
 gulp.task("watch", function () {
   gulp.watch(["./app/*.html"], ["html"]);
   gulp.watch(["./app/styles/*.css"], ["css"]);
   gulp.watch(["./app/js/*.js"], ["js"]);
+  gulp.watch(["./app/assets/*.js"], ["icons"]);
 });
-
 
 gulp.task("default", ["dev", "watch"]);
