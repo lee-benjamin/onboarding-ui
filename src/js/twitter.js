@@ -13,12 +13,27 @@ function addImage(tweetDiv, tweet) {
   tweetDiv.appendChild(figure);
 }
 
+function formatDate(date) {
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+
+  return monthNames[monthIndex] + " " + day;
+}
+
 function addTime(tweetDiv, tweet) {
   // Append the timestamp
-  var tweetSpan = document.createElement("span");
-  var createdAt = document.createTextNode(new Date(tweet.createdAt));
-  tweetSpan.appendChild(createdAt);
-  tweetDiv.appendChild(tweetSpan);
+  var timeDiv = document.createElement("div");
+  timeDiv.setAttribute("id", "timeDiv");
+  var createdAt = document.createTextNode(formatDate(new Date(tweet.createdAt)));
+  timeDiv.appendChild(createdAt);
+  tweetDiv.appendChild(timeDiv);
 }
 
 function addText(tweetDiv, tweet) {
@@ -29,7 +44,7 @@ function addText(tweetDiv, tweet) {
   a.setAttribute("target", "_blank");
 
   // Append the body of the tweet
-  var bodyDiv = document.createElement("span");
+  var bodyDiv = document.createElement("div");
   bodyDiv.innerHTML = tweet.text;
   a.appendChild(bodyDiv);
   tweetDiv.appendChild(a);
@@ -53,6 +68,10 @@ function appendTweet(tweet, color) {
   addTime(tweetContent, tweet);
   addText(tweetContent, tweet);
   tweetDiv.appendChild(tweetContent);
+  // clear block div for styling
+  var clearfix = document.createElement("div");
+  clearfix.setAttribute("class", "clearfix");
+  tweetDiv.appendChild(clearfix);
 
   // Append the new tweet block to the DOM
   var element = document.getElementById("divTimeline");

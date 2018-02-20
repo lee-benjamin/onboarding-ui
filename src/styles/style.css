@@ -20,10 +20,18 @@
 }
 
 figure {
-    display: inline-block;
+    width: 20%;
+    margin-right: 2%;
+    float: left;
 }
 
 .tweetContent {
+    width: 60%;
+    float: left;
+}
+
+.clearfix {
+    clear: both;
 }
 
 .imageCaption {
@@ -34,4 +42,9 @@ figure {
 #screenName {
     font-size: 10pt;
     font-weight: normal;
+}
+
+#timeDiv {
+    font-style: italic;
+    font-size: 10pt;
 }
