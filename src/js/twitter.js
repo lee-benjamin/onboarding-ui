@@ -63,7 +63,7 @@ function appendTweet(tweet, color) {
 
   addImage(tweetDiv, tweet);
   // create a div to hold the date and text
-  var tweetContent = document.createElement("span");
+  var tweetContent = document.createElement("div");
   tweetContent.setAttribute("class", "tweetContent");
   addTime(tweetContent, tweet);
   addText(tweetContent, tweet);
