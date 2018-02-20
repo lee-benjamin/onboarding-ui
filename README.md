@@ -7,7 +7,7 @@ You will need `gulp` and `gulp-connect`. I downloaded both modules via `npm`.
 
 Once you have both, run `gulp` in the root directory of this git repo, and voila!
 
-You will see the app being served at (localhost:9000)[http://localhost:9000/].
+You will see the app being served at [localhost:9000](http://localhost:9000/).
 
 ##### Running With Node
 Clone this repository in the directory of your choosing.
