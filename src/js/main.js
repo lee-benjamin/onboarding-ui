@@ -2,7 +2,6 @@ var http = require("http");
 var fs = require("fs");
 
 http.createServer(function (request, response) {
-    console.log(request.url);
     if (request.url == "/" || request.url.indexOf(".html") != -1) { // request url contains html
         fs.readFile("src/index.html", function (err, data) {
             if (err) console.log(err);
