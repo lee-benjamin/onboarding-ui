@@ -82,18 +82,18 @@ function appendTweet(tweet, color) {
 function getHomeTimeline() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-   document.getElementById("divTimeline").innerHTML = "";
-    var stylesheet = document.styleSheets[0];
-    stylesheet.insertRule("#divTimeline {border-style: solid; border-width: 2px;}", 0);
+    var divTimeline = document.getElementById("divTimeline");
+    divTimeline.innerHTML = ""; // Clearing previous text
     if (this.readyState == XMLHttpRequest.DONE)  {
       if (this.status == 200) {
         var obj = JSON.parse(this.responseText);
         for (var i=0;i<obj.length;i++) {
             appendTweet(obj[i], i % 2 == 0);
         }
+        divTimeline.setAttribute("style", "border-style: solid; border-width: 2px;");
       }
       else {
-        document.getElementById("divTimeline").innerHTML = "Unable to get home timeline, please try again later.";
+        divTimeline.innerHTML = "Unable to get home timeline, please try again later.";
       }
     }
   };
