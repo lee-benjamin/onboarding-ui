@@ -51,16 +51,10 @@ function addText(tweetDiv, tweet) {
 }
 
 
-function appendTweet(tweet, color) {
+function appendTweet(tweet) {
   // Each tweet will live in a <div>
   var tweetDiv = document.createElement("div"); // The root element of the tweet
   tweetDiv.classList.add("tweetDiv");
-  if (color) {
-    tweetDiv.classList.add("lightTweet");
-  }
-  else {
-    tweetDiv.classList.add("darkTweet");
-  }
 
   addImage(tweetDiv, tweet);
   // create a div to hold the date and text
@@ -84,7 +78,7 @@ function getHomeTimeline() {
         divTimeline.classList.add("divTimelineWithContent");
         var obj = JSON.parse(this.responseText);
         for (var i=0;i<obj.length;i++) {
-            appendTweet(obj[i], i % 2 == 0);
+            appendTweet(obj[i]);
         }
       }
       else {

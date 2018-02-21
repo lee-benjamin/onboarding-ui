@@ -23,11 +23,11 @@
     border-bottom: 1px black solid;
 }
 
-.lightTweet {
+.tweetDiv:nth-child(odd) {
     background-color:  #e8f5fd;
 }
 
-.darkTweet {
+.tweetDiv:nth-child(even) {
     background-color: #e9e9e9;
 }
 
