@@ -86,11 +86,11 @@ function getHomeTimeline() {
     divTimeline.innerHTML = ""; // Clearing previous text
     if (this.readyState == XMLHttpRequest.DONE)  {
       if (this.status == 200) {
+        divTimeline.classList.add("divTimelineWithContent");
         var obj = JSON.parse(this.responseText);
         for (var i=0;i<obj.length;i++) {
             appendTweet(obj[i], i % 2 == 0);
         }
-        divTimeline.setAttribute("style", "border-style: solid; border-width: 2px;");
       }
       else {
         divTimeline.innerHTML = "Unable to get home timeline, please try again later.";
