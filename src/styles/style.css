@@ -9,11 +9,15 @@
     font-family: "Times New Roman", Arial, sans-serif;
 }
 
-.lightTweet {
+.tweetDiv {
+    border-bottom: 1px black solid;
+}
+
+#lightTweet {
     background-color:  #e8f5fd;
 }
 
-.darkTweet {
+#darkTweet {
     background-color: #e9e9e9;
 }
 
