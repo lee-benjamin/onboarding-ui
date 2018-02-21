@@ -69,11 +69,6 @@ function appendTweet(tweet, color) {
   addTime(tweetContent, tweet);
   addText(tweetContent, tweet);
   tweetDiv.appendChild(tweetContent);
-  // clear block div for styling
-  var clearfix = document.createElement("div");
-  clearfix.setAttribute("class", "clearfix");
-  tweetDiv.appendChild(clearfix);
-
   // Append the new tweet block to the DOM
   var element = document.getElementById("divTimeline");
   element.appendChild(tweetDiv);
