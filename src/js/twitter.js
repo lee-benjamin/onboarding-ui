@@ -93,6 +93,7 @@ function getHomeTimeline() {
         }
       }
       else {
+        divTimeline.classList.remove("divTimelineWithContent");
         divTimeline.innerHTML = "Unable to get home timeline, please try again later.";
       }
     }
