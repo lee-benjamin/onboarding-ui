@@ -4,8 +4,7 @@
 
 .divTimeline.divTimelineWithContent {
     margin: 25px;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px black solid;
 }
 
 .title {
@@ -20,7 +19,7 @@
 }
 
 .tweetDiv {
-    border-bottom: 1px black solid;
+    border-bottom: 1px #C0C0C0 solid;
 }
 
 .tweetDiv:nth-child(odd) {
@@ -46,8 +45,9 @@
 }
 
 .tweetContent {
+    position: relative;
+    top: -35px;
     display: inline-block;
-    height: 30pt;
 }
 
 .imageCaption {
@@ -56,14 +56,14 @@
     text-align: center;
 }
 
-#screenName {
+.screenName {
     font-size: 10pt;
     font-weight: normal;
 }
 
-#timeDiv {
+.timeDiv {
     font-style: italic;
     font-size: 10pt;
-    padding-top: 40px;
+    padding-top: 20px;
     padding-bottom: 5pt;
 }

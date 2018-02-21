@@ -3,7 +3,7 @@ function addImage(tweetDiv, tweet) {
   var figure = document.createElement("figure");
   figure.setAttribute("class", "userContent");
   var figCaption = document.createElement("figcaption");
-  figCaption.innerHTML = "<div class='imageCaption'>" + tweet.user.screenName + "<div id='screenName'>" + tweet.user.name +"</div></div>";
+  figCaption.innerHTML = "<div class='imageCaption'>" + tweet.user.screenName + "<div class='screenName'>" + tweet.user.name +"</div></div>";
   var tweetImg = document.createElement("img");
   tweetImg.setAttribute("class", "img-circle");
   tweetImg.src = tweet.user.profileImageURL;
@@ -30,7 +30,7 @@ function formatDate(date) {
 function addTime(tweetDiv, tweet) {
   // Append the timestamp
   var timeDiv = document.createElement("div");
-  timeDiv.setAttribute("id", "timeDiv");
+  timeDiv.setAttribute("class", "timeDiv");
   var createdAt = document.createTextNode(formatDate(new Date(tweet.createdAt)));
   timeDiv.appendChild(createdAt);
   tweetDiv.appendChild(timeDiv);
