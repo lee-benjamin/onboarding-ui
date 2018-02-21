@@ -24,9 +24,11 @@
 }
 
 figure {
-    width: 10%;
+    width: 140px;
     text-align: center;
     float: left;
+    margin-left: 10px;
+    margin-right: 50px;
 }
 
 .tweetContent {
@@ -51,6 +53,6 @@ figure {
 #timeDiv {
     font-style: italic;
     font-size: 10pt;
-    padding-top: 25pt;
+    padding-top: 40px;
     padding-bottom: 5pt;
 }

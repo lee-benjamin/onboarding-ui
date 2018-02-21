@@ -83,7 +83,7 @@ function getHomeTimeline() {
   xhttp.onreadystatechange = function() {
    document.getElementById("divTimeline").innerHTML = "";
     var stylesheet = document.styleSheets[0];
-    stylesheet.insertRule("#divTimeline {border-style: solid; border-width: medium;}", 0);
+    stylesheet.insertRule("#divTimeline {border-style: solid; border-width: thin;}", 0);
     if (this.readyState == XMLHttpRequest.DONE)  {
       if (this.status == 200) {
         var obj = JSON.parse(this.responseText);
