@@ -1,66 +1,15 @@
 <!doctype HTML>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <script type="text/javascript" src="src/js/twitter.js" asnyc></script>
+    <link rel="shortcut icon" type"image/x-con" href="assets/favicon.ico"/>
+    <link id="stylesheet" rel="stylesheet" href="styles/style.css" type="text/css">
   </head>
   <body>
-    <button type="button" onclick="getHomeTimeline()">Get Home Timeline</button>
-    <div id="divTimeline">
+    <div class="title">Lab for Ben Lee</div>
+    <button class="getTimelineButton" type="button" onclick="getHomeTimeline()">Get Home Timeline</button>
+    <div class="divTimeline" id="divTimeline">
     </div>
-    <script>
-      function appendTweet(tweet, color) {
-        // Each tweet will live in a <div>
-        var tweetDiv = document.createElement("div");
-        if (color) {
-          tweetDiv.style.backgroundColor = "DarkSeaGreen";
-        }
-
-        // Append the image
-        var tweetImg = document.createElement("img");
-        tweetImg.src = tweet.user.profileImageURL;
-        tweetDiv.appendChild(tweetImg);
-
-        // Append the timestamp
-        var tweetSpan = document.createElement("span");
-        var createdAt = document.createTextNode(new Date(tweet.createdAt));
-        tweetSpan.appendChild(createdAt);
-        tweetDiv.appendChild(tweetSpan);
-
-        // Append the body of the tweet
-        var text = document.createTextNode(tweet.text);
-        tweetDiv.appendChild(text);
-
-        // Link the div to Twitter
-        var a  = document.createElement("a");
-        var urlPrefix = "https://twitter.com/TwitterAPI/status/";
-        a.setAttribute("href", urlPrefix + tweet.id);
-        a.setAttribute("target", "_blank");
-        a.appendChild(tweetDiv);
-
-        // Append the new tweet block to the DOM
-        var element = document.getElementById("divTimeline");
-        element.appendChild(a);
-      }
-
-      function getHomeTimeline() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          document.getElementById("divTimeline").innerHTML = "";
-          if (this.readyState == XMLHttpRequest.DONE)  {
-            if (this.status == 200) {
-              var obj = JSON.parse(this.responseText);
-              for (var i=0;i<obj.length;i++) {
-                  appendTweet(obj[i], i % 2 == 0);
-              }
-            }
-            else {
-              document.getElementById("divTimeline").innerHTML = "Unable to get home timeline, please try again later.";
-            }
-          }
-        };
-        xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
-        xhttp.send();
-      }
-    </script>
   </body>
 </html>
