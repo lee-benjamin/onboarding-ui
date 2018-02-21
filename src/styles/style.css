@@ -2,14 +2,14 @@
     margin: 25px;
 }
 
-#title {
+.title {
     text-align: center;
     font-size: 40pt;
     font-weight: bold;
     font-family: "Times New Roman", Arial, sans-serif;
 }
 
-#getTimelineButton {
+.getTimelineButton {
     margin: 25px;
 }
 
