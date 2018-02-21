@@ -1,5 +1,5 @@
 #divTimeline {
-    margin: 2%;
+    margin: 25px;
 }
 
 #title {
@@ -7,6 +7,10 @@
     font-size: 40pt;
     font-weight: bold;
     font-family: "Times New Roman", Arial, sans-serif;
+}
+
+#getTimelineButton {
+    margin: 25px;
 }
 
 .tweetDiv {
