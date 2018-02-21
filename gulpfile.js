@@ -1,5 +1,12 @@
 var gulp = require("gulp");
-var connect = require ("gulp-connect");
+var connect = require("gulp-connect");
+var sass = require("gulp-sass");
+
+gulp.task("styles", function() {
+    gulp.src("./app/styles/sass/*.scss")
+        .pipe(sass().on("error", sass.logError))
+        .pipe(gulp.dest("./app/styles/css"));
+});
 
 gulp.task("dev", function() {
     connect.server({
@@ -21,7 +28,7 @@ gulp.task("html", function () {
 
 gulp.task("css", function () {
   gulp.src("./app/styles/*.css")
-    .pipe(gulp.dest("./app/styles"))
+    .pipe(gulp.dest("./app/styles/css/"))
     .pipe(connect.reload());
 });
 
@@ -39,7 +46,7 @@ gulp.task("icons", function () {
 
 gulp.task("watch", function () {
   gulp.watch(["./app/*.html"], ["html"]);
-  gulp.watch(["./app/styles/*.css"], ["css"]);
+  gulp.watch(["./app/styles/css/*.css"], ["css"]);
   gulp.watch(["./app/js/*.js"], ["js"]);
   gulp.watch(["./app/assets/*.js"], ["icons"]);
 });
