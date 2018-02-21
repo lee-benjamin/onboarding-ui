@@ -56,10 +56,10 @@ function appendTweet(tweet, color) {
   var tweetDiv = document.createElement("div"); // The root element of the tweet
   tweetDiv.setAttribute("class", "tweetDiv");
   if (color) {
-    tweetDiv.setAttribute("id", "lightTweet");
+    tweetDiv.setAttribute("class", "lightTweet");
   }
   else {
-    tweetDiv.setAttribute("id", "darkTweet");
+    tweetDiv.setAttribute("class", "darkTweet");
   }
 
   addImage(tweetDiv, tweet);
