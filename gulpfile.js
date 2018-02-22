@@ -2,12 +2,6 @@ var gulp = require("gulp");
 var connect = require("gulp-connect");
 var sass = require("gulp-sass");
 
-gulp.task("styles", function() {
-    gulp.src("./app/styles/sass/*.scss")
-        .pipe(sass().on("error", sass.logError))
-        .pipe(gulp.dest("./app/styles/css"));
-});
-
 gulp.task("dev", function() {
     connect.server({
         root: "app/",
@@ -32,6 +26,12 @@ gulp.task("css", function () {
     .pipe(connect.reload());
 });
 
+gulp.task("sass", function() {
+    gulp.src("./app/styles/sass/*.scss")
+        .pipe(sass().on("error", sass.logError))
+        .pipe(gulp.dest("./app/styles/css"));
+});
+
 gulp.task("js", function () {
   gulp.src("./app/js/*.js")
     .pipe(gulp.dest("./app/js"))
@@ -47,6 +47,7 @@ gulp.task("icons", function () {
 gulp.task("watch", function () {
   gulp.watch(["./app/*.html"], ["html"]);
   gulp.watch(["./app/styles/css/*.css"], ["css"]);
+  gulp.watch(["./app/styles/sass/*.scss"], ["sass"]);
   gulp.watch(["./app/js/*.js"], ["js"]);
   gulp.watch(["./app/assets/*.js"], ["icons"]);
 });
