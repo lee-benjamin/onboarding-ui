@@ -1,0 +1,64 @@
+$font-stack: "Times New Roman", Arial, sans-serif;
+$light-color: #e9e9e9;
+$dark-color: #e8f5fd;
+$border-color: #C0C0C0;
+
+.title {
+    text-align: center;
+    font-size: 40pt;
+    font-weight: bold;
+    font-family: $font-stack;
+}
+
+.divTimelineWithContent {
+    margin: 10px;
+    border: 1px black solid;
+}
+
+.getTimelineButton {
+    margin-left: 10px;
+}
+
+@mixin background-color($color) {
+    background-color: $color;
+}
+
+.tweetDiv {
+    border-bottom: 1px $border-color solid;
+    &:nth-child(odd) {
+        @include background-color($dark-color);
+    }
+    &:nth-child(even) {
+        @include background-color($light-color);
+    }
+    .userContent {
+        width: 140px;
+        text-align: center;
+        display: inline-block;
+        margin: 1em 50px 1em 10px;
+        .img-circle {
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+        }
+        .imageCaption {
+            font-size: 15pt;
+            font-weight: bold;
+            text-align: center;
+        }
+        .screenName {
+            font-size: 10pt;
+            font-weight: normal;
+        }
+    }
+    .tweetContent {
+        position: relative;
+        top: -35px;
+        display: inline-block;
+        .timeDiv {
+            font-style: italic;
+            font-size: 10pt;
+            margin: 20px 0 5px;
+        }
+    }
+}
