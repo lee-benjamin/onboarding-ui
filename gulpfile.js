@@ -45,6 +45,4 @@ gulp.task("watch", function () {
   gulp.watch(["./src/assets/*"], ["assets"]);
 });
 
-gulp.task("dev", ["html", "sass", "js", "assets", "start-server", "watch"]);
-
-gulp.task("default", ["start-server", "watch"]);
+gulp.task("default", ["html", "sass", "js", "assets", "start-server", "watch"]);
