@@ -1,0 +1,26 @@
+{
+  "name": "onboarding-ui",
+  "version": "1.0.0",
+  "description": "Ben Lee's onboarding ui lab",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-sass": "^3.1.0",
+    "sass": "^1.0.0-beta.5.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lee-benjamin/onboarding-ui.git"
+  },
+  "author": "github.com/lee-benjamin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lee-benjamin/onboarding-ui/issues"
+  },
+  "homepage": "https://github.com/lee-benjamin/onboarding-ui#readme"
+}
