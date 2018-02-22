@@ -3,11 +3,16 @@
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="/js/twitter.js" asnyc></script>
-    <link rel="icon" type"image/x-con" href="/assets/favicon.ico"/>
+    <script type="text/javascript" src="/js/helloWorld.js" asnyc></script>
+    <script src="https://unpkg.com/react@15/dist/react.js" async></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js" async></script>
     <link id="stylesheet" rel="stylesheet" href="/styles/css/style.css" type="text/css">
   </head>
-  <body onLoad="getHomeTimeline()">
+  <body>
+    <link rel="icon" type"image/x-con" href="/assets/favicon.ico"/>
+      <!--<body onLoad="getHomeTimeline()">-->
     <div class="title">Lab for Ben Lee</div>
+    <div id="reactComponent"></div>
     <button class="getTimelineButton" type="button" onclick="getHomeTimeline()">Get Home Timeline</button>
     <div class="divTimeline" id="divTimeline">
     </div>
