@@ -3,7 +3,7 @@ var fs = require("fs");
 
 http.createServer(function (request, response) {
     if (request.url == "/" || request.url.indexOf(".html") != -1) { // request url contains html
-        fs.readFile("src/index.html", function (err, data) {
+        fs.readFile("app/index.html", function (err, data) {
             if (err) console.log(err);
             response.writeHead(200, {"Content-Type": "text/html"});
             response.write(data);
@@ -12,7 +12,7 @@ http.createServer(function (request, response) {
     }
 
     else if (request.url.indexOf(".css") != -1) { // request url contains css
-        fs.readFile("src/styles/style.css", function (err,data) {
+        fs.readFile("app/styles/css/style.css", function (err,data) {
             if (err) console.log(err);
             response.writeHead(200, {"Content-Type": "text/css"});
             response.write(data);
@@ -20,8 +20,8 @@ http.createServer(function (request, response) {
         });
     }
 
-    else if (request.url == "/src/js/twitter.js") {
-        fs.readFile("src/js/twitter.js", function (err, data) {
+    else if (request.url == "/app/js/twitter.js") {
+        fs.readFile("app/js/twitter.js", function (err, data) {
             if (err) console.log(err);
             response.writeHead(200, {"Content-Type": "text/javascript"});
             response.write(data);
