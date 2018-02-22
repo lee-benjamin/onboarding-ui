@@ -19,14 +19,17 @@ $border-color: #C0C0C0;
     margin: 25px;
 }
 
+@mixin background-color($color) {
+    background-color: $color;
+}
+
 .tweetDiv {
     border-bottom: 1px $border-color solid;
-
     &:nth-child(odd) {
-        background-color: $dark-color;
+        @include background-color($dark-color);
     }
     &:nth-child(even) {
-        background-color: $light-color;
+        @include background-color($light-color);
     }
     .userContent {
         width: 140px;
