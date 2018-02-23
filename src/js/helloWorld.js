@@ -1,6 +1,6 @@
 var domready = require("domready");
 
-domready(function () {
+domready(() => {
      ReactDOM.render(
       React.createElement("div", null, "hello, react!"),
       document.getElementById("reactComponent"));
