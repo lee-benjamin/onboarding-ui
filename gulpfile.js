@@ -1,14 +1,25 @@
-var gulp = require("gulp");
-var connect = require("gulp-connect");
-var sass = require("gulp-sass");
+const gulp = require("gulp");
+const connect = require("gulp-connect");
+const sass = require("gulp-sass");
 const babel = require("gulp-babel");
+const browserify = require("browserify");
+const fs = require("fs");
+
+gulp.task("browserify", () => {
+    browserify({
+        entries: ["./src/js/helloWorld.js", "./src/js/twitter.js"],
+        debug: true
+    })
+    .bundle()
+    .pipe(fs.createWriteStream("./app/js/bundle.js"));
+});
 
 gulp.task("babel", () =>
     gulp.src("src/js/*.js")
         .pipe(babel({
             presets: ["es2017"]
         }))
-        .pipe(gulp.dest("app/js/"))
+        .pipe(gulp.dest("app/js"))
 );
 
 gulp.task("start-server", () =>
@@ -54,4 +65,4 @@ gulp.task("watch", () => {
   gulp.watch(["./src/assets/*"], ["assets"]);
 });
 
-gulp.task("default", ["html", "sass", "js", "assets", "start-server", "watch"]);
+gulp.task("default", ["html", "sass", "js", "browserify", "assets", "start-server", "watch"]);
