@@ -8,7 +8,9 @@ const source = require("vinyl-source-stream");
 
 gulp.task("javascript", () => 
     browserify({debug: true})
-        .transform(babelify)
+        .transform(babelify.configure({
+            presets: ["env"]
+        }))
         .require(["./src/js/helloWorld.js", "./src/js/twitter.js"], {entry: true})
         .bundle()
         .pipe(source("bundle.js"))
