@@ -53,7 +53,7 @@ gulp.task("js", () =>
 );
 
 gulp.task("assets", () =>
-   gulp.src("./src/assets/*.ico")
+   gulp.src("./src/assets/*")
     .pipe(gulp.dest("./app/assets"))
     .pipe(connect.reload())
 );
