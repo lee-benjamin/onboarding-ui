@@ -1,8 +1,6 @@
 var domready = require("domready");
 
-domready(function() {
-    getHomeTimeline();
-});
+domready(() => getHomeTimeline());
 
 function addImage(tweetDiv, tweet) {
   // Append the image within a figure tag

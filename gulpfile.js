@@ -7,7 +7,7 @@ const fs = require("fs");
 
 gulp.task("browserify", () => {
     browserify({
-        entries: ["./src/js/helloWorld.js", "./src/js/twitter.js"],
+        entries: ["./app/js/helloWorld.js", "./app/js/twitter.js"],
         debug: true
     })
     .bundle()
@@ -46,12 +46,6 @@ gulp.task("sass", () =>
         .pipe(gulp.dest("./app/styles/css"))
 );
 
-gulp.task("js", () =>
-  gulp.src("./src/js/*.js")
-    .pipe(gulp.dest("./app/js"))
-    .pipe(connect.reload())
-);
-
 gulp.task("assets", () =>
    gulp.src("./src/assets/*")
     .pipe(gulp.dest("./app/assets"))
@@ -61,8 +55,8 @@ gulp.task("assets", () =>
 gulp.task("watch", () => {
   gulp.watch(["./src/*.html"], ["html"]);
   gulp.watch(["./src/styles/sass/*.scss"], ["sass"]);
-  gulp.watch(["./src/js/*.js"], ["js"]);
+  gulp.watch(["./src/js/*.js"], ["babel", "browserify"]);
   gulp.watch(["./src/assets/*"], ["assets"]);
 });
 
-gulp.task("default", ["html", "sass", "js", "browserify", "assets", "start-server", "watch"]);
+gulp.task("default", ["html", "sass", "babel", "browserify", "assets", "start-server", "watch"]);
