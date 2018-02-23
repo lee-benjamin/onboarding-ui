@@ -1,3 +1,13 @@
+var domready = require("domready");
+
+domready(function() {
+    getHomeTimeline();
+});
+
+//document.addEventListener("DOMContentLoaded", (event) =>
+//    getHomeTimeline()
+//);
+
 function addImage(tweetDiv, tweet) {
   // Append the image within a figure tag
   var figure = document.createElement("figure");
@@ -91,6 +101,3 @@ function getHomeTimeline() {
   xhttp.send();
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    getHomeTimeline()
-});
