@@ -6,12 +6,11 @@ const browserify = require("browserify");
 const fs = require("fs");
 const source = require("vinyl-source-stream");
 
-gulp.task("javascript", () => 
-    browserify({debug: true})
+gulp.task("js", () =>
+    browserify({entries: ["./src/js/helloWorld.js", "./src/js/twitter.js"]})
         .transform(babelify.configure({
             presets: ["env"]
         }))
-        .require(["./src/js/helloWorld.js", "./src/js/twitter.js"], {entry: true})
         .bundle()
         .pipe(source("bundle.js"))
         .pipe(gulp.dest("./app/js/"))
@@ -50,8 +49,8 @@ gulp.task("assets", () =>
 gulp.task("watch", () => {
   gulp.watch(["./src/*.html"], ["html"]);
   gulp.watch(["./src/styles/sass/*.scss"], ["sass"]);
-  gulp.watch(["./src/js/*.js"], ["javascript"]);
+  gulp.watch(["./src/js/*.js"], ["js"]);
   gulp.watch(["./src/assets/*"], ["assets"]);
 });
 
-gulp.task("default", ["html", "sass","javascript", "assets", "start-server", "watch"]);
+gulp.task("default", ["html", "sass", "js", "assets", "start-server", "watch"]);

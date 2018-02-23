@@ -1,6 +1,10 @@
 const domready = require("domready");
 
-domready(() => getHomeTimeline());
+domready(() => {
+    const button = document.getElementById("getTimelineButton");
+    button.addEventListener("click", getHomeTimeline);
+    getHomeTimeline();
+});
 
 const addImage = (tweetDiv, tweet) => {
   // Append the image within a figure tag
@@ -53,7 +57,6 @@ const addText = (tweetDiv, tweet) => {
   a.appendChild(bodyDiv);
   tweetDiv.appendChild(a);
 }
-
 
 const appendTweet = (tweet) => {
   // Each tweet will live in a <div>
