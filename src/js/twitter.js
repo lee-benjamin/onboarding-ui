@@ -1,8 +1,14 @@
-const domready = require("domready");
+function GetHomeTimelineButton() {
+  return React.createElement(
+    "button",
+    {onClick: getHomeTimeline},
+    "Get Home Timeline"
+  );
+}
 
-domready(() => {
-    const button = document.getElementById("getTimelineButton");
-    button.addEventListener("click", getHomeTimeline);
+document.addEventListener("DOMContentLoaded", () => {
+ReactDOM.render(GetHomeTimelineButton(),
+      document.getElementById("getTimelineButton"));
     getHomeTimeline();
 });
 

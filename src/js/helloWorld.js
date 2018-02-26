@@ -1,7 +1,5 @@
-var domready = require("domready");
-
-domready(() => {
-     ReactDOM.render(
-      React.createElement("div", null, "hello, react!"),
-      document.getElementById("reactComponent"));
+document.addEventListener("DOMContentLoaded", () => {
+  ReactDOM.render(
+    React.createElement("div", null, "hello, react!"),
+    document.getElementById("reactComponent"));
 });
