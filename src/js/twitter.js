@@ -1,13 +1,64 @@
+const e = React.createElement; // syntatical shorthand
+
 function GetHomeTimelineButton() {
-  return React.createElement(
+  return e(
     "button",
     {onClick: getHomeTimeline},
     "Get Home Timeline"
   );
 }
 
+function ProfilePic(props) {
+    return e(
+        "img",
+        { className: "ProfilePic",
+          src: props.user.profileImageURL
+        });
+}
+
+function UserInfo(props) {
+  return React.createElement(
+    "figcaption",
+    null,
+    React.createElement(
+      "div",
+      { className: "imageCaption" },
+      props.user.name,
+      React.createElement(
+        "div",
+        { className: "screenName" },
+        props.user.screenName
+      )
+    )
+  );
+}
+
+function Avatar(props) {
+  return e(
+    "figure",
+    { className: "Avatar" },
+    e(ProfilePic, {user: props.user}),
+    e(
+      React.createElement(
+        "div",
+        { className: "UserInfo-name" },
+        props.author.name
+      )
+    React.createElement(
+      "div",
+      { className: "Comment-text" },
+      props.text
+    ),
+    React.createElement(
+      "div",
+      { className: "Comment-date" },
+      formatDate(props.date)
+    )
+  );
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-ReactDOM.render(GetHomeTimelineButton(),
+  ReactDOM.render(GetHomeTimelineButton(),
       document.getElementById("getTimelineButton"));
     getHomeTimeline();
 });
@@ -15,11 +66,11 @@ ReactDOM.render(GetHomeTimelineButton(),
 const addImage = (tweetDiv, tweet) => {
   // Append the image within a figure tag
   const figure = document.createElement("figure");
-  figure.setAttribute("class", "userContent");
+  figure.setAttribute("class", "Avatar");
   const figCaption = document.createElement("figcaption");
   figCaption.innerHTML = "<div class='imageCaption'>" + tweet.user.screenName + "<div class='screenName'>" + tweet.user.name +"</div></div>";
   const tweetImg = document.createElement("img");
-  tweetImg.setAttribute("class", "img-circle");
+  tweetImg.setAttribute("class", "ProfilePic");
   tweetImg.src = tweet.user.profileImageURL;
 
   figure.appendChild(tweetImg);
