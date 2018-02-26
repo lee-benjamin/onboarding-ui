@@ -17,14 +17,14 @@ function ProfilePic(props) {
 }
 
 function UserInfo(props) {
-  return React.createElement(
+  return e(
     "figcaption",
     null,
-    React.createElement(
+    e(
       "div",
       { className: "imageCaption" },
       props.user.name,
-      React.createElement(
+      e(
         "div",
         { className: "screenName" },
         props.user.screenName
@@ -38,22 +38,7 @@ function Avatar(props) {
     "figure",
     { className: "Avatar" },
     e(ProfilePic, {user: props.user}),
-    e(
-      React.createElement(
-        "div",
-        { className: "UserInfo-name" },
-        props.author.name
-      )
-    React.createElement(
-      "div",
-      { className: "Comment-text" },
-      props.text
-    ),
-    React.createElement(
-      "div",
-      { className: "Comment-date" },
-      formatDate(props.date)
-    )
+    e(UserInfo, {user: props.user}),
   );
 }
 
@@ -120,7 +105,11 @@ const appendTweet = (tweet) => {
   const tweetDiv = document.createElement("div"); // The root element of the tweet
   tweetDiv.classList.add("tweetDiv");
 
-  addImage(tweetDiv, tweet);
+
+  //addImage(tweetDiv, tweet);
+  ReactDOM.render(Avatar(tweet),
+      document.getElementById("divTimeline")
+  );
   // create a div to hold the date and text
   const tweetContent = document.createElement("div");
   tweetContent.setAttribute("class", "tweetContent");
