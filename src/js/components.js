@@ -24,23 +24,6 @@ function GetHomeTimelineButton() {
   );
 }
 
-function UserInfo(props) {
-  return e(
-    "figcaption",
-    null,
-    e(
-      "div",
-      { className: "imageCaption" },
-      props.user.name,
-      e(
-        "div",
-        { className: "screenName" },
-        props.user.screenName
-      )
-    )
-  );
-}
-
 function Avatar(props) {
   return e(
     "figure",
@@ -50,7 +33,20 @@ function Avatar(props) {
       { className: "ProfilePic",
         src: props.user.profileImageURL
       }),
-    e(UserInfo, {user: props.user}),
+    e(
+      "figcaption",
+      null,
+      e(
+        "div",
+        { className: "imageCaption" },
+        props.user.name,
+        e(
+          "div",
+          { className: "screenName" },
+          props.user.screenName
+        )
+      )
+    )
   );
 }
 
