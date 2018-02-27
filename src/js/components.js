@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function GetHomeTimelineButton() {
   function handleClick() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("divTimeline"));
+    ReactDOM.unmountComponentAtNode(document.getElementById("root"));
     getHomeTimeline();
   };
 
@@ -61,11 +61,21 @@ function TweetContent(props) {
   );
 }
 
-export function TweetDiv(props) {
+export function Timeline(props) {
+  let tweets = [];
+  props.tweets.forEach((tweet) => tweets.push(Tweet(tweet)));
+  return e(
+    "div",
+    {className: "divTimeline"},
+    tweets
+  );
+}
+
+export function Tweet(props) {
   return e (
     "div",
     {
-      className: "TweetDiv",
+      className: "Tweet",
       key: props.id
     },
     e(Avatar, {user: props.user}),

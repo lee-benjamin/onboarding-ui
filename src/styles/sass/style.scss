@@ -10,7 +10,7 @@ $border-color: #C0C0C0;
   font-family: $font-stack;
 }
 
-.divTimelineWithContent {
+.rootWithContent {
   margin: 10px;
   border: 1px black solid;
 }
@@ -23,7 +23,7 @@ $border-color: #C0C0C0;
    background-color: $color;
 }
 
-.TweetDiv {
+.Tweet {
   border-bottom: 1px $border-color solid;
   &:nth-child(odd) {
     @include background-color($dark-color);
