@@ -7,7 +7,7 @@ const fs = require("fs");
 const source = require("vinyl-source-stream");
 
 gulp.task("js", () =>
-    browserify({entries: ["./src/js/components.js", "./src/js/twitter.js"]})
+    browserify({entries: ["./src/js/components.js", "./src/js/twitter.js"], paths: ["./src/js"]})
         .transform(babelify.configure({
             presets: ["env"]
         }))
