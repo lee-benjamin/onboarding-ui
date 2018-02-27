@@ -1,6 +1,6 @@
-const components = require("./components.js");
+import {TweetDiv} from "./components.js";
 
-const formatDate = (input) => {
+export const formatDate = (input) => {
   const date = new Date(input);
   const monthNames = [
     "January", "February", "March",
@@ -15,12 +15,12 @@ const formatDate = (input) => {
   return monthNames[monthIndex] + " " + day;
 }
 
-const getTwitterLink = (tweet) => {
+export const getTwitterLink = (tweet) => {
   const urlPrefix = "https://twitter.com/TwitterAPI/status/";
   return urlPrefix + tweet.id;
 }
 
-const getHomeTimeline = () => {
+export const getHomeTimeline = () => {
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     const divTimeline = document.getElementById("divTimeline");
@@ -30,7 +30,7 @@ const getHomeTimeline = () => {
         divTimeline.classList.add("divTimelineWithContent");
         let tweets = [];
         const obj = JSON.parse(this.responseText);
-        obj.forEach((tweet) => tweets.push(components.TweetDiv(tweet)));
+        obj.forEach((tweet) => tweets.push(TweetDiv(tweet)));
         ReactDOM.render(tweets,
           document.getElementById("divTimeline"));
       }
@@ -43,7 +43,3 @@ const getHomeTimeline = () => {
   xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
   xhttp.send();
 }
-
-exports.getHomeTimeline = getHomeTimeline;
-exports.formatDate = formatDate;
-exports.getTwitterLink = getTwitterLink;

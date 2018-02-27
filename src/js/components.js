@@ -1,18 +1,20 @@
-const twitter = require("./twitter.js");
+import {formatDate} from "./twitter.js";
+import {getTwitterLink} from "./twitter.js";
+import {getHomeTimeline} from "./twitter.js";
 
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(GetHomeTimelineButton(),
     document.getElementById("getTimelineButton"));
-  twitter.getHomeTimeline();
+  getHomeTimeline();
 });
 
 
 function GetHomeTimelineButton() {
   function handleClick() {
     ReactDOM.unmountComponentAtNode(document.getElementById("divTimeline"));
-    twitter.getHomeTimeline();
+    getHomeTimeline();
   };
 
   return e(
@@ -56,14 +58,14 @@ function TweetContent(props) {
   return e(
     "div",
     {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, twitter.formatDate(props.tweet.createdAt)),
-    e("a", {href: twitter.getTwitterLink(props.tweet), target: "_blank"},
+    e("div", {className: "timeDiv"}, formatDate(props.tweet.createdAt)),
+    e("a", {href: getTwitterLink(props.tweet), target: "_blank"},
       e("div", null, props.tweet.text)
     )
   );
 }
 
-function TweetDiv(props) {
+export function TweetDiv(props) {
   return e (
     "div",
     {
@@ -74,5 +76,3 @@ function TweetDiv(props) {
     e(TweetContent, {tweet: props}),
   );
 }
-
-exports.TweetDiv = TweetDiv;
