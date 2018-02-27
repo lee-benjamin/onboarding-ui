@@ -53,7 +53,10 @@ function TweetContent(props) {
 function TweetDiv(props) {
   return e (
     "div",
-    {className: "TweetDiv"},
+    {
+      className: "TweetDiv",
+      key: props.id
+    },
     e(Avatar, {user: props.user}),
     e(TweetContent, {tweet: props}),
   );
@@ -148,7 +151,6 @@ const getHomeTimeline = () => {
       if (this.status == 200) {
         divTimeline.classList.add("divTimelineWithContent");
         const obj = JSON.parse(this.responseText);
-        // only displaying one tweet for development purposes
         let tweets = [];
         for (let i=0; i<obj.length;i++) {
             tweets.push(TweetDiv(obj[i]));
