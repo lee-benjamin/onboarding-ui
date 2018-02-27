@@ -1,76 +1,4 @@
-const e = React.createElement; // syntatical shorthand
-
-document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(GetHomeTimelineButton(),
-    document.getElementById("getTimelineButton"));
-  getHomeTimeline();
-});
-
-function GetHomeTimelineButton() {
-  function handleClick() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("divTimeline"));
-    getHomeTimeline();
-  }
-
-  return e(
-    "button",
-    {onClick: handleClick},
-    "Get Home Timeline"
-  );
-}
-
-function UserInfo(props) {
-  return e(
-    "figcaption",
-    null,
-    e(
-      "div",
-      { className: "imageCaption" },
-      props.user.name,
-      e(
-        "div",
-        { className: "screenName" },
-        props.user.screenName
-      )
-    )
-  );
-}
-
-function Avatar(props) {
-  return e(
-    "figure",
-    { className: "Avatar" },
-    e(
-      "img",
-      { className: "ProfilePic",
-        src: props.user.profileImageURL
-      }),
-    e(UserInfo, {user: props.user}),
-  );
-}
-
-function TweetContent(props) {
-  return e(
-    "div",
-    {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, formatDate(props.tweet.createdAt)),
-    e("a", {href: getTwitterLink(props.tweet), target: "_blank"},
-      e("div", null, props.tweet.text)
-    )
-  );
-}
-
-function TweetDiv(props) {
-  return e (
-    "div",
-    {
-      className: "TweetDiv",
-      key: props.id
-    },
-    e(Avatar, {user: props.user}),
-    e(TweetContent, {tweet: props}),
-  );
-}
+const components = require("./components.js");
 
 const formatDate = (input) => {
   const date = new Date(input);
@@ -86,6 +14,7 @@ const formatDate = (input) => {
 
   return monthNames[monthIndex] + " " + day;
 }
+
 const getTwitterLink = (tweet) => {
   const urlPrefix = "https://twitter.com/TwitterAPI/status/";
   return urlPrefix + tweet.id;
@@ -101,7 +30,7 @@ const getHomeTimeline = () => {
         divTimeline.classList.add("divTimelineWithContent");
         let tweets = [];
         const obj = JSON.parse(this.responseText);
-        obj.forEach((tweet) => tweets.push(TweetDiv(tweet)));
+        obj.forEach((tweet) => tweets.push(components.TweetDiv(tweet)));
         ReactDOM.render(tweets,
           document.getElementById("divTimeline"));
       }
@@ -114,3 +43,7 @@ const getHomeTimeline = () => {
   xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
   xhttp.send();
 }
+
+exports.getHomeTimeline = getHomeTimeline;
+exports.formatDate = formatDate;
+exports.getTwitterLink = getTwitterLink;
