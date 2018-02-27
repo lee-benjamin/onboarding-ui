@@ -23,7 +23,7 @@ $border-color: #C0C0C0;
     background-color: $color;
 }
 
-.tweetDiv {
+.TweetDiv {
     border-bottom: 1px $border-color solid;
     &:nth-child(odd) {
         @include background-color($dark-color);
@@ -31,7 +31,7 @@ $border-color: #C0C0C0;
     &:nth-child(even) {
         @include background-color($light-color);
     }
-    .userContent {
+    .Avatar {
         width: 140px;
         text-align: center;
         display: inline-block;
@@ -51,7 +51,7 @@ $border-color: #C0C0C0;
             font-weight: normal;
         }
     }
-    .tweetContent {
+    .TweetContent {
         position: relative;
         top: -35px;
         display: inline-block;
