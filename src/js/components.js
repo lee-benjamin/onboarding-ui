@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function ServerError(props) {
+  return e(
+    "div",
+    {className: "ServerError"},
+    "Unable to get home timeline, please try again later."
+  );
+}
+
 class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -19,11 +27,12 @@ class TimelineContainer extends React.Component {
   }
 
   render() {
+    const isServerError = this.state.tweets == null;
     return e(
       "div",
       {className: "TimelineContainer"},
       e(HomeTimelineButton, {}),
-      e(Timeline, {tweets: this.state.tweets})
+      ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
   }
 }
@@ -46,7 +55,10 @@ class HomeTimelineButton extends React.Component {
   render() {
     return e(
       "button",
-      {onClick: this.handleClick},
+      {
+        className: "getHomeTimelineButton",
+        onClick: this.handleClick
+      },
       "Get Home Timeline"
     );
   }

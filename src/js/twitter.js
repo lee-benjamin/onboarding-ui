@@ -23,22 +23,19 @@ export const getTwitterLink = (tweet) => {
 export const getHomeTimeline = (callback) => {
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-    //const divTimeline = document.getElementById("root");
-    //divTimeline.innerHTML = ""; // Clearing previous text
     if (this.readyState == XMLHttpRequest.DONE)  {
       if (this.status == 200) {
-        //divTimeline.classList.add("rootWithContent");
         const tweets = JSON.parse(this.responseText);
         callback(tweets);
         //ReactDOM.render(React.createElement(Timeline, {tweets: tweets}),
         //  document.getElementById("root"));
       }
-      //else {
-      //  divTimeline.classList.remove("rootWithContent");
-      //  divTimeline.innerHTML = "Unable to get home timeline, please try again later.";
-      //}
+      else {
+        callback(null);
+      }
     }
   };
   xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
+  console.log("hello");
   xhttp.send();
 }
