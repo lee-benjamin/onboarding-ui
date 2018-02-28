@@ -27,8 +27,6 @@ export const getHomeTimeline = (callback) => {
       if (this.status == 200) {
         const tweets = JSON.parse(this.responseText);
         callback(tweets);
-        //ReactDOM.render(React.createElement(Timeline, {tweets: tweets}),
-        //  document.getElementById("root"));
       }
       else {
         callback(null);
