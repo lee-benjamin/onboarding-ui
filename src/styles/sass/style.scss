@@ -10,11 +10,6 @@ $border-color: #C0C0C0;
   font-family: $font-stack;
 }
 
-.rootWithContent {
-  margin: 10px;
-  border: 1px black solid;
-}
-
 .getTimelineButton {
    margin-left: 10px;
 }
@@ -23,42 +18,46 @@ $border-color: #C0C0C0;
    background-color: $color;
 }
 
-.Tweet {
-  border-bottom: 1px $border-color solid;
-  &:nth-child(odd) {
-    @include background-color($dark-color);
-  }
-  &:nth-child(even) {
-    @include background-color($light-color);
-  }
-  .Avatar {
-    width: 140px;
-    text-align: center;
-    display: inline-block;
-    margin: 1em 50px 1em 10px;
-    .ProfilePic {
-        border-radius: 50%;
-        height: 60px;
-        width: 60px;
+.divTimeline {
+  margin: 10px;
+  border: 1px black solid;
+  .Tweet {
+    border-bottom: 1px $border-color solid;
+    &:nth-child(odd) {
+      @include background-color($dark-color);
     }
-    .imageCaption {
-        font-size: 15pt;
-        font-weight: bold;
-        text-align: center;
+    &:nth-child(even) {
+      @include background-color($light-color);
     }
-    .screenName {
+    .Avatar {
+      width: 140px;
+      text-align: center;
+      display: inline-block;
+      margin: 1em 50px 1em 10px;
+      .ProfilePic {
+          border-radius: 50%;
+          height: 60px;
+          width: 60px;
+      }
+      .imageCaption {
+          font-size: 15pt;
+          font-weight: bold;
+          text-align: center;
+      }
+      .screenName {
+          font-size: 10pt;
+          font-weight: normal;
+      }
+    }
+    .TweetContent {
+      position: relative;
+      top: -35px;
+      display: inline-block;
+      .timeDiv {
+        font-style: italic;
         font-size: 10pt;
-        font-weight: normal;
-    }
-  }
-  .TweetContent {
-    position: relative;
-    top: -35px;
-    display: inline-block;
-    .timeDiv {
-      font-style: italic;
-      font-size: 10pt;
-      margin: 20px 0 5px;
+        margin: 20px 0 5px;
+      }
     }
   }
 }

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     getHomeTimeline( (tweets) => {
     console.log(tweets);
     ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
-      document.getElementById("reactComponent"));
+      document.getElementById("root"));
   });
 });
 
