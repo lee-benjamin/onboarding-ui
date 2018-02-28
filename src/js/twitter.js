@@ -36,6 +36,5 @@ export const getHomeTimeline = (callback) => {
     }
   };
   xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
-  console.log("hello");
   xhttp.send();
 }

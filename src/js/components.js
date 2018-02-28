@@ -6,7 +6,6 @@ const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
     getHomeTimeline( (tweets) => {
-    console.log(tweets);
     ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
       document.getElementById("root"));
   });
@@ -24,6 +23,13 @@ class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {tweets: props.tweets};
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    getHomeTimeline( (tweets) => {
+      this.setState({tweets: tweets});
+    });
   }
 
   render() {
@@ -31,35 +37,14 @@ class TimelineContainer extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer"},
-      e(HomeTimelineButton, {}),
+      e("button",
+        {
+          className: "getHomeTimelineButton",
+          onClick: this.handleClick,
+        },
+        "Get Home Timeline"
+      ),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
-    );
-  }
-}
-
-class HomeTimelineButton extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-    //this.state = {tweets: props.tweets}
-    this.state = {};
-  }
-
-  handleClick() {
-    console.log("clicked");
-    //ReactDOM.unmountComonentAtNode(document.getElementById("root"));
-    //this.setState(prevState => getHomeTimeline());
-    //getHomeTimeline();
-  };
-
-  render() {
-    return e(
-      "button",
-      {
-        className: "getHomeTimelineButton",
-        onClick: this.handleClick
-      },
-      "Get Home Timeline"
     );
   }
 }
