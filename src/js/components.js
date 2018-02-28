@@ -5,24 +5,41 @@ import {getHomeTimeline} from "./twitter.js";
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
-  const tweets = getHomeTimeline( (tweets) => {
+    getHomeTimeline( (tweets) => {
     console.log(tweets);
-    ReactDOM.render(e(HomeTimelineButton, {tweets: tweets}),
-      document.getElementById("getTimelineButton"));
+    ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
+      document.getElementById("reactComponent"));
   });
 });
 
+class TimelineContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {tweets: props.tweets};
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "TimelineContainer"},
+      e(HomeTimelineButton, {}),
+      e(Timeline, {tweets: this.state.tweets})
+    );
+  }
+}
 
 class HomeTimelineButton extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = {tweets: props.tweets}
+    //this.state = {tweets: props.tweets}
+    this.state = {};
   }
 
   handleClick() {
-    //ReactDOM.unmountComponentAtNode(document.getElementById("root"));
-    this.setState(prevState => getHomeTimeline());
+    console.log("clicked");
+    //ReactDOM.unmountComonentAtNode(document.getElementById("root"));
+    //this.setState(prevState => getHomeTimeline());
     //getHomeTimeline();
   };
 
