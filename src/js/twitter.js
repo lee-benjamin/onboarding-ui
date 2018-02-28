@@ -20,7 +20,7 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getHomeTimeline = () => {
+export const getHomeTimeline = (callback) => {
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     const divTimeline = document.getElementById("root");
@@ -29,8 +29,9 @@ export const getHomeTimeline = () => {
       if (this.status == 200) {
         divTimeline.classList.add("rootWithContent");
         const tweets = JSON.parse(this.responseText);
-        ReactDOM.render(React.createElement(Timeline, {tweets: tweets}),
-          document.getElementById("root"));
+        callback(tweets);
+        //ReactDOM.render(React.createElement(Timeline, {tweets: tweets}),
+        //  document.getElementById("root"));
       }
       else {
         divTimeline.classList.remove("rootWithContent");
