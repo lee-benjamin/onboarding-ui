@@ -8,25 +8,17 @@ const e = React.createElement; // syntatical shorthand
 document.addEventListener("DOMContentLoaded", () => {
   getHomeTimeline(
     (tweets) => { // success
-      ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
+      ReactDOM.render(e(HomeTimelineContainer, {tweets: tweets}),
         document.getElementById("root"));
       },
     () => { //failure
-      ReactDOM.render(e(TimelineContainer, {isServerError: true}),
+      ReactDOM.render(e(HomeTimelineContainer, {isServerError: true}),
         document.getElementById("root"));
     }
   );
 });
 
-function ServerError(props) {
-  return e(
-    "div",
-    {className: "ServerError"},
-    "Unable to get home timeline, please try again later."
-  );
-}
-
-class TimelineContainer extends React.Component {
+class HomeTimelineContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {tweets: props.tweets, isServerError: props.isServerError};
@@ -51,7 +43,7 @@ class TimelineContainer extends React.Component {
     const isServerError = this.state.isServerError == true;
     return e(
       "div",
-      {className: "TimelineContainer"},
+      {className: "HomeTimelineContainer"},
       e("button",
         {
           className: "getHomeTimelineButton",
@@ -62,6 +54,14 @@ class TimelineContainer extends React.Component {
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
   }
+}
+
+function ServerError(props) {
+  return e(
+    "div",
+    {className: "ServerError"},
+    "Unable to get home timeline, please try again later."
+  );
 }
 
 function Avatar(props) {

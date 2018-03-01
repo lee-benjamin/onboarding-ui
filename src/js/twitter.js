@@ -21,7 +21,7 @@ export const getTwitterLink = (tweet) => {
 }
 
 export const getHomeTimeline = (successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline"
+  const url = "http://localhost:8080/api/1.0/twitter/timeline/home"
   fetch(url)
     .then((data) => data.json())
     .then((data) => {
