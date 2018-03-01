@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Ben Lee's onboarding ui lab",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.5"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

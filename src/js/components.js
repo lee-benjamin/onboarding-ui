@@ -1,6 +1,7 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getHomeTimeline} from "./twitter.js";
+import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
@@ -101,8 +102,8 @@ function TweetContent(props) {
 }
 
 export function Timeline(props) {
-  let tweets = [];
-  props.tweets.forEach((tweet) => tweets.push(Tweet(tweet)));
+  let tweets = _.map(props.tweets, Tweet);
+
   return e(
     "div",
     {className: "divTimeline"},
