@@ -1,14 +1,21 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getHomeTimeline} from "./twitter.js";
+import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
-    getHomeTimeline( (tweets) => {
-    ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
-      document.getElementById("root"));
-  });
+  getHomeTimeline(
+    (tweets) => { // success
+      ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
+        document.getElementById("root"));
+      },
+    () => { //failure
+      ReactDOM.render(e(TimelineContainer, {isServerError: true}),
+        document.getElementById("root"));
+    }
+  );
 });
 
 function ServerError(props) {
@@ -22,18 +29,26 @@ function ServerError(props) {
 class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets};
+    this.state = {tweets: props.tweets, isServerError: props.isServerError};
     this.handleClick = this.handleClick.bind(this);
+    this.successCallback = this.successCallback.bind(this);
+    this.failureCallback = this.failureCallback.bind(this);
+  }
+
+  successCallback(tweets) {
+    this.setState({tweets: tweets, isServerError: false});
+  }
+
+  failureCallback() {
+    this.setState({isServerError: true});
   }
 
   handleClick() {
-    getHomeTimeline( (tweets) => {
-      this.setState({tweets: tweets});
-    });
+    getHomeTimeline(this.successCallback, this.failureCallback);
   }
 
   render() {
-    const isServerError = this.state.tweets == null;
+    const isServerError = this.state.isServerError == true;
     return e(
       "div",
       {className: "TimelineContainer"},
@@ -87,8 +102,8 @@ function TweetContent(props) {
 }
 
 export function Timeline(props) {
-  let tweets = [];
-  props.tweets.forEach((tweet) => tweets.push(Tweet(tweet)));
+  let tweets = _.map(props.tweets, Tweet);
+
   return e(
     "div",
     {className: "divTimeline"},
