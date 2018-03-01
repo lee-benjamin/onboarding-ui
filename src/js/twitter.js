@@ -20,19 +20,15 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getHomeTimeline = (callback) => {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == XMLHttpRequest.DONE)  {
-      if (this.status == 200) {
-        const tweets = JSON.parse(this.responseText);
-        callback(tweets);
-      }
-      else {
-        callback(null);
-      }
-    }
-  };
-  xhttp.open("GET", "http://localhost:8080/api/1.0/twitter/timeline",true);
-  xhttp.send();
+export const getHomeTimeline = (successCallback, failureCallback) => {
+  const url = "http://localhost:8080/api/1.0/twitter/timeline"
+  fetch(url)
+    .then((data) => data.json())
+    .then((data) => {
+      successCallback(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      failureCallback();
+    });
 }
