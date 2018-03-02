@@ -63,11 +63,14 @@ class TimelineContainer extends React.Component {
   }
 
   render() {
+    const userTimeline = (this.state.className == "UserTimeline" ? true : false);
     const isServerError = this.state.isServerError == true;
-    let buttonName = (this.state.className == "UserTimeline" ? "Get User Timeline" : "Get Home Timeline");
+    let buttonName = (userTimeline ? "Get User Timeline" : "Get Home Timeline");
+    let header = (userTimeline ? "User Timeline" : "Home Timeline");
     return e(
       "div",
       {className: "TimelineContainer " + this.state.className},
+      e("h1",{className: "TimelineHeader"}, header),
       e("button",
         {
           className: "getTimelineButton",

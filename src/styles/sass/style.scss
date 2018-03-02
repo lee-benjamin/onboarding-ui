@@ -55,6 +55,10 @@ $margin: 10px;
     }
   }
 
+  .TimelineHeader {
+    margin: $margin;
+  }
+
   .Timeline {
     margin: $margin;
     border: 1px black solid;
