@@ -1,6 +1,8 @@
 $font-stack: "Times New Roman", Arial, sans-serif;
-$light-color: #e9e9e9;
-$dark-color: #e8f5fd;
+$Home-light: #e9e9e9;
+$Home-dark: #e8f5fd;
+$User-light:#1da1f2;
+$User-dark: #f5f8fa;
 $border-color: #C0C0C0;
 $margin: 10px;
 
@@ -11,8 +13,13 @@ $margin: 10px;
   font-family: $font-stack;
 }
 
-@mixin background-color($color) {
-   background-color: $color;
+@mixin tweet-color($light-color, $dark-color) {
+  &:nth-child(odd) {
+    background-color: $dark-color;
+  }
+  &:nth-child(even) {
+    background-color: $light-color;
+  }
 }
 
 .ServerError {
@@ -25,11 +32,13 @@ $margin: 10px;
   &.UserTimeline {
     display: inline-block;
     width: 45%;
-
     .getTimelineButton {
       position: absolute;
       top: -2 * $margin;
       right: $margin;
+    }
+    .Tweet {
+      @include tweet-color($User-light, $User-dark);
     }
   }
 
@@ -41,6 +50,9 @@ $margin: 10px;
       top: -2 * $margin;
       left: $margin;
     }
+    .Tweet {
+      @include tweet-color($Home-light, $Home-dark);
+    }
   }
 
   .Timeline {
@@ -48,12 +60,6 @@ $margin: 10px;
     border: 1px black solid;
     .Tweet {
       border-bottom: 1px $border-color solid;
-      &:nth-child(odd) {
-        @include background-color($dark-color);
-      }
-      &:nth-child(even) {
-        @include background-color($light-color);
-      }
       .Avatar {
         width: 140px;
         text-align: center;
