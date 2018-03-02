@@ -2,7 +2,7 @@ $font-stack: "Times New Roman", Arial, sans-serif;
 $light-color: #e9e9e9;
 $dark-color: #e8f5fd;
 $border-color: #C0C0C0;
-$left-margin: 10px;
+$margin: 10px;
 
 .title {
   text-align: center;
@@ -16,17 +16,20 @@ $left-margin: 10px;
 }
 
 .ServerError {
-  margin: $left-margin;
+  margin: $margin;
 }
 
 .TimelineContainer {
+  position: relative;
 
   &.UserTimeline {
     display: inline-block;
     width: 45%;
 
     .getTimelineButton {
-       margin-left: $left-margin;
+      position: absolute;
+      top: -2 * $margin;
+      right: $margin;
     }
   }
 
@@ -34,12 +37,14 @@ $left-margin: 10px;
     display: inline-block;
     width: 55%;
     .getTimelineButton {
-         margin-left: $left-margin;
-      }
+      position: absolute;
+      top: -2 * $margin;
+      left: $margin;
+    }
   }
 
   .Timeline {
-    margin: $left-margin;
+    margin: $margin;
     border: 1px black solid;
     .Tweet {
       border-bottom: 1px $border-color solid;
