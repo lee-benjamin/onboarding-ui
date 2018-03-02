@@ -8,15 +8,30 @@ const e = React.createElement; // syntatical shorthand
 document.addEventListener("DOMContentLoaded", () => {
   getHomeTimeline(
     (tweets) => { // success
-      ReactDOM.render(e(HomeTimelineContainer, {tweets: tweets}),
+      ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
         document.getElementById("root"));
       },
     () => { //failure
-      ReactDOM.render(e(HomeTimelineContainer, {isServerError: true}),
+      ReactDOM.render(e(TimelineContainer, {isServerError: true}),
         document.getElementById("root"));
     }
   );
 });
+
+class TimelineContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {tweets: props.tweets, isServerError: props.isServerError};
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "TimelineContainer"},
+      e(HomeTimelineContainer, {tweets: this.state.tweets})
+    );
+  }
+}
 
 class HomeTimelineContainer extends React.Component {
   constructor(props) {
