@@ -122,7 +122,7 @@ function TweetContent(props) {
     "div",
     {className: "TweetContent"},
     e("div", {className: "timeDiv"}, formatDate(props.tweet.createdAt)),
-    e("a", {href: getTwitterLink(props.tweet), target: "_blank"},
+    e("a", {className: "tweetText", href: getTwitterLink(props.tweet), target: "_blank"},
       e("div", null, props.tweet.text)
     )
   );
