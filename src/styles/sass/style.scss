@@ -34,11 +34,13 @@ $margin: 10px;
   &.UserTimeline {
     display: inline-block;
     width: 45%;
+
     .getTimelineButton {
       position: absolute;
       top: 7 * $margin;
       right: $margin;
     }
+
     .Tweet {
       @include tweet-color($User-light, $User-dark);
     }
@@ -47,11 +49,13 @@ $margin: 10px;
   &.HomeTimeline {
     display: inline-block;
     width: 55%;
+
     .getTimelineButton {
       position: absolute;
       top: 7 * $margin;
       left: $margin;
     }
+
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);
     }
@@ -65,33 +69,40 @@ $margin: 10px;
   .Timeline {
     margin: $margin;
     border: 1px black solid;
+
     .Tweet {
       border-bottom: 1px $border-color solid;
+
       .Avatar {
         width: 140px;
         text-align: center;
         display: inline-block;
         margin: 1em 50px 1em 10px;
+
         .ProfilePic {
             border-radius: 50%;
             height: 60px;
             width: 60px;
         }
+
         .imageCaption {
             font-size: 15pt;
             font-weight: bold;
             text-align: center;
         }
+
         .screenName {
             font-size: 10pt;
             font-weight: normal;
         }
       }
+
       .TweetContent {
         width: 70%;
         position: relative;
         top: -35px;
         display: inline-block;
+
         .timeDiv {
           font-style: italic;
           font-size: 10pt;
