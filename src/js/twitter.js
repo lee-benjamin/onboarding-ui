@@ -46,15 +46,3 @@ export const getUserTimeline = (successCallback, failureCallback) => {
       failureCallback();
     });
 }
-//export const getBothTimelines = (successCallback, failureCallback) => {
-//  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
-//  let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
-//  Promise.all(promises)
-//    .then((data) => {
-//      successCallback(data[0],data[1]);
-//    })
-//    .catch((error) => {
-//      console.log(error);
-//      failureCallback();
-//    });
-//}

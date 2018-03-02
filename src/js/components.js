@@ -1,6 +1,6 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
-import {getTimeline} from "./twitter.js";
+import {getHomeTimeline} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -46,9 +46,8 @@ class ReactContainer extends React.Component {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(TimelineContainer,
+      e(HomeTimeline,
         {
-          className: "HomeTimeline",
           isServerError: this.state.isServerError,
           tweets: this.state.homeTweets
         }
@@ -64,6 +63,44 @@ class ReactContainer extends React.Component {
   }
 }
 
+class HomeTimeline extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {tweets: props.tweets, isServerError: props.isServerError, className: "HomeTimeline"};
+    this.handleClick = this.handleClick.bind(this);
+    this.successCallback = this.successCallback.bind(this);
+    this.failureCallback = this.failureCallback.bind(this);
+  }
+
+  successCallback(tweets) {
+    this.setState({tweets: tweets, isServerError: false});
+  }
+
+  failureCallback() {
+    this.setState({isServerError: true});
+  }
+
+  handleClick() {
+    getHomeTimeline(this.successCallback, this.failureCallback);
+  }
+
+  render() {
+    const isServerError = this.state.isServerError == true;
+    return e(
+      "div",
+      {className: "TimelineContainer HomeTimeline"},
+      e("h1",{className: "TimelineHeader"}, "Home Timeline"),
+      e("button",
+        {
+          className: "getTimelineButton",
+          onClick: this.handleClick,
+        },
+        "Get Home Timeline"
+      ),
+      ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
+    );
+  }
+}
 class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
