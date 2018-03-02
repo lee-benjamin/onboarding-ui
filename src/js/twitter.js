@@ -20,8 +20,8 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getHomeTimeline = (successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline/home"
+export const getTimeline2 = (endpoint, successCallback, failureCallback) => {
+  const url = "http://localhost:8080/api/1.0/twitter/timeline/" + endpoint;
   fetch(url)
     .then((data) => data.json())
     .then((data) => {
@@ -32,3 +32,17 @@ export const getHomeTimeline = (successCallback, failureCallback) => {
       failureCallback();
     });
 }
+
+//export const getTimeline = (successCallback, failureCallback) => {
+//  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
+//  fetch(url + "home")
+//    .then((data) => data.json())
+//    .then((homeTweets) =>  fetch(url + "user")
+//    .then((userTweets,homeTweets) => {
+//      successCallback(userTweets, homeTweets);
+//    })
+//    .catch((error) => {
+//      console.log(error);
+//      failureCallback();
+//    });
+//}

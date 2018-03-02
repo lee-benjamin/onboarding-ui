@@ -1,16 +1,24 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
-import {getHomeTimeline} from "./twitter.js";
+import {getTimeline} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
-  getHomeTimeline(
-    (tweets) => { // success
-      ReactDOM.render(e(ReactContainer, {tweets: tweets}),
-        document.getElementById("root"));
-      },
+  getTimeline( "home",
+    (homeTweets) => { // success
+      getTimeline ( "user",
+        (userTweets) => {
+          ReactDOM.render(e(ReactContainer, {userTweets: userTweets, homeTweets: homeTweets}),
+            document.getElementById("root"));
+        },
+        () => { // failure
+          ReactDOM.render(e(ReactContainer, {isServerError: true}),
+            document.getElementById("root"));
+        }
+      );
+    },
     () => { //failure
       ReactDOM.render(e(ReactContainer, {isServerError: true}),
         document.getElementById("root"));
@@ -21,15 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError};
+    this.state = {
+      homeTweets: props.homeTweets,
+      userTweets: props.userTweets,
+      isServerError: props.isServerError
+    };
   }
 
   render() {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(TimelineContainer, {className: "HomeTimeline", tweets: this.state.tweets}),
-      e(TimelineContainer, {className: "UserTimeline", tweets: this.state.tweets})
+      e(TimelineContainer, {className: "HomeTimeline", tweets: this.state.homeTweets}),
+      e(TimelineContainer, {className: "UserTimeline", tweets: this.state.userTweets})
     );
   }
 }
@@ -52,7 +64,7 @@ class TimelineContainer extends React.Component {
   }
 
   handleClick() {
-    getHomeTimeline(this.successCallback, this.failureCallback);
+    getTimeline("user", this.successCallback, this.failureCallback);
   }
 
   render() {
@@ -122,7 +134,7 @@ export function Timeline(props) {
 
   return e(
     "div",
-    {className: "divTimeline"},
+    {className: "Timeline"},
     tweets
   );
 }
