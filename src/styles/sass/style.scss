@@ -23,45 +23,56 @@ $left-margin: 10px;
   margin: $left-margin;
 }
 
-.divTimeline {
-  margin: $left-margin;
-  border: 1px black solid;
-  .Tweet {
-    border-bottom: 1px $border-color solid;
-    &:nth-child(odd) {
-      @include background-color($dark-color);
-    }
-    &:nth-child(even) {
-      @include background-color($light-color);
-    }
-    .Avatar {
-      width: 140px;
-      text-align: center;
-      display: inline-block;
-      margin: 1em 50px 1em 10px;
-      .ProfilePic {
-          border-radius: 50%;
-          height: 60px;
-          width: 60px;
+.TimelineContainer {
+
+  &.UserTimeline {
+    display: inline-block;
+  }
+
+  &.HomeTimeline {
+    display: inline-block;
+  }
+
+  .divTimeline {
+    margin: $left-margin;
+    border: 1px black solid;
+    .Tweet {
+      border-bottom: 1px $border-color solid;
+      &:nth-child(odd) {
+        @include background-color($dark-color);
       }
-      .imageCaption {
-          font-size: 15pt;
-          font-weight: bold;
-          text-align: center;
+      &:nth-child(even) {
+        @include background-color($light-color);
       }
-      .screenName {
+      .Avatar {
+        width: 140px;
+        text-align: center;
+        display: inline-block;
+        margin: 1em 50px 1em 10px;
+        .ProfilePic {
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+        }
+        .imageCaption {
+            font-size: 15pt;
+            font-weight: bold;
+            text-align: center;
+        }
+        .screenName {
+            font-size: 10pt;
+            font-weight: normal;
+        }
+      }
+      .TweetContent {
+        position: relative;
+        top: -35px;
+        display: inline-block;
+        .timeDiv {
+          font-style: italic;
           font-size: 10pt;
-          font-weight: normal;
-      }
-    }
-    .TweetContent {
-      position: relative;
-      top: -35px;
-      display: inline-block;
-      .timeDiv {
-        font-style: italic;
-        font-size: 10pt;
-        margin: 20px 0 5px;
+          margin: 20px 0 5px;
+        }
       }
     }
   }

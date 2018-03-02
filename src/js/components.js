@@ -27,8 +27,9 @@ class ReactContainer extends React.Component {
   render() {
     return e(
       "div",
-      {className: "TimelineContainer"},
-      e(TimelineContainer, {tweets: this.state.tweets})
+      {className: "ReactContainer"},
+      e(TimelineContainer, {className: "HomeTimeline", tweets: this.state.tweets}),
+      e(TimelineContainer, {className: "UserTimeline", tweets: this.state.tweets})
     );
   }
 }
@@ -36,7 +37,7 @@ class ReactContainer extends React.Component {
 class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError};
+    this.state = {tweets: props.tweets, isServerError: props.isServerError, className: props.className};
     this.handleClick = this.handleClick.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
@@ -58,7 +59,7 @@ class TimelineContainer extends React.Component {
     const isServerError = this.state.isServerError == true;
     return e(
       "div",
-      {className: "TimelineContainer"},
+      {className: "TimelineContainer " + this.state.className},
       e("button",
         {
           className: "getHomeTimelineButton",
