@@ -8,17 +8,17 @@ const e = React.createElement; // syntatical shorthand
 document.addEventListener("DOMContentLoaded", () => {
   getHomeTimeline(
     (tweets) => { // success
-      ReactDOM.render(e(TimelineContainer, {tweets: tweets}),
+      ReactDOM.render(e(ReactContainer, {tweets: tweets}),
         document.getElementById("root"));
       },
     () => { //failure
-      ReactDOM.render(e(TimelineContainer, {isServerError: true}),
+      ReactDOM.render(e(ReactContainer, {isServerError: true}),
         document.getElementById("root"));
     }
   );
 });
 
-class TimelineContainer extends React.Component {
+class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {tweets: props.tweets, isServerError: props.isServerError};
@@ -28,12 +28,12 @@ class TimelineContainer extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer"},
-      e(HomeTimelineContainer, {tweets: this.state.tweets})
+      e(TimelineContainer, {tweets: this.state.tweets})
     );
   }
 }
 
-class HomeTimelineContainer extends React.Component {
+class TimelineContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {tweets: props.tweets, isServerError: props.isServerError};
@@ -58,7 +58,7 @@ class HomeTimelineContainer extends React.Component {
     const isServerError = this.state.isServerError == true;
     return e(
       "div",
-      {className: "HomeTimelineContainer"},
+      {className: "TimelineContainer"},
       e("button",
         {
           className: "getHomeTimelineButton",
