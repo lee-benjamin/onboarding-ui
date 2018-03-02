@@ -34,8 +34,20 @@ class ReactContainer extends React.Component {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(TimelineContainer, {className: "HomeTimeline", tweets: this.state.homeTweets}),
-      e(TimelineContainer, {className: "UserTimeline", tweets: this.state.userTweets})
+      e(TimelineContainer,
+        {
+          className: "HomeTimeline",
+          isServerError: this.state.isServerError,
+          tweets: this.state.homeTweets
+        }
+      ),
+      e(TimelineContainer,
+        {
+          className: "UserTimeline",
+          isServerError: this.state.isServerError,
+          tweets: this.state.userTweets
+        }
+      )
     );
   }
 }
