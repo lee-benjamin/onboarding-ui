@@ -23,6 +23,7 @@ export const getTwitterLink = (tweet) => {
 
 export const getTimeline = (endpoint, successCallback, failureCallback) => {
   const url = "http://localhost:8080/api/1.0/twitter/timeline/" + endpoint;
+  console.log("GET at " + url);
   fetch(url)
     .then((data) => data.json())
     .then((data) => {
@@ -34,9 +35,8 @@ export const getTimeline = (endpoint, successCallback, failureCallback) => {
     });
 }
 
-export const getTimeline2 = (successCallback, failureCallback) => {
+export const getBothTimelines = (successCallback, failureCallback) => {
   const url = "http://localhost:8080/api/1.0/twitter/timeline/";
-  //let promises = _.map([url+"home", url+"user"], fetch);
   let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
   Promise.all(promises)
     .then((data) => {

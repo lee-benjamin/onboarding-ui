@@ -1,7 +1,7 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getTimeline} from "./twitter.js";
-import {getTimeline2} from "./twitter.js";
+import {getBothTimelines} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("root"));
   }
 
-  getTimeline2(successCallback, failureCallback);
+  getBothTimelines(successCallback, failureCallback);
 });
 
 class ReactContainer extends React.Component {
@@ -58,7 +58,8 @@ class TimelineContainer extends React.Component {
   }
 
   handleClick() {
-    getTimeline("user", this.successCallback, this.failureCallback);
+    let endpoint = (this.state.className == "UserTimeline" ? "user" : "home");
+    getTimeline(endpoint, this.successCallback, this.failureCallback);
   }
 
   render() {
