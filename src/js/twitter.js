@@ -1,4 +1,5 @@
 import {Timeline} from "./components.js";
+import * as _ from "lodash/core";
 
 export const formatDate = (input) => {
   const date = new Date(input);
@@ -20,7 +21,7 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getTimeline2 = (endpoint, successCallback, failureCallback) => {
+export const getTimeline = (endpoint, successCallback, failureCallback) => {
   const url = "http://localhost:8080/api/1.0/twitter/timeline/" + endpoint;
   fetch(url)
     .then((data) => data.json())
@@ -33,16 +34,16 @@ export const getTimeline2 = (endpoint, successCallback, failureCallback) => {
     });
 }
 
-//export const getTimeline = (successCallback, failureCallback) => {
-//  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
-//  fetch(url + "home")
-//    .then((data) => data.json())
-//    .then((homeTweets) =>  fetch(url + "user")
-//    .then((userTweets,homeTweets) => {
-//      successCallback(userTweets, homeTweets);
-//    })
-//    .catch((error) => {
-//      console.log(error);
-//      failureCallback();
-//    });
-//}
+export const getTimeline2 = (successCallback, failureCallback) => {
+  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
+  //let promises = _.map([url+"home", url+"user"], fetch);
+  let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
+  Promise.all(promises)
+    .then((data) => {
+      successCallback(data[0],data[1]);
+    })
+    .catch((error) => {
+      console.log(error);
+      failureCallback();
+    });
+}

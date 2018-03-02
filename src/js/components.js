@@ -1,29 +1,23 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getTimeline} from "./twitter.js";
+import {getTimeline2} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
-  getTimeline( "home",
-    (homeTweets) => { // success
-      getTimeline ( "user",
-        (userTweets) => {
-          ReactDOM.render(e(ReactContainer, {userTweets: userTweets, homeTweets: homeTweets}),
-            document.getElementById("root"));
-        },
-        () => { // failure
-          ReactDOM.render(e(ReactContainer, {isServerError: true}),
-            document.getElementById("root"));
-        }
-      );
-    },
-    () => { //failure
-      ReactDOM.render(e(ReactContainer, {isServerError: true}),
-        document.getElementById("root"));
-    }
-  );
+  function successCallback(homeTweets, userTweets) {
+    ReactDOM.render(e(ReactContainer, {userTweets: userTweets, homeTweets: homeTweets}),
+      document.getElementById("root"));
+  }
+
+  function failureCallback() {
+    ReactDOM.render(e(ReactContainer, {isServerError: true}),
+      document.getElementById("root"));
+  }
+
+  getTimeline2(successCallback, failureCallback);
 });
 
 class ReactContainer extends React.Component {
