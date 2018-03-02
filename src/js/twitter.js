@@ -23,7 +23,6 @@ export const getTwitterLink = (tweet) => {
 
 export const getTimeline = (endpoint, successCallback, failureCallback) => {
   const url = "http://localhost:8080/api/1.0/twitter/timeline/" + endpoint;
-  console.log("GET at " + url);
   fetch(url)
     .then((data) => data.json())
     .then((data) => {

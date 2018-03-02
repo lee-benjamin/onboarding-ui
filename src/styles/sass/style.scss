@@ -15,10 +15,6 @@ $left-margin: 10px;
    background-color: $color;
 }
 
-.getHomeTimelineButton {
-   margin-left: $left-margin;
-}
-
 .ServerError {
   margin: $left-margin;
 }
@@ -27,10 +23,19 @@ $left-margin: 10px;
 
   &.UserTimeline {
     display: inline-block;
+    width: 45%;
+
+    .getTimelineButton {
+       margin-left: $left-margin;
+    }
   }
 
   &.HomeTimeline {
     display: inline-block;
+    width: 55%;
+    .getTimelineButton {
+         margin-left: $left-margin;
+      }
   }
 
   .Timeline {

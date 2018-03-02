@@ -64,15 +64,16 @@ class TimelineContainer extends React.Component {
 
   render() {
     const isServerError = this.state.isServerError == true;
+    let buttonName = (this.state.className == "UserTimeline" ? "Get User Timeline" : "Get Home Timeline");
     return e(
       "div",
       {className: "TimelineContainer " + this.state.className},
       e("button",
         {
-          className: "getHomeTimelineButton",
+          className: "getTimelineButton",
           onClick: this.handleClick,
         },
-        "Get Home Timeline"
+        buttonName
       ),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
