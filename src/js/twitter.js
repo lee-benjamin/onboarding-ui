@@ -21,8 +21,8 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getTimeline = (endpoint, successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline/" + endpoint;
+export const getHomeTimeline = (successCallback, failureCallback) => {
+  const url = "http://localhost:8080/api/1.0/twitter/timeline/home";
   fetch(url)
     .then((data) => data.json())
     .then((data) => {
@@ -34,15 +34,27 @@ export const getTimeline = (endpoint, successCallback, failureCallback) => {
     });
 }
 
-export const getBothTimelines = (successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
-  let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
-  Promise.all(promises)
+export const getUserTimeline = (successCallback, failureCallback) => {
+  const url = "http://localhost:8080/api/1.0/twitter/timeline/user";
+  fetch(url)
+    .then((data) => data.json())
     .then((data) => {
-      successCallback(data[0],data[1]);
+      successCallback(data);
     })
     .catch((error) => {
       console.log(error);
       failureCallback();
     });
 }
+//export const getBothTimelines = (successCallback, failureCallback) => {
+//  const url = "http://localhost:8080/api/1.0/twitter/timeline/";
+//  let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
+//  Promise.all(promises)
+//    .then((data) => {
+//      successCallback(data[0],data[1]);
+//    })
+//    .catch((error) => {
+//      console.log(error);
+//      failureCallback();
+//    });
+//}

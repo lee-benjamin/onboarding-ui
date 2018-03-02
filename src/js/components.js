@@ -1,7 +1,6 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getTimeline} from "./twitter.js";
-import {getBothTimelines} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -15,6 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function failureCallback() {
     ReactDOM.render(e(ReactContainer, {isServerError: true}),
       document.getElementById("root"));
+  }
+
+  const getBothTimelines = (successCallback, failureCallback) => {
+    const url = "http://localhost:8080/api/1.0/twitter/timeline/";
+    let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
+    Promise.all(promises)
+      .then((data) => {
+        successCallback(data[0],data[1]);
+      })
+      .catch((error) => {
+        console.log(error);
+        failureCallback();
+      });
   }
 
   getBothTimelines(successCallback, failureCallback);
