@@ -1,6 +1,7 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getHomeTimeline} from "./twitter.js";
+import {getUserTimeline} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -52,7 +53,7 @@ class ReactContainer extends React.Component {
           tweets: this.state.homeTweets
         }
       ),
-      e(TimelineContainer,
+      e(UserTimeline,
         {
           className: "UserTimeline",
           isServerError: this.state.isServerError,
@@ -101,10 +102,10 @@ class HomeTimeline extends React.Component {
     );
   }
 }
-class TimelineContainer extends React.Component {
+class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError, className: props.className};
+    this.state = {tweets: props.tweets, isServerError: props.isServerError};
     this.handleClick = this.handleClick.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
@@ -119,25 +120,21 @@ class TimelineContainer extends React.Component {
   }
 
   handleClick() {
-    let endpoint = (this.state.className == "UserTimeline" ? "user" : "home");
-    getTimeline(endpoint, this.successCallback, this.failureCallback);
+    getUserTimeline(this.successCallback, this.failureCallback);
   }
 
   render() {
-    const userTimeline = (this.state.className == "UserTimeline" ? true : false);
     const isServerError = this.state.isServerError == true;
-    let buttonName = (userTimeline ? "Get User Timeline" : "Get Home Timeline");
-    let header = (userTimeline ? "User Timeline" : "Home Timeline");
     return e(
       "div",
-      {className: "TimelineContainer " + this.state.className},
-      e("h1",{className: "TimelineHeader"}, header),
+      {className: "TimelineContainer UserTimeline"},
+      e("h1",{className: "TimelineHeader"}, "User Timeline"),
       e("button",
         {
           className: "getTimelineButton",
           onClick: this.handleClick,
         },
-        buttonName
+        "Get User Timeline"
       ),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
