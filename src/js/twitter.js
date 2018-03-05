@@ -1,5 +1,4 @@
 import {Timeline} from "./components.js";
-import * as _ from "lodash/core";
 
 export const formatDate = (input) => {
   const date = new Date(input);
