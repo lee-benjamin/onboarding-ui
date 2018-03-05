@@ -2,6 +2,7 @@ import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
 import {getHomeTimeline} from "./twitter.js";
 import {getUserTimeline} from "./twitter.js";
+import {filterHomeTimeline} from "./twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -87,8 +88,8 @@ class HomeTimeline extends React.Component {
       .catch(() => this.failureCallback());
   }
 
-  handleFilter() {
-    console.log("filter!");
+  handleFilter(tweets) {
+    this.setState({tweets: tweets});
   }
 
   render() {
@@ -104,7 +105,7 @@ class HomeTimeline extends React.Component {
         },
         "Get Home Timeline"
       ),
-      e(SearchComponent, {onClick: this.handleFilter}),
+      e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
   }
@@ -115,7 +116,11 @@ function SearchComponent(props) {
     console.log("hello");
     let text = document.getElementById("SearchBar").value;
     console.log(text);
-    props.onClick();
+    filterHomeTimeline(text)
+      .then((data) => {
+        props.onClick(data);
+      })
+      .catch(() => props.failureCallback);
   }
 
   return e(
