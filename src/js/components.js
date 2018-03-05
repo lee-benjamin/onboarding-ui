@@ -1,8 +1,8 @@
 import {formatDate} from "./twitter.js";
 import {getTwitterLink} from "./twitter.js";
-import {getHomeTimeline} from "./twitter.js";
-import {getUserTimeline} from "./twitter.js";
-import {filterHomeTimeline} from "./twitter.js";
+import {getHomeTimeline} from "./services/HomeTimeline.js";
+import {getUserTimeline} from "./services/UserTimeline.js";
+import {filterHomeTimeline} from "./services/FilterHomeTimeline.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
