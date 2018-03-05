@@ -87,8 +87,7 @@ class HomeTimeline extends React.Component {
       .catch(() => this.failureCallback());
   }
 
-  handleFilter(e) {
-    e.preventDefault();
+  handleFilter() {
     console.log("filter!");
   }
 
@@ -112,16 +111,23 @@ class HomeTimeline extends React.Component {
 }
 
 function SearchComponent(props) {
+  function onClick() {
+    console.log("hello");
+    let text = document.getElementById("SearchBar").value;
+    console.log(text);
+    props.onClick();
+  }
+
   return e(
     "div",
     {className: "SearchComponent"},
     e(
       "input",
-      {type: "text", className: "SearchBar"}
+      {type: "text", className: "SearchBar", id: "SearchBar"}
     ),
     e(
       "button",
-      {onClick: props.onClick, className: "FilterButton"},
+      {onClick: onClick, className: "FilterButton"},
       "Filter Home Timeline"
     )
   );
