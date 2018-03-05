@@ -105,7 +105,7 @@ class HomeTimeline extends React.Component {
         },
         "Get Home Timeline"
       ),
-      e(SearchComponent, {onSubmit: this.handleFilter}),
+      e(SearchComponent, {onClick: this.handleFilter}),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
   }
@@ -113,15 +113,16 @@ class HomeTimeline extends React.Component {
 
 function SearchComponent(props) {
   return e(
-    "form",
-    {onSubmit: props.onSubmit, className: "SearchComponent"},
+    "div",
+    {className: "SearchComponent"},
     e(
       "input",
       {type: "text", className: "SearchBar"}
     ),
     e(
-      "input",
-      {type: "submit", className: "FilterButton"}
+      "button",
+      {onClick: props.onClick, className: "FilterButton"},
+      "Filter Home Timeline"
     )
   );
 }
