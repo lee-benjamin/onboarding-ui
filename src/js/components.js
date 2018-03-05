@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const getBothTimelines = (successCallback, failureCallback) => {
-    const url = "http://localhost:8080/api/1.0/twitter/timeline/";
     let promises = [getHomeTimeline(), getUserTimeline()]
     Promise.all(promises)
       .then((data) => {
