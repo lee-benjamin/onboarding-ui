@@ -113,7 +113,6 @@ class HomeTimeline extends React.Component {
 
 function SearchComponent(props) {
   function onClick() {
-    console.log("hello");
     let text = document.getElementById("SearchBar").value;
     console.log(text);
     filterHomeTimeline(text)
@@ -124,7 +123,7 @@ function SearchComponent(props) {
   }
 
   return e(
-    "div",
+    "span",
     {className: "SearchComponent"},
     e(
       "input",

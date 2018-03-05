@@ -29,20 +29,19 @@ $margin: 10px;
 .TimelineContainer {
   vertical-align: top;
   margin-top: 40px;
-  position: relative;
 
   &.UserTimeline {
     display: inline-block;
     width: 45%;
+    text-align: right;
 
     .getTimelineButton {
-      position: absolute;
-      top: 7 * $margin;
-      right: $margin;
+      margin: $margin;
     }
 
     .Tweet {
       @include tweet-color($User-light, $User-dark);
+      text-align: left;
     }
 
     .screenName {
@@ -55,9 +54,27 @@ $margin: 10px;
     width: 55%;
 
     .getTimelineButton {
-      position: absolute;
-      top: 7 * $margin;
-      left: $margin;
+      display: inline-block;
+      text-align: left;
+      margin: $margin;
+   }
+
+    .getTimelineButton .SearchComponent {
+      display:inline-block;
+    }
+
+    .SearchComponent {
+      text-align: right;
+
+      .SearchBar {
+        width: 60%;
+        display: inline-block;
+      }
+
+      .FilterButton {
+        text-align: right;
+        display: inline-block;
+      }
     }
 
     .Tweet {
