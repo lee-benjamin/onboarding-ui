@@ -1,8 +1,10 @@
 $font-stack: "Times New Roman", Arial, sans-serif;
-$light-color: #e9e9e9;
-$dark-color: #e8f5fd;
+$Home-light: #e9e9e9;
+$Home-dark: #e8f5fd;
+$User-light:#1da1f2;
+$User-dark: #f5f8fa;
 $border-color: #C0C0C0;
-$left-margin: 10px;
+$margin: 10px;
 
 .title {
   text-align: center;
@@ -11,57 +13,105 @@ $left-margin: 10px;
   font-family: $font-stack;
 }
 
-@mixin background-color($color) {
-   background-color: $color;
-}
-
-.getHomeTimelineButton {
-   margin-left: $left-margin;
+@mixin tweet-color($light-color, $dark-color) {
+  &:nth-child(odd) {
+    background-color: $dark-color;
+  }
+  &:nth-child(even) {
+    background-color: $light-color;
+  }
 }
 
 .ServerError {
-  margin: $left-margin;
+  margin: $margin;
 }
 
-.divTimeline {
-  margin: $left-margin;
-  border: 1px black solid;
-  .Tweet {
-    border-bottom: 1px $border-color solid;
-    &:nth-child(odd) {
-      @include background-color($dark-color);
+.TimelineContainer {
+  vertical-align: top;
+  margin-top: 40px;
+  position: relative;
+
+  &.UserTimeline {
+    display: inline-block;
+    width: 45%;
+
+    .getTimelineButton {
+      position: absolute;
+      top: 7 * $margin;
+      right: $margin;
     }
-    &:nth-child(even) {
-      @include background-color($light-color);
+
+    .Tweet {
+      @include tweet-color($User-light, $User-dark);
     }
-    .Avatar {
-      width: 140px;
-      text-align: center;
-      display: inline-block;
-      margin: 1em 50px 1em 10px;
-      .ProfilePic {
+
+    .screenName {
+      visibility: hidden;
+    }
+  }
+
+  &.HomeTimeline {
+    display: inline-block;
+    width: 55%;
+
+    .getTimelineButton {
+      position: absolute;
+      top: 7 * $margin;
+      left: $margin;
+    }
+
+    .Tweet {
+      @include tweet-color($Home-light, $Home-dark);
+    }
+  }
+
+  .TimelineHeader {
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  .Timeline {
+    margin: $margin;
+    border: 1px black solid;
+
+    .Tweet {
+      border-bottom: 1px $border-color solid;
+
+      .Avatar {
+        width: 140px;
+        text-align: center;
+        display: inline-block;
+        margin: 1em 50px 1em 10px;
+
+        .ProfilePic {
           border-radius: 50%;
           height: 60px;
           width: 60px;
-      }
-      .imageCaption {
+        }
+
+        .imageCaption {
           font-size: 15pt;
           font-weight: bold;
           text-align: center;
-      }
-      .screenName {
+        }
+
+        .screenName {
           font-size: 10pt;
           font-weight: normal;
+        }
       }
-    }
-    .TweetContent {
-      position: relative;
-      top: -35px;
-      display: inline-block;
-      .timeDiv {
-        font-style: italic;
-        font-size: 10pt;
-        margin: 20px 0 5px;
+
+      .TweetContent {
+        width: 70%;
+        position: relative;
+        top: -35px;
+        display: inline-block;
+
+        .timeDiv {
+          font-style: italic;
+          font-size: 10pt;
+          margin: 20px 0 5px;
+        }
       }
     }
   }
