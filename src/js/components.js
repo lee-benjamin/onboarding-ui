@@ -68,6 +68,7 @@ class HomeTimeline extends React.Component {
     super(props);
     this.state = {tweets: props.tweets, isServerError: props.isServerError, className: "HomeTimeline"};
     this.handleClick = this.handleClick.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
   }
@@ -86,6 +87,11 @@ class HomeTimeline extends React.Component {
       .catch(() => this.failureCallback());
   }
 
+  handleFilter(e) {
+    e.preventDefault();
+    console.log("filter!");
+  }
+
   render() {
     const isServerError = this.state.isServerError == true;
     return e(
@@ -99,10 +105,27 @@ class HomeTimeline extends React.Component {
         },
         "Get Home Timeline"
       ),
+      e(SearchComponent, {onSubmit: this.handleFilter}),
       ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
     );
   }
 }
+
+function SearchComponent(props) {
+  return e(
+    "form",
+    {onSubmit: props.onSubmit, className: "SearchComponent"},
+    e(
+      "input",
+      {type: "text", className: "SearchBar"}
+    ),
+    e(
+      "input",
+      {type: "submit", className: "FilterButton"}
+    )
+  );
+}
+
 class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
