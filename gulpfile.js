@@ -54,3 +54,5 @@ gulp.task("watch", () => {
 });
 
 gulp.task("default", ["html", "sass", "js", "assets", "start-server", "watch"]);
+
+gulp.task("dev", ["default"]);

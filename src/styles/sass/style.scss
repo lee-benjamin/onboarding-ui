@@ -22,7 +22,8 @@ $margin: 10px;
   }
 }
 
-.ServerError {
+.ServerError, .NoTweets {
+  text-align: left;
   margin: $margin;
 }
 
@@ -57,25 +58,26 @@ $margin: 10px;
       display: inline-block;
       text-align: left;
       margin: $margin;
-   }
-
-    .getTimelineButton .SearchComponent {
-      display:inline-block;
     }
 
     .SearchComponent {
-      text-align: right;
+      float: right;
+      margin: $margin;
 
       .SearchBar {
-        width: 60%;
-        display: inline-block;
+        width: 150px;
       }
 
       .FilterButton {
         text-align: right;
-        display: inline-block;
+      }
+
+      &:after {
+        display: block;
+        clear: both;
       }
     }
+
 
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);

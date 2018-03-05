@@ -33,6 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
   getBothTimelines(successCallback, failureCallback);
 });
 
+const chooseComponent = (isServerError, hasNoTweets) => {
+  if (isServerError) {
+    return ServerError;
+  }
+
+  if (hasNoTweets) {
+    return NoTweets;
+  }
+  return Timeline;
+}
+
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -72,6 +83,7 @@ class HomeTimeline extends React.Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
+//    this.chooseComponent = this.chooseComponent.bind(this);
   }
 
   successCallback(tweets) {
@@ -89,11 +101,17 @@ class HomeTimeline extends React.Component {
   }
 
   handleFilter(tweets) {
-    this.setState({tweets: tweets});
+    this.setState({
+      hasNoTweets: (tweets.length == 0 ? true : false),
+      tweets: tweets
+    });
   }
 
   render() {
     const isServerError = this.state.isServerError == true;
+    const hasNoTweets = this.state.hasNoTweets == true;
+    let component = chooseComponent(isServerError, hasNoTweets);
+
     return e(
       "div",
       {className: "TimelineContainer HomeTimeline"},
@@ -106,7 +124,7 @@ class HomeTimeline extends React.Component {
         "Get Home Timeline"
       ),
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
-      ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
+      e(component, {tweets: this.state.tweets})
     );
   }
 }
@@ -114,7 +132,6 @@ class HomeTimeline extends React.Component {
 function SearchComponent(props) {
   function onClick() {
     let text = document.getElementById("SearchBar").value;
-    console.log(text);
     filterHomeTimeline(text)
       .then((data) => {
         props.onClick(data);
@@ -147,7 +164,11 @@ class UserTimeline extends React.Component {
   }
 
   successCallback(tweets) {
-    this.setState({tweets: tweets, isServerError: false});
+    this.setState({
+      tweets: tweets,
+      isServerError: false,
+      hasNoTweets: (tweets.length == 0 ? true : false)
+    });
   }
 
   failureCallback() {
@@ -162,6 +183,9 @@ class UserTimeline extends React.Component {
 
   render() {
     const isServerError = this.state.isServerError == true;
+    const hasNoTweets = this.state.hasNoTweets == true;
+    let component = chooseComponent(isServerError, hasNoTweets);
+
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
@@ -173,7 +197,7 @@ class UserTimeline extends React.Component {
         },
         "Get User Timeline"
       ),
-      ((isServerError) ? e(ServerError, null) : e(Timeline, {tweets: this.state.tweets}))
+      e(component, {tweets: this.state.tweets})
     );
   }
 }
@@ -183,6 +207,14 @@ function ServerError(props) {
     "div",
     {className: "ServerError"},
     "Unable to get home timeline, please try again later."
+  );
+}
+
+function NoTweets(props) {
+  return e(
+    "div",
+    {className: "NoTweets"},
+    "Sorry, there are no tweets to be displayed."
   );
 }
 
