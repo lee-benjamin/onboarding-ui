@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getBothTimelines = (successCallback, failureCallback) => {
     const url = "http://localhost:8080/api/1.0/twitter/timeline/";
-    let promises = [url+"home", url+"user"].map(url => fetch(url).then(resp => resp.json()));
+    let promises = [getHomeTimeline(), getUserTimeline()]
     Promise.all(promises)
       .then((data) => {
         successCallback(data[0],data[1]);
@@ -82,7 +82,9 @@ class HomeTimeline extends React.Component {
   }
 
   handleClick() {
-    getHomeTimeline(this.successCallback, this.failureCallback);
+    getHomeTimeline()
+      .then((data) => this.successCallback(data))
+      .catch(() => this.failureCallback());
   }
 
   render() {
@@ -120,7 +122,9 @@ class UserTimeline extends React.Component {
   }
 
   handleClick() {
-    getUserTimeline(this.successCallback, this.failureCallback);
+    getUserTimeline()
+      .then((data) => this.successCallback(data))
+      .catch(() => this.failureCallback());
   }
 
   render() {

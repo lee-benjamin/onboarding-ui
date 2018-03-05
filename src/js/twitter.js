@@ -21,28 +21,26 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
-export const getHomeTimeline = (successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline/home";
-  fetch(url)
-    .then((data) => data.json())
-    .then((data) => {
-      successCallback(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      failureCallback();
-    });
+export const getHomeTimeline = () => {
+  return new Promise((resolve, reject) => {
+    const url = "http://localhost:8080/api/1.0/twitter/timeline/home";
+    return fetch(url)
+      .then((data) => data.json())
+      .then((data) => resolve(data))
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 }
 
-export const getUserTimeline = (successCallback, failureCallback) => {
-  const url = "http://localhost:8080/api/1.0/twitter/timeline/user";
-  fetch(url)
-    .then((data) => data.json())
-    .then((data) => {
-      successCallback(data);
-    })
-    .catch((error) => {
-      console.log(error);
-      failureCallback();
-    });
+export const getUserTimeline = () => {
+  return new Promise((resolve, reject) => {
+    const url = "http://localhost:8080/api/1.0/twitter/timeline/user";
+    return fetch(url)
+      .then((data) => data.json())
+      .then((data) => resolve(data))
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 }
