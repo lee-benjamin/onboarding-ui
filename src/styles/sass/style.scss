@@ -44,6 +44,10 @@ $margin: 10px;
     .Tweet {
       @include tweet-color($User-light, $User-dark);
     }
+
+    .screenName {
+      visibility: hidden;
+    }
   }
 
   &.HomeTimeline {
@@ -80,20 +84,20 @@ $margin: 10px;
         margin: 1em 50px 1em 10px;
 
         .ProfilePic {
-            border-radius: 50%;
-            height: 60px;
-            width: 60px;
+          border-radius: 50%;
+          height: 60px;
+          width: 60px;
         }
 
         .imageCaption {
-            font-size: 15pt;
-            font-weight: bold;
-            text-align: center;
+          font-size: 15pt;
+          font-weight: bold;
+          text-align: center;
         }
 
         .screenName {
-            font-size: 10pt;
-            font-weight: normal;
+          font-size: 10pt;
+          font-weight: normal;
         }
       }
 
