@@ -8,8 +8,15 @@ import * as _ from "lodash/core";
 const e = React.createElement; // syntatical shorthand
 
 document.addEventListener("DOMContentLoaded", () => {
+  getHomeTimeline()
+    .then((data) => {
+      ReactDOM.render(e(ReactContainer, {tweets: data}),
+        document.getElementById("root"));
+    })
+    .catch(() => failureCallback());
+
   function successCallback(homeTweets, userTweets) {
-    ReactDOM.render(e(ReactContainer, {userTweets: userTweets, homeTweets: homeTweets}),
+    ReactDOM.render(e(ReactContainer, {tweets: userTweets}),
       document.getElementById("root"));
   }
 
@@ -30,50 +37,53 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  getBothTimelines(successCallback, failureCallback);
+  //getBothTimelines(successCallback, failureCallback);
 });
 
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      focusedComponent: "HomeTimeline",
-      homeTweets: props.homeTweets,
-      userTweets: props.userTweets,
+      focusedComponent: HomeTimeline,
+      tweets: props.tweets,
+      //homeTweets: props.homeTweets,
+      //userTweets: props.userTweets,
       isServerError: props.isServerError
     };
-    this.getFocusedComponent = this.getFocusedComponent.bind(this);
     this.focusedComponentListener = this.focusedComponentListener.bind(this);
   }
 
-  getFocusedComponent() {
-    switch(this.state.focusedComponent) {
-      case "User Timeline":
-        return UserTimeline;
-      case "Post Tweet":
-        return PostTweet;
-      default:
-        return HomeTimeline;
-    }
-  }
-
   focusedComponentListener(componentName) {
-    //this.setState({focusedComponent: componentName});
-    console.log(componentName);
+    let focusedComponent = null;
+    switch(componentName) {
+      case "User Timeline":
+        focusedComponent = UserTimeline;
+        break;
+      case "Post Tweet":
+        focusedComponent = PostTweet;
+        break;
+      default:
+        focusedComponent = HomeTimeline; // Default View
+    }
+    this.setState({focusedComponent: focusedComponent});
   }
 
   render() {
-    let focusedComponent = this.getFocusedComponent();
     return e(
       "div",
       {className: "ReactContainer"},
       e(NavBar, {handleClick: this.focusedComponentListener}),
-      e(HomeTimeline,
+      e(this.state.focusedComponent,
         {
-          isServerError: this.state.isServerError,
-          tweets: this.state.homeTweets
-        }
-      )
+          isServerError: this.state.isServerErorr,
+          tweets: this.state.tweets,
+        })
+//      e(HomeTimeline,
+//        {
+//          isServerError: this.state.isServerError,
+//          tweets: this.state.homeTweets
+//        }
+//      )
 //      e(UserTimeline,
 //        {
 //          className: "UserTimeline",
