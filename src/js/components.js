@@ -140,7 +140,6 @@ class SearchComponent extends React.Component {
     this.state = {
       onClick: props.onClick,
       filterQuery: "",
-      buttonDisabled: true,
       failureCallback: props.failureCallback
     };
     this.onClick = this.onClick.bind(this);
@@ -156,17 +155,7 @@ class SearchComponent extends React.Component {
   }
 
   onChange(e) {
-    if (e.target.value == "") {
-      this.setState({
-        filterQuery: e.target.value,
-        buttonDisabled: true
-      });
-    } else {
-      this.setState({
-        buttonDisabled: false,
-        filterQuery: e.target.value
-      });
-    }
+    this.setState({filterQuery: e.target.value});
   }
 
   render() {
@@ -185,7 +174,7 @@ class SearchComponent extends React.Component {
       e(
         "button",
         {
-          disabled: this.state.buttonDisabled,
+          disabled: !this.state.filterQuery.length,
           onClick: this.onClick,
           className: "FilterButton"
         },
