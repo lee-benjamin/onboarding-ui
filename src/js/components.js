@@ -34,8 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 class ReactContainer extends React.Component {
-  chooseComponent(componentName) {
-    switch(componentName) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      focusedComponent: "HomeTimeline",
+      homeTweets: props.homeTweets,
+      userTweets: props.userTweets,
+      isServerError: props.isServerError
+    };
+    this.getFocusedComponent = this.getFocusedComponent.bind(this);
+    this.focusedComponentListener = this.focusedComponentListener.bind(this);
+  }
+
+  getFocusedComponent() {
+    switch(this.state.focusedComponent) {
       case "User Timeline":
         return UserTimeline;
       case "Post Tweet":
@@ -45,20 +57,17 @@ class ReactContainer extends React.Component {
     }
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      homeTweets: props.homeTweets,
-      userTweets: props.userTweets,
-      isServerError: props.isServerError
-    };
+  focusedComponentListener(componentName) {
+    //this.setState({focusedComponent: componentName});
+    console.log(componentName);
   }
 
   render() {
+    let focusedComponent = this.getFocusedComponent();
     return e(
       "div",
       {className: "ReactContainer"},
-      e(NavBar, null),
+      e(NavBar, {handleClick: this.focusedComponentListener}),
       e(HomeTimeline,
         {
           isServerError: this.state.isServerError,
@@ -79,31 +88,34 @@ class ReactContainer extends React.Component {
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(componentName) {
-    this.setState({focusedComponent: componentName});
+    this.state = {handleClick: props.handleClick};
   }
 
   render() {
+    const HomeTimeline = "Home Timeline";
+    const UserTimeline = "User Timeline";
+    const PostTweet = "Post Tweet";
+
     return e(
       "div",
       {className: "NavBar"},
-      e(Tab, {onClick: this.handleClick, tabName: "Home Timeline"}),
-      e(Tab, {onClick: this.handleClick, tabName: "User Timeline"}),
-      e(Tab, {onClick: this.handleClick, tabName: "Post Tweet"}),
+      e(Tab, {onClick: this.state.handleClick, tabName: HomeTimeline}),
+      e(Tab, {onClick: this.state.handleClick, tabName: UserTimeline}),
+      e(Tab, {onClick: this.state.handleClick, tabName: PostTweet}),
     );
   }
 }
 
 function Tab(props) {
+  function onClick() {
+    props.onClick(props.tabName);
+  }
+
   return e(
     "button",
     {
       className: "Tab",
-      onClick: props.onClick,
+      onClick: onClick,
     },
     props.tabName
   );
