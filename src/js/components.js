@@ -140,6 +140,7 @@ class SearchComponent extends React.Component {
     this.state = {
       onClick: props.onClick,
       filterQuery: "",
+      buttonDisabled: true,
       failureCallback: props.failureCallback
     };
     this.onClick = this.onClick.bind(this);
@@ -147,11 +148,6 @@ class SearchComponent extends React.Component {
   }
 
   onClick() {
-    // Do not send request for an empty query
-    if (this.state.filterQuery == "") {
-      return;
-    }
-
     filterHomeTimeline(this.state.filterQuery)
       .then((data) => {
         this.state.onClick(data);
@@ -160,7 +156,17 @@ class SearchComponent extends React.Component {
   }
 
   onChange(e) {
-    this.setState({filterQuery: e.target.value});
+    if (e.target.value == "") {
+      this.setState({
+        filterQuery: e.target.value,
+        buttonDisabled: true
+      });
+    } else {
+      this.setState({
+        buttonDisabled: false,
+        filterQuery: e.target.value
+      });
+    }
   }
 
   render() {
@@ -178,7 +184,11 @@ class SearchComponent extends React.Component {
       ),
       e(
         "button",
-        {onClick: this.onClick, className: "FilterButton"},
+        {
+          disabled: this.state.buttonDisabled,
+          onClick: this.onClick,
+          className: "FilterButton"
+        },
         "Filter Home Timeline"
       )
     );
