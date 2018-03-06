@@ -48,8 +48,8 @@ export const filterHomeTimeline = (query) => {
     return fetch(url+query)
       .then((data) => data.json())
       .then((data) => resolve(data))
-//      .catch((error) => {
-//        reject(error.message);
-//      }); blah
+      .catch((error) => {
+        reject(error.message);
+      });
   });
 }

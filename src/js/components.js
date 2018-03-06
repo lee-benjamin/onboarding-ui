@@ -100,10 +100,16 @@ class HomeTimeline extends React.Component {
   }
 
   handleFilter(tweets) {
-    this.setState({
-      hasNoTweets: (tweets.length == 0 ? true : false),
-      tweets: tweets
-    });
+    if (tweets.length == 0) {
+      this.setState({hasNoTweets: true});
+    }
+    else {
+      this.setState({
+        isServerError: false,
+        hasNoTweets: false,
+        tweets: tweets
+      });
+    }
   }
 
   render() {
@@ -133,7 +139,6 @@ function SearchComponent(props) {
     let text = document.getElementById("SearchBar").value;
     filterHomeTimeline(text)
       .then((data) => {
-        console.log(data);
         props.onClick(data);
       })
       .catch(() => props.failureCallback);
