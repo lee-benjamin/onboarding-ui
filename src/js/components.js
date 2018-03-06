@@ -133,6 +133,7 @@ function SearchComponent(props) {
     let text = document.getElementById("SearchBar").value;
     filterHomeTimeline(text)
       .then((data) => {
+        console.log(data);
         props.onClick(data);
       })
       .catch(() => props.failureCallback);
