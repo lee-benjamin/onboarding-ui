@@ -139,7 +139,7 @@ class SearchComponent extends React.Component {
     super(props);
     this.state = {
       onClick: props.onClick,
-      inputValue: "",
+      filterQuery: "",
       failureCallback: props.failureCallback
     };
     this.onClick = this.onClick.bind(this);
@@ -147,7 +147,7 @@ class SearchComponent extends React.Component {
   }
 
   onClick() {
-    filterHomeTimeline(this.state.inputValue)
+    filterHomeTimeline(this.state.filterQuery)
       .then((data) => {
         this.state.onClick(data);
       })
@@ -155,7 +155,7 @@ class SearchComponent extends React.Component {
   }
 
   onChange(e) {
-    this.setState({inputValue: e.target.value});
+    this.setState({filterQuery: e.target.value});
   }
 
   render() {
@@ -165,6 +165,7 @@ class SearchComponent extends React.Component {
       e(
         "input",
         {
+          value: this.state.filterQuery,
           type: "text",
           className: "SearchBar",
           onChange: this.onChange
