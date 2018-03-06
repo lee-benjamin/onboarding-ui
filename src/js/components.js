@@ -147,6 +147,11 @@ class SearchComponent extends React.Component {
   }
 
   onClick() {
+    // Do not send request for an empty query
+    if (this.state.filterQuery == "") {
+      return;
+    }
+
     filterHomeTimeline(this.state.filterQuery)
       .then((data) => {
         this.state.onClick(data);
