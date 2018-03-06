@@ -49,7 +49,7 @@ gulp.task("assets", () =>
 gulp.task("watch", () => {
   gulp.watch(["./src/*.html"], ["html"]);
   gulp.watch(["./src/styles/sass/*.scss"], ["sass"]);
-  gulp.watch(["./src/js/*.js"], ["js"]);
+  gulp.watch(["./src/js/**/*.js"], ["js"]);
   gulp.watch(["./src/assets/*"], ["assets"]);
 });
 
