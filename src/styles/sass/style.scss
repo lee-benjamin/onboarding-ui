@@ -5,6 +5,9 @@ $User-light:#1da1f2;
 $User-dark: #f5f8fa;
 $border-color: #C0C0C0;
 $margin: 10px;
+$tab-border-color: #ccc;
+$tab-hover-color: #ddd;
+$tab-color: #f1f1f1;
 
 .title {
   text-align: center;
@@ -25,6 +28,27 @@ $margin: 10px;
 .ServerError, .NoTweets {
   text-align: left;
   margin: $margin;
+}
+
+.NavBar {
+  border: 1px solid $tab-border-color;
+  overflow: hidden;
+  background-color: $tab-color;
+
+  .Tab {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  & button:hover {
+    background-color: $tab-hover-color;
+  }
 }
 
 .TimelineContainer {

@@ -33,18 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
   getBothTimelines(successCallback, failureCallback);
 });
 
-const chooseComponent = (isServerError, hasNoTweets) => {
-  if (isServerError) {
-    return ServerError;
-  }
-
-  if (hasNoTweets) {
-    return NoTweets;
-  }
-  return Timeline;
-}
-
 class ReactContainer extends React.Component {
+  chooseComponent(componentName) {
+    switch(componentName) {
+      case "User Timeline":
+        return UserTimeline;
+      case "Post Tweet":
+        return PostTweet;
+      default:
+        return HomeTimeline;
+    }
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -58,27 +58,85 @@ class ReactContainer extends React.Component {
     return e(
       "div",
       {className: "ReactContainer"},
+      e(NavBar, null),
       e(HomeTimeline,
         {
           isServerError: this.state.isServerError,
           tweets: this.state.homeTweets
         }
-      ),
-      e(UserTimeline,
-        {
-          className: "UserTimeline",
-          isServerError: this.state.isServerError,
-          tweets: this.state.userTweets
-        }
       )
+//      e(UserTimeline,
+//        {
+//          className: "UserTimeline",
+//          isServerError: this.state.isServerError,
+//          tweets: this.state.userTweets
+//        }
+//      )
     );
   }
+}
+
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(componentName) {
+    this.setState({focusedComponent: componentName});
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "NavBar"},
+      e(Tab, {onClick: this.handleClick, tabName: "Home Timeline"}),
+      e(Tab, {onClick: this.handleClick, tabName: "User Timeline"}),
+      e(Tab, {onClick: this.handleClick, tabName: "Post Tweet"}),
+    );
+  }
+}
+
+function Tab(props) {
+  return e(
+    "button",
+    {
+      className: "Tab",
+      onClick: props.onClick,
+    },
+    props.tabName
+  );
+}
+
+class PostTweet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render() {
+  }
+}
+
+const chooseComponent = (isServerError, hasNoTweets) => {
+  if (isServerError) {
+    return ServerError;
+  }
+
+  if (hasNoTweets) {
+    return NoTweets;
+  }
+  return Timeline;
 }
 
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError, className: "HomeTimeline"};
+    this.state = {
+      tweets: props.tweets,
+      isServerError: props.isServerError,
+      className: "HomeTimeline"
+    };
     this.handleClick = this.handleClick.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
