@@ -1,8 +1,8 @@
-import {formatDate} from "./twitter.js";
-import {getTwitterLink} from "./twitter.js";
-import {getHomeTimeline} from "./services/HomeTimeline.js";
-import {getUserTimeline} from "./services/UserTimeline.js";
-import {filterHomeTimeline} from "./services/FilterHomeTimeline.js";
+import {formatDate} from "./services/twitter.js";
+import {getTwitterLink} from "./services/twitter.js";
+import {getHomeTimeline} from "./services/twitter.js";
+import {getUserTimeline} from "./services/twitter.js";
+import {filterHomeTimeline} from "./services/twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -83,7 +83,6 @@ class HomeTimeline extends React.Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
-//    this.chooseComponent = this.chooseComponent.bind(this);
   }
 
   successCallback(tweets) {
