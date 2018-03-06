@@ -1,5 +1,3 @@
-import {Timeline} from "./components.js";
-
 export const formatDate = (input) => {
   const date = new Date(input);
   const monthNames = [
@@ -24,8 +22,14 @@ export const getHomeTimeline = () => {
   return new Promise((resolve, reject) => {
     const url = "http://localhost:8080/api/1.0/twitter/timeline/home";
     return fetch(url)
-      .then((data) => data.json())
-      .then((data) => resolve(data))
+       .then((data) => {
+        if (data.status == 200) {
+           resolve(data.json());
+        }
+        else {
+          reject();
+        }
+      })
       .catch((error) => {
         reject(error.message);
       });
@@ -36,8 +40,32 @@ export const getUserTimeline = () => {
   return new Promise((resolve, reject) => {
     const url = "http://localhost:8080/api/1.0/twitter/timeline/user";
     return fetch(url)
-      .then((data) => data.json())
-      .then((data) => resolve(data))
+       .then((data) => {
+        if (data.status == 200) {
+           resolve(data.json());
+        }
+        else {
+          reject();
+        }
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
+}
+
+export const filterHomeTimeline = (query) => {
+  return new Promise((resolve, reject) => {
+    const url = "http://localhost:8080/api/1.0/twitter/tweet/filter?keyword=";
+    return fetch(url+query)
+      .then((data) => {
+        if (data.status == 200) {
+           resolve(data.json());
+        }
+        else {
+          reject();
+        }
+      })
       .catch((error) => {
         reject(error.message);
       });

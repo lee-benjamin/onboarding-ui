@@ -22,27 +22,27 @@ $margin: 10px;
   }
 }
 
-.ServerError {
+.ServerError, .NoTweets {
+  text-align: left;
   margin: $margin;
 }
 
 .TimelineContainer {
   vertical-align: top;
   margin-top: 40px;
-  position: relative;
 
   &.UserTimeline {
     display: inline-block;
     width: 45%;
+    text-align: right;
 
     .getTimelineButton {
-      position: absolute;
-      top: 7 * $margin;
-      right: $margin;
+      margin: $margin;
     }
 
     .Tweet {
       @include tweet-color($User-light, $User-dark);
+      text-align: left;
     }
 
     .screenName {
@@ -55,10 +55,30 @@ $margin: 10px;
     width: 55%;
 
     .getTimelineButton {
-      position: absolute;
-      top: 7 * $margin;
-      left: $margin;
+      display: inline-block;
+      text-align: left;
+      margin: $margin;
     }
+
+    .SearchComponent {
+      float: right;
+      margin: $margin;
+
+      .SearchBar {
+        width: 150px;
+      }
+
+      .FilterButton {
+        margin-left: 10px;
+        text-align: right;
+      }
+
+      &:after {
+        display: block;
+        clear: both;
+      }
+    }
+
 
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);
