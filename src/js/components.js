@@ -134,29 +134,49 @@ class HomeTimeline extends React.Component {
   }
 }
 
-function SearchComponent(props) {
-  function onClick() {
-    let text = document.getElementById("SearchBar").value;
-    filterHomeTimeline(text)
-      .then((data) => {
-        props.onClick(data);
-      })
-      .catch(() => props.failureCallback);
+class SearchComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      onClick: props.onClick,
+      inputValue: "",
+      failureCallback: props.failureCallback
+    };
+    this.onClick = this.onClick.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  return e(
-    "span",
-    {className: "SearchComponent"},
-    e(
-      "input",
-      {type: "text", className: "SearchBar", id: "SearchBar"}
-    ),
-    e(
-      "button",
-      {onClick: onClick, className: "FilterButton"},
-      "Filter Home Timeline"
-    )
-  );
+  onClick() {
+    filterHomeTimeline(this.state.inputValue)
+      .then((data) => {
+        this.state.onClick(data);
+      })
+      .catch(() => this.state.failureCallback);
+  }
+
+  onChange(e) {
+    this.setState({inputValue: e.target.value});
+  }
+
+  render() {
+    return e(
+      "span",
+      {className: "SearchComponent"},
+      e(
+        "input",
+        {
+          type: "text",
+          className: "SearchBar",
+          onChange: this.onChange
+        }
+      ),
+      e(
+        "button",
+        {onClick: this.onClick, className: "FilterButton"},
+        "Filter Home Timeline"
+      )
+    );
+  }
 }
 
 class UserTimeline extends React.Component {
