@@ -156,7 +156,7 @@ class SearchComponent extends React.Component {
       .then((data) => {
         this.state.onClick(data);
       })
-      .catch(() => this.state.failureCallback);
+      .catch(() => this.state.failureCallback());
   }
 
   onChange(e) {
