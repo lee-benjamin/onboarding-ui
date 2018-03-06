@@ -56,8 +56,6 @@ $tab-color: #f1f1f1;
   margin-top: 40px;
 
   &.UserTimeline {
-    display: inline-block;
-    width: 45%;
     text-align: right;
 
     .getTimelineButton {
@@ -75,9 +73,6 @@ $tab-color: #f1f1f1;
   }
 
   &.HomeTimeline {
-    display: inline-block;
-    width: 55%;
-
     .getTimelineButton {
       display: inline-block;
       text-align: left;
