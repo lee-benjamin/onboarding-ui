@@ -98,14 +98,16 @@ class PostTweet extends React.Component {
       "div",
       {className: "PostTweet"},
       e("h1", {className: "Header"}, "Post a tweet"),
-      e(
-        "textarea",
-        {
-          onChange: this.onChange,
-          maxLength: maxTweetLength
-        }
-      ),
-      e("div",{className:"CharCount"}, "Characters: " + this.state.tweetText.length)
+      e("div", {className: "tweetBoxCharCount"},
+        e(
+          "textarea",
+          {
+            onChange: this.onChange,
+            maxLength: maxTweetLength
+          }
+        ),
+        e("div",{className:"CharCount"}, "Characters: " + this.state.tweetText.length)
+      )
     );
   }
 }
