@@ -73,6 +73,14 @@ $tab-color: #f1f1f1;
       resize: none;
    }
 
+   .CharCount {
+     position: absolute;
+     right: 0;
+     font-size: small;
+     color: gray;
+     bottom: 5px;
+   }
+
     .PostTweetButton {
       position: absolute;
       right: 0;
