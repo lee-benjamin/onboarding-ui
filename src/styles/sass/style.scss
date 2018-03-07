@@ -51,6 +51,24 @@ $tab-color: #f1f1f1;
   }
 }
 
+.Header {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+
+.PostTweet {
+
+  textarea {
+    resize: none;
+    width: 500px;
+    height: 75px;
+    display: block;
+    margin-left: auto;
+    margin-right:auto;
+  }
+}
+
 .TimelineContainer {
   vertical-align: top;
   margin-top: 40px;
@@ -98,20 +116,9 @@ $tab-color: #f1f1f1;
       }
     }
 
-    &.PostTweet {
-      textarea {
-        width: 500px;
-      }
-    }
-
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);
     }
-  }
-
-  .TimelineHeader {
-    margin-bottom: 50px;
-    text-align: center;
   }
 
   .Timeline {

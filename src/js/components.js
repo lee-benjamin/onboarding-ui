@@ -84,15 +84,28 @@ function Tab(props) {
 class PostTweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {tweetText:""};
+    this.onChange = this.onChange.bind(this);
   }
+
+  onChange(e) {
+    this.setState({tweetText: e.target.value});
+  }
+
   render() {
+    const maxTweetLength = 280;
     return e(
       "div",
       {className: "PostTweet"},
+      e("h1", {className: "Header"}, "Post a tweet"),
       e(
         "textarea",
-        null)
+        {
+          onChange: this.onChange,
+          maxLength: maxTweetLength
+        }
+      ),
+      e("div",{className:"CharCount"}, "Characters: " + this.state.tweetText.length)
     );
   }
 }
@@ -157,7 +170,7 @@ class HomeTimeline extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer HomeTimeline"},
-      e("h1",{className: "TimelineHeader"}, "Home Timeline"),
+      e("h1",{className: "Header"}, "Home Timeline"),
       e("button",
         {
           className: "getTimelineButton",
@@ -259,7 +272,7 @@ class UserTimeline extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
-      e("h1",{className: "TimelineHeader"}, "User Timeline"),
+      e("h1",{className: "Header"}, "User Timeline"),
       e("button",
         {
           className: "getTimelineButton",
