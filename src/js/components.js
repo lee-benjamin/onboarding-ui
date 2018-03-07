@@ -104,9 +104,10 @@ class PostTweet extends React.Component {
           {
             onChange: this.onChange,
             maxLength: maxTweetLength
-          }
+          },
         ),
-        e("div",{className:"CharCount"}, "Characters: " + this.state.tweetText.length)
+        e("div", {className:"CharCount"}, this.state.tweetText.length),
+        e("button", {className: "PostTweetButton"}, "Post Tweet")
       )
     );
   }
