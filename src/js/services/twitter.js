@@ -18,6 +18,29 @@ export const getTwitterLink = (tweet) => {
   return urlPrefix + tweet.id;
 }
 
+export const postTweet = (tweet) => {
+  return new Promise((resolve, reject) => {
+    const url = "http://localhost:8080/api/1.0/twitter/tweet";
+    const obj = {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({"message": tweet})
+    }
+    return fetch(url, obj)
+       .then((data) => {
+        if (data.status == 200) {
+           resolve(data.json());
+        }
+        else {
+          reject();
+        }
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
+}
+
 export const getHomeTimeline = () => {
   return new Promise((resolve, reject) => {
     const url = "http://localhost:8080/api/1.0/twitter/timeline/home";

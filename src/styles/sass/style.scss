@@ -71,19 +71,19 @@ $tab-color: #f1f1f1;
     textarea {
       @include PostTweetSizing();
       resize: none;
-   }
+    }
 
-   .CharCount {
-     position: absolute;
-     right: 0;
-     font-size: small;
-     color: gray;
-     bottom: 5px;
-   }
+    .CharCount {
+      position: absolute;
+      right: 0;
+      font-size: small;
+      color: gray;
+      bottom: 5px;
+    }
 
     .PostTweetButton {
       position: absolute;
-      right: 0;
+      right: -7px;
     }
   }
 }

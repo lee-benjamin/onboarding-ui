@@ -1,8 +1,4 @@
-import {formatDate} from "./services/twitter.js";
-import {getTwitterLink} from "./services/twitter.js";
-import {getHomeTimeline} from "./services/twitter.js";
-import {getUserTimeline} from "./services/twitter.js";
-import {filterHomeTimeline} from "./services/twitter.js";
+import * as twitter from "./services/twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
@@ -86,6 +82,13 @@ class PostTweet extends React.Component {
     super(props);
     this.state = {tweetText:""};
     this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    twitter.postTweet(this.state.tweetText)
+      .then((data) => console.log(data))
+      .catch((error) => console.log("LOL" + error));
   }
 
   onChange(e) {
@@ -107,7 +110,14 @@ class PostTweet extends React.Component {
           },
         ),
         e("div", {className:"CharCount"}, this.state.tweetText.length),
-        e("button", {className: "PostTweetButton"}, "Post Tweet")
+        e(
+          "button",
+          {
+            onClick: this.onClick,
+            disabled: !this.state.tweetText.length,
+            className: "PostTweetButton"
+          },
+          "Post Tweet")
       )
     );
   }
@@ -147,7 +157,7 @@ class HomeTimeline extends React.Component {
   }
 
   getTweets() {
-    getHomeTimeline()
+    twitter.getHomeTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
   }
@@ -200,7 +210,7 @@ class SearchComponent extends React.Component {
   }
 
   onClick() {
-    filterHomeTimeline(this.state.filterQuery)
+    twitter.filterHomeTimeline(this.state.filterQuery)
       .then((data) => {
         this.state.onClick(data);
       })
@@ -262,7 +272,7 @@ class UserTimeline extends React.Component {
   }
 
   getTweets() {
-    getUserTimeline()
+    twitter.getUserTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
   }
@@ -334,8 +344,8 @@ function TweetContent(props) {
   return e(
     "div",
     {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, formatDate(props.tweet.createdAt)),
-    e("a", {className: "tweetText", href: getTwitterLink(props.tweet), target: "_blank"},
+    e("div", {className: "timeDiv"}, twitter.formatDate(props.tweet.createdAt)),
+    e("a", {className: "tweetText", href: twitter.getTwitterLink(props.tweet), target: "_blank"},
       e("div", null, props.tweet.text)
     )
   );
