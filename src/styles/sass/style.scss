@@ -66,10 +66,12 @@ $tab-color: #f1f1f1;
   @include PostTweetSizing();
 
   .tweetBoxCharCount {
+    @include PostTweetSizing();
     position: relative;
 
     textarea {
-      @include PostTweetSizing();
+      width: 100%;
+      height: 100%;
       resize: none;
     }
 
@@ -82,8 +84,18 @@ $tab-color: #f1f1f1;
     }
 
     .PostTweetButton {
-      position: absolute;
-      right: -7px;
+      float: right;
+    }
+
+    .successMessage {
+      margin-right: 5px;
+      font-size: small;
+      float: right;
+      color: red;
+
+      &.green {
+        color: limegreen;
+      }
     }
   }
 }

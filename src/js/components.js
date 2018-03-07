@@ -80,19 +80,30 @@ function Tab(props) {
 class PostTweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweetText:""};
+    this.state = {tweetText:"", successMessage: ""};
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.getMessageClass = this.getMessageClass.bind(this);
   }
 
   onClick() {
     twitter.postTweet(this.state.tweetText)
-      .then((data) => console.log(data))
-      .catch((error) => console.log("LOL" + error));
+      .then((data) => this.setState({successMessage: "Post successful!"}))
+      .catch((error) => this.setState({successMessage: "Unable to post tweet."}));
+  }
+
+  getMessageClass() {
+    if (this.state.successMessage == "Unable to post tweet.") {
+      return "";
+    }
+    return "green"
   }
 
   onChange(e) {
-    this.setState({tweetText: e.target.value});
+    this.setState({
+      tweetText: e.target.value,
+      successMessage: "",
+    });
   }
 
   render() {
@@ -117,7 +128,13 @@ class PostTweet extends React.Component {
             disabled: !this.state.tweetText.length,
             className: "PostTweetButton"
           },
-          "Post Tweet")
+          "Post Tweet"
+        ),
+        e(
+          "span",
+          {className: "successMessage " + this.getMessageClass()},
+          this.state.successMessage
+        )
       )
     );
   }
