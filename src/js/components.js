@@ -50,7 +50,12 @@ class ReactContainer extends React.Component {
       //userTweets: props.userTweets,
       isServerError: props.isServerError
     };
+    this.parentCallback = this.parentCallback.bind(this);
     this.focusedComponentListener = this.focusedComponentListener.bind(this);
+  }
+
+  parentCallback(isServerError) {
+    this.setState({isServerError: isServerError});
   }
 
   focusedComponentListener(componentName) {
@@ -75,7 +80,8 @@ class ReactContainer extends React.Component {
       e(NavBar, {handleClick: this.focusedComponentListener}),
       e(this.state.focusedComponent,
         {
-          isServerError: this.state.isServerErorr,
+          parentCallback: this.parentCallback,
+          isServerError: this.state.isServerError,
           tweets: this.state.tweets,
         })
 //      e(HomeTimeline,
@@ -137,6 +143,13 @@ class PostTweet extends React.Component {
     this.state = {};
   }
   render() {
+    return e(
+      "div",
+      {className: "PostTweet"},
+      e(
+        "textarea",
+        null)
+    );
   }
 }
 
@@ -155,6 +168,7 @@ class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      parentCallback: props.parentCallback,
       tweets: props.tweets,
       isServerError: props.isServerError,
       className: "HomeTimeline"
@@ -171,6 +185,7 @@ class HomeTimeline extends React.Component {
 
   failureCallback() {
     this.setState({isServerError: true});
+    this.state.parentCallback(true);
   }
 
   handleClick() {
