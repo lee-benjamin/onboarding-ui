@@ -7,55 +7,17 @@ import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
-document.addEventListener("DOMContentLoaded", () => {
-  getHomeTimeline()
-    .then((data) => {
-      ReactDOM.render(e(ReactContainer, {tweets: data}),
-        document.getElementById("root"));
-    })
-    .catch(() => failureCallback());
-
-  function successCallback(homeTweets, userTweets) {
-    ReactDOM.render(e(ReactContainer, {tweets: userTweets}),
-      document.getElementById("root"));
-  }
-
-  function failureCallback() {
-    ReactDOM.render(e(ReactContainer, {isServerError: true}),
-      document.getElementById("root"));
-  }
-
-  const getBothTimelines = (successCallback, failureCallback) => {
-    let promises = [getHomeTimeline(), getUserTimeline()]
-    Promise.all(promises)
-      .then((data) => {
-        successCallback(data[0],data[1]);
-      })
-      .catch((error) => {
-        console.log(error);
-        failureCallback();
-      });
-  }
-
-  //getBothTimelines(successCallback, failureCallback);
-});
+document.addEventListener("DOMContentLoaded", () =>
+  ReactDOM.render(e(ReactContainer, null), document.getElementById("root"))
+);
 
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      focusedComponent: HomeTimeline,
-      tweets: props.tweets,
-      //homeTweets: props.homeTweets,
-      //userTweets: props.userTweets,
-      isServerError: props.isServerError
-    };
-    this.parentCallback = this.parentCallback.bind(this);
-    this.focusedComponentListener = this.focusedComponentListener.bind(this);
-  }
+    this.state = {focusedComponent: HomeTimeline};
 
-  parentCallback(isServerError) {
-    this.setState({isServerError: isServerError});
+    // Bind functions
+    this.focusedComponentListener = this.focusedComponentListener.bind(this);
   }
 
   focusedComponentListener(componentName) {
@@ -78,25 +40,7 @@ class ReactContainer extends React.Component {
       "div",
       {className: "ReactContainer"},
       e(NavBar, {handleClick: this.focusedComponentListener}),
-      e(this.state.focusedComponent,
-        {
-          parentCallback: this.parentCallback,
-          isServerError: this.state.isServerError,
-          tweets: this.state.tweets,
-        })
-//      e(HomeTimeline,
-//        {
-//          isServerError: this.state.isServerError,
-//          tweets: this.state.homeTweets
-//        }
-//      )
-//      e(UserTimeline,
-//        {
-//          className: "UserTimeline",
-//          isServerError: this.state.isServerError,
-//          tweets: this.state.userTweets
-//        }
-//      )
+      e(this.state.focusedComponent, null)
     );
   }
 }
@@ -167,13 +111,11 @@ const chooseComponent = (isServerError, hasNoTweets) => {
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      parentCallback: props.parentCallback,
-      tweets: props.tweets,
-      isServerError: props.isServerError,
-      className: "HomeTimeline"
-    };
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {};
+    this.getTweets();
+
+    // Bind functions
+    this.getTweets = this.getTweets.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
@@ -188,7 +130,7 @@ class HomeTimeline extends React.Component {
     this.state.parentCallback(true);
   }
 
-  handleClick() {
+  getTweets() {
     getHomeTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
@@ -219,7 +161,7 @@ class HomeTimeline extends React.Component {
       e("button",
         {
           className: "getTimelineButton",
-          onClick: this.handleClick,
+          onClick: this.getTweets,
         },
         "Get Home Timeline"
       ),
@@ -282,8 +224,11 @@ class SearchComponent extends React.Component {
 class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError};
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {};
+    this.getTweets();
+
+    // Bind functions
+    this.getTweets = this.getTweets.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
   }
@@ -300,7 +245,7 @@ class UserTimeline extends React.Component {
     this.setState({isServerError: true});
   }
 
-  handleClick() {
+  getTweets() {
     getUserTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
@@ -318,7 +263,7 @@ class UserTimeline extends React.Component {
       e("button",
         {
           className: "getTimelineButton",
-          onClick: this.handleClick,
+          onClick: this.getTweets,
         },
         "Get User Timeline"
       ),
