@@ -250,7 +250,7 @@ class HomeTimeline extends React.Component {
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets && this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
       )
     );
   }
@@ -354,7 +354,7 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets && this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
       )
     );
   }

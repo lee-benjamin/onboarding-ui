@@ -21,12 +21,12 @@ export const getTwitterLink = (tweet) => {
 export const postTweet = (tweet) => {
   return new Promise((resolve, reject) => {
     const url = "http://localhost:8080/api/1.0/twitter/tweet";
-    const obj = {
+    const params = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({"message": tweet})
     }
-    return fetch(url, obj)
+    return fetch(url, params)
        .then((data) => {
         if (data.status == 200) {
            resolve(data.json());
