@@ -54,11 +54,6 @@ $post-tweet-height: 75px;
   }
 }
 
-.Header {
-  margin-bottom: 50px;
-  text-align: center;
-}
-
 @mixin PostTweetSizing($post-tweet-width, $post-tweet-height) {
   width: $post-tweet-width;
   height: $post-tweet-height;
@@ -68,7 +63,7 @@ $post-tweet-height: 75px;
 .PostTweet {
   @include PostTweetSizing($post-tweet-width, $post-tweet-height);
   position: relative;
-  margin-top: 50px;
+  margin-top: 90px;
 
   textarea {
     $border-width: 1px;

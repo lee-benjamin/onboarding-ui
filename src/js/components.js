@@ -19,7 +19,7 @@ class ReactContainer extends React.Component {
   focusedComponentListener(componentName) {
     let focusedComponent = null;
     switch(componentName) {
-      case "User Timeline":
+      case Views.UserTimeline:
         focusedComponent = UserTimeline;
         break;
       case "Post Tweet":
@@ -35,45 +35,77 @@ class ReactContainer extends React.Component {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(NavBar, {changeFocusedComponent: this.focusedComponentListener}),
+      e(NavBar,
+        {
+          focusedComponent: this.state.focusedComponent,
+          changeFocusedComponent: this.focusedComponentListener
+        }
+      ),
       e(this.state.focusedComponent, null)
     );
   }
 }
 
+const Views = Object.freeze(
+  {
+    HomeTimeline: "Home Timeline",
+    UserTimeline: "User Timeline",
+    PostTweet: "Post Tweet"
+  }
+);
+
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {focusedComponent: props.focusedComponent};
   }
 
   render() {
-    const HomeTimeline = "Home Timeline";
-    const UserTimeline = "User Timeline";
-    const PostTweet = "Post Tweet";
-
     return e(
       "div",
       {className: "NavBar"},
-      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: HomeTimeline}),
-      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: UserTimeline}),
-      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: PostTweet}),
+      e(Tab,
+        {
+          changeFocusedComponent: this.props.changeFocusedComponent,
+          tabName: Views.HomeTimeline
+        }
+      ),
+      e(Tab,
+        {
+          changeFocusedComponent: this.props.changeFocusedComponent,
+          tabName: Views.UserTimeline
+        }
+      ),
+      e(Tab,
+        {
+          changeFocusedComponent: this.props.changeFocusedComponent,
+          tabName: Views.PostTweet
+        }
+      )
     );
   }
 }
 
-function Tab(props) {
-  function onClick() {
-    props.changeFocusedComponent(props.tabName);
+class Tab extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
   }
 
-  return e(
-    "button",
-    {
-      className: "Tab",
-      onClick: onClick
-    },
-    props.tabName
-  );
+  onClick() {
+    this.props.changeFocusedComponent(this.props.tabName);
+  }
+
+  render() {
+    return e(
+      "button",
+      {
+        className: "Tab",
+        onClick: this.onClick
+      },
+      this.props.tabName
+    );
+  }
 }
 
 class PostTweet extends React.Component {
@@ -196,7 +228,6 @@ class HomeTimeline extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer HomeTimeline"},
-      e("h1",{className: "Header"}, "Home Timeline"),
       e("button",
         {
           className: "getTimelineButton",
@@ -298,7 +329,6 @@ class UserTimeline extends React.Component {
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
-      e("h1",{className: "Header"}, "User Timeline"),
       e("button",
         {
           className: "getTimelineButton",
