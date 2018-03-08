@@ -110,30 +110,27 @@ class PostTweet extends React.Component {
     return e(
       "div",
       {className: "PostTweet"},
-      e("h1", {className: "Header"}, "Post a tweet"),
-      e("div", {className: "tweetBoxCharCount"},
-        e(
-          "textarea",
-          {
-            onChange: this.onChange,
-            maxLength: maxTweetLength
-          },
-        ),
-        e("div", {className:"CharCount"}, this.state.tweetText.length),
-        e(
-          "button",
-          {
-            onClick: this.onClick,
-            disabled: !this.state.tweetText.length,
-            className: "PostTweetButton"
-          },
-          "Post Tweet"
-        ),
-        e(
-          "span",
-          {className: "successMessage " + this.getMessageClass()},
-          this.state.successMessage
-        )
+      e(
+        "textarea",
+        {
+          onChange: this.onChange,
+          maxLength: maxTweetLength
+        },
+      ),
+      e("div", {className:"CharCount"}, this.state.tweetText.length),
+      e(
+        "button",
+        {
+          onClick: this.onClick,
+          disabled: !this.state.tweetText.length,
+          className: "PostTweetButton"
+        },
+        "Post Tweet"
+      ),
+      e(
+        "span",
+        {className: "successMessage " + this.getMessageClass()},
+        this.state.successMessage
       )
     );
   }

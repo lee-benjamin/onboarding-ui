@@ -67,41 +67,38 @@ $post-tweet-height: 75px;
 
 .PostTweet {
   @include PostTweetSizing($post-tweet-width, $post-tweet-height);
+  position: relative;
+  margin-top: 50px;
 
-  .tweetBoxCharCount {
-    @include PostTweetSizing($post-tweet-width, $post-tweet-height);
-    position: relative;
+  textarea {
+    $border-width: 1px;
+    border-width: $border-width;
+    width: $post-tweet-width - (2 * $border-width);
+    height: $post-tweet-height - (2 * $border-width);
+    resize: none;
+    padding: 0;
+  }
 
-    textarea {
-      $border-width: 1px;
-      border-width: $border-width;
-      width: $post-tweet-width - (2 * $border-width);
-      height: $post-tweet-height - (2 * $border-width);
-      resize: none;
-      padding: 0;
-    }
+  .CharCount {
+    position: absolute;
+    right: 3px;
+    font-size: small;
+    color: gray;
+    bottom: 6px;
+  }
 
-    .CharCount {
-      position: absolute;
-      right: 3px;
-      font-size: small;
-      color: gray;
-      bottom: 6px;
-    }
+  .PostTweetButton {
+    float: right;
+  }
 
-    .PostTweetButton {
-      float: right;
-    }
+  .successMessage {
+    margin-right: 5px;
+    font-size: small;
+    float: right;
+    color: red;
 
-    .successMessage {
-      margin-right: 5px;
-      font-size: small;
-      float: right;
-      color: red;
-
-      &.green {
-        color: limegreen;
-      }
+    &.green {
+      color: limegreen;
     }
   }
 }
