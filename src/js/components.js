@@ -35,7 +35,7 @@ class ReactContainer extends React.Component {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(NavBar, {handleClick: this.focusedComponentListener}),
+      e(NavBar, {changeFocusedComponent: this.focusedComponentListener}),
       e(this.state.focusedComponent, null)
     );
   }
@@ -44,7 +44,6 @@ class ReactContainer extends React.Component {
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {handleClick: props.handleClick};
   }
 
   render() {
@@ -55,23 +54,23 @@ class NavBar extends React.Component {
     return e(
       "div",
       {className: "NavBar"},
-      e(Tab, {onClick: this.state.handleClick, tabName: HomeTimeline}),
-      e(Tab, {onClick: this.state.handleClick, tabName: UserTimeline}),
-      e(Tab, {onClick: this.state.handleClick, tabName: PostTweet}),
+      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: HomeTimeline}),
+      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: UserTimeline}),
+      e(Tab, {changeFocusedComponent: this.props.changeFocusedComponent, tabName: PostTweet}),
     );
   }
 }
 
 function Tab(props) {
   function onClick() {
-    props.onClick(props.tabName);
+    props.changeFocusedComponent(props.tabName);
   }
 
   return e(
     "button",
     {
       className: "Tab",
-      onClick: onClick,
+      onClick: onClick
     },
     props.tabName
   );
