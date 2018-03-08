@@ -48,7 +48,7 @@ $post-tweet-height: 75px;
     transition: 0.3s;
     font-size: 17px;
 
-    &#focused {
+    &.focused {
       background-color: darkgray;
     }
   }

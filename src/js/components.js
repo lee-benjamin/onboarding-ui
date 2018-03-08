@@ -127,9 +127,8 @@ class Tab extends React.Component {
     return e(
       "button",
       {
-        className: "Tab",
-        onClick: this.onClick,
-        id: (this.props.focusedTab == this.props.tabName ? "focused" : "")
+        className: "Tab " + (this.props.focusedTab == this.props.tabName ? "focused" : ""),
+        onClick: this.onClick
       },
       this.props.tabName
     );
