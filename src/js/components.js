@@ -11,8 +11,9 @@ document.addEventListener("DOMContentLoaded", () =>
 );
 
 /*
- * Root React component that renders the NavBar and
- * whatever the focused component View is (User, Home, Post, etc)
+ * React component that renders the NavBar and
+ * whatever the focused component View is (User, Home, Post, etc).
+ * Parent to the Tab component.
  */
 class ReactContainer extends React.Component {
   constructor(props) {
@@ -44,7 +45,6 @@ class ReactContainer extends React.Component {
       {className: "ReactContainer"},
       e(NavBar,
         {
-          focusedComponent: this.state.focusedComponent,
           changeFocusedComponent: this.focusedComponentListener
         }
       ),
@@ -70,7 +70,13 @@ const Views = Object.freeze(
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {focusedComponent: props.focusedComponent};
+    this.state = {focusedTab: Views.HomeTimeline}; // Default view
+    this.changeFocusedTab = this.changeFocusedTab.bind(this);
+  }
+
+  changeFocusedTab(componentName) {
+    this.setState({focusedTab: componentName});
+    this.props.changeFocusedComponent(componentName);
   }
 
   render() {
@@ -79,19 +85,22 @@ class NavBar extends React.Component {
       {className: "NavBar"},
       e(Tab,
         {
-          changeFocusedComponent: this.props.changeFocusedComponent,
-          tabName: Views.HomeTimeline
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
+          tabName: Views.HomeTimeline,
         }
       ),
       e(Tab,
         {
-          changeFocusedComponent: this.props.changeFocusedComponent,
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
           tabName: Views.UserTimeline
         }
       ),
       e(Tab,
         {
-          changeFocusedComponent: this.props.changeFocusedComponent,
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
           tabName: Views.PostTweet
         }
       )
@@ -111,7 +120,7 @@ class Tab extends React.Component {
   }
 
   onClick() {
-    this.props.changeFocusedComponent(this.props.tabName);
+    this.props.changeFocusedTab(this.props.tabName);
   }
 
   render() {
@@ -119,7 +128,8 @@ class Tab extends React.Component {
       "button",
       {
         className: "Tab",
-        onClick: this.onClick
+        onClick: this.onClick,
+        id: (this.props.focusedTab == this.props.tabName ? "focused" : "")
       },
       this.props.tabName
     );
@@ -216,7 +226,6 @@ class HomeTimeline extends React.Component {
         hasNoTweets: false // explicitly set for readability, though shouldn't matter
       }
     );
-    this.state.parentCallback(true);
   }
 
   getTweets() {
