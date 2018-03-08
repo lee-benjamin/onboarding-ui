@@ -5,6 +5,12 @@ $User-light:#1da1f2;
 $User-dark: #f5f8fa;
 $border-color: #C0C0C0;
 $margin: 10px;
+$tab-border-color: #ccc;
+$tab-hover-color: #ddd;
+$tab-color: #f1f1f1;
+$post-tweet-width: 500px;
+$post-tweet-height: 75px;
+
 
 .title {
   text-align: center;
@@ -27,13 +33,88 @@ $margin: 10px;
   margin: $margin;
 }
 
+.NavBar {
+  border: 1px solid $tab-border-color;
+  overflow: hidden;
+  background-color: $tab-color;
+
+  .Tab {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+
+    &.focused {
+      background-color: darkgray;
+    }
+  }
+
+  & button:hover {
+    background-color: $tab-hover-color;
+  }
+}
+
+@mixin PostTweetSizing($post-tweet-width, $post-tweet-height) {
+  width: $post-tweet-width;
+  height: $post-tweet-height;
+  margin: auto;
+}
+
+.PostTweet {
+  @include PostTweetSizing($post-tweet-width, $post-tweet-height);
+  position: relative;
+  margin-top: 90px;
+
+  textarea {
+    $border-width: 1px;
+    border-width: $border-width;
+    width: $post-tweet-width - (2 * $border-width);
+    height: $post-tweet-height - (2 * $border-width);
+    resize: none;
+    padding: 0;
+  }
+
+  .CharCount {
+    position: absolute;
+    right: 3px;
+    font-size: small;
+    color: gray;
+    bottom: 6px;
+  }
+
+  .PostTweetButton {
+    float: right;
+  }
+
+  .resultMessage {
+    margin-right: 10px;
+    font-size: small;
+    float: right;
+
+    &.success {
+      color: limegreen;
+    }
+
+    &.failure {
+      color: red;
+    }
+
+    &:after {
+      display: block;
+      clear: both;
+    }
+  }
+}
+
 .TimelineContainer {
   vertical-align: top;
   margin-top: 40px;
 
   &.UserTimeline {
-    display: inline-block;
-    width: 45%;
     text-align: right;
 
     .getTimelineButton {
@@ -51,9 +132,6 @@ $margin: 10px;
   }
 
   &.HomeTimeline {
-    display: inline-block;
-    width: 55%;
-
     .getTimelineButton {
       display: inline-block;
       text-align: left;
@@ -79,15 +157,9 @@ $margin: 10px;
       }
     }
 
-
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);
     }
-  }
-
-  .TimelineHeader {
-    margin-bottom: 50px;
-    text-align: center;
   }
 
   .Timeline {

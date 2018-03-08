@@ -1,157 +1,282 @@
-import {formatDate} from "./services/twitter.js";
-import {getTwitterLink} from "./services/twitter.js";
-import {getHomeTimeline} from "./services/twitter.js";
-import {getUserTimeline} from "./services/twitter.js";
-import {filterHomeTimeline} from "./services/twitter.js";
+import * as twitter from "./services/twitter.js";
 import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
-document.addEventListener("DOMContentLoaded", () => {
-  function successCallback(homeTweets, userTweets) {
-    ReactDOM.render(e(ReactContainer, {userTweets: userTweets, homeTweets: homeTweets}),
-      document.getElementById("root"));
-  }
+/*
+ * A listener to render the default view on page load
+ */
+document.addEventListener("DOMContentLoaded", () =>
+  ReactDOM.render(e(ReactContainer, null), document.getElementById("root"))
+);
 
-  function failureCallback() {
-    ReactDOM.render(e(ReactContainer, {isServerError: true}),
-      document.getElementById("root"));
-  }
-
-  const getBothTimelines = (successCallback, failureCallback) => {
-    let promises = [getHomeTimeline(), getUserTimeline()]
-    Promise.all(promises)
-      .then((data) => {
-        successCallback(data[0],data[1]);
-      })
-      .catch((error) => {
-        console.log(error);
-        failureCallback();
-      });
-  }
-
-  getBothTimelines(successCallback, failureCallback);
-});
-
-const chooseComponent = (isServerError, hasNoTweets) => {
-  if (isServerError) {
-    return ServerError;
-  }
-
-  if (hasNoTweets) {
-    return NoTweets;
-  }
-  return Timeline;
-}
-
+/*
+ * React component that renders the NavBar and
+ * whatever the focused component View is (User, Home, Post, etc).
+ * Parent to the Tab component.
+ */
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      homeTweets: props.homeTweets,
-      userTweets: props.userTweets,
-      isServerError: props.isServerError
-    };
+    this.state = {focusedComponent: HomeTimeline};
+
+    // Bind functions
+    this.focusedComponentListener = this.focusedComponentListener.bind(this);
+  }
+
+  focusedComponentListener(componentName) {
+    let focusedComponent = null;
+    switch(componentName) {
+      case Views.UserTimeline:
+        focusedComponent = UserTimeline;
+        break;
+      case "Post Tweet":
+        focusedComponent = PostTweet;
+        break;
+      default:
+        focusedComponent = HomeTimeline; // Default View
+    }
+    this.setState({focusedComponent: focusedComponent});
   }
 
   render() {
     return e(
       "div",
       {className: "ReactContainer"},
-      e(HomeTimeline,
+      e(NavBar,
         {
-          isServerError: this.state.isServerError,
-          tweets: this.state.homeTweets
+          changeFocusedComponent: this.focusedComponentListener
         }
       ),
-      e(UserTimeline,
+      e(this.state.focusedComponent, null)
+    );
+  }
+}
+
+/*
+ * An enum to define the labels of each view
+ */
+const Views = Object.freeze(
+  {
+    HomeTimeline: "Home Timeline",
+    UserTimeline: "User Timeline",
+    PostTweet: "Post Tweet"
+  }
+);
+
+/*
+ * The NavBar is the root navigational element and contains the Tabs
+ */
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {focusedTab: Views.HomeTimeline}; // Default view
+    this.changeFocusedTab = this.changeFocusedTab.bind(this);
+  }
+
+  changeFocusedTab(componentName) {
+    this.setState({focusedTab: componentName});
+    this.props.changeFocusedComponent(componentName);
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "NavBar"},
+      e(Tab,
         {
-          className: "UserTimeline",
-          isServerError: this.state.isServerError,
-          tweets: this.state.userTweets
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
+          tabName: Views.HomeTimeline,
+        }
+      ),
+      e(Tab,
+        {
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
+          tabName: Views.UserTimeline
+        }
+      ),
+      e(Tab,
+        {
+          focusedTab: this.state.focusedTab,
+          changeFocusedTab: this.changeFocusedTab,
+          tabName: Views.PostTweet
         }
       )
     );
   }
 }
 
+/*
+ * This component passes its name back to NavBar then to the
+ * root component in order to dynamically render the focused
+ * tab.
+ */
+class Tab extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    this.props.changeFocusedTab(this.props.tabName);
+  }
+
+  render() {
+    return e(
+      "button",
+      {
+        className: "Tab" + (this.props.focusedTab == this.props.tabName ? " focused" : ""),
+        onClick: this.onClick
+      },
+      this.props.tabName
+    );
+  }
+}
+
+/*
+ * Represents the Post Tweet view
+ */
+class PostTweet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {tweetText:"", resultMessage: ""};
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    twitter.postTweet(this.state.tweetText)
+      .then((data) => this.setState({resultMessage: "success"}))
+      .catch((error) => this.setState({resultMessage: "failure"}));
+  }
+
+  onChange(e) {
+    this.setState({
+      tweetText: e.target.value,
+      resultMessage: "",
+    });
+  }
+
+  render() {
+    const maxTweetLength = 280;
+    const tweetTextLength = (this.state.tweetText ? this.state.tweetText.length : 0);
+    return e(
+      "div",
+      {className: "PostTweet"},
+      e(
+        "textarea",
+        {
+          onChange: this.onChange,
+          maxLength: maxTweetLength
+        },
+      ),
+      e("div", {className:"CharCount"}, tweetTextLength),
+      e(
+        "button",
+        {
+          onClick: this.onClick,
+          disabled: !tweetTextLength,
+          className: "PostTweetButton"
+        },
+        "Post Tweet"
+      ),
+      e(
+        "span",
+        {className: "resultMessage " + this.state.resultMessage},
+        (this.state.resultMessage == "" ?
+          "" :(this.state.resultMessage == "success" ? "Post successful!" : "Unable to post tweet.")
+        )
+      )
+    );
+  }
+}
+
+/*
+ * Component for the Home Timeline view
+ */
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError, className: "HomeTimeline"};
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {tweets: [], isServerError: false};
+    this.getTweets();
+
+    // Bind functions
+    this.getTweets = this.getTweets.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
   }
 
   successCallback(tweets) {
-    this.setState({tweets: tweets, isServerError: false});
+    this.setState(
+      {
+        tweets: tweets,
+        isServerError: false
+      }
+    );
   }
 
   failureCallback() {
     this.setState({isServerError: true});
   }
 
-  handleClick() {
-    getHomeTimeline()
+  getTweets() {
+    twitter.getHomeTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
   }
 
   handleFilter(tweets) {
-    if (tweets.length == 0) {
-      this.setState({hasNoTweets: true});
-    }
-    else {
-      this.setState({
+    this.setState(
+      {
         isServerError: false,
-        hasNoTweets: false,
         tweets: tweets
-      });
-    }
+      }
+    );
   }
 
   render() {
-    const isServerError = this.state.isServerError == true;
-    const hasNoTweets = this.state.hasNoTweets == true;
-    let component = chooseComponent(isServerError, hasNoTweets);
-
     return e(
       "div",
       {className: "TimelineContainer HomeTimeline"},
-      e("h1",{className: "TimelineHeader"}, "Home Timeline"),
       e("button",
         {
           className: "getTimelineButton",
-          onClick: this.handleClick,
+          onClick: this.getTweets,
         },
         "Get Home Timeline"
       ),
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
-      e(component, {tweets: this.state.tweets})
+      (this.state.isServerError ?
+        e(ServerError, null) :
+        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}) : e(NoTweets))
+      )
     );
   }
 }
 
+/*
+ * Component that adds filtering to the HomeTimeline View
+ */
 class SearchComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       onClick: props.onClick,
       filterQuery: "",
-      failureCallback: props.failureCallback
     };
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   onClick() {
-    filterHomeTimeline(this.state.filterQuery)
+    twitter.filterHomeTimeline(this.state.filterQuery)
       .then((data) => {
         this.state.onClick(data);
       })
-      .catch(() => this.state.failureCallback());
+      .catch(() => this.props.failureCallback());
   }
 
   onChange(e) {
@@ -159,6 +284,7 @@ class SearchComponent extends React.Component {
   }
 
   render() {
+    const filterQueryLength = (this.state.filterQuery ? this.state.filterQuery.length : 0);
     return e(
       "span",
       {className: "SearchComponent"},
@@ -174,7 +300,7 @@ class SearchComponent extends React.Component {
       e(
         "button",
         {
-          disabled: !this.state.filterQuery.length,
+          disabled: !filterQueryLength,
           onClick: this.onClick,
           className: "FilterButton"
         },
@@ -184,11 +310,17 @@ class SearchComponent extends React.Component {
   }
 }
 
+/*
+ * Component that represents the User Timeline view
+ */
 class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: props.tweets, isServerError: props.isServerError};
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {tweets: [], isServerError: false};
+    this.getTweets();
+
+    // Bind functions
+    this.getTweets = this.getTweets.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
   }
@@ -196,8 +328,7 @@ class UserTimeline extends React.Component {
   successCallback(tweets) {
     this.setState({
       tweets: tweets,
-      isServerError: false,
-      hasNoTweets: (tweets.length == 0 ? true : false)
+      isServerError: false
     });
   }
 
@@ -205,30 +336,29 @@ class UserTimeline extends React.Component {
     this.setState({isServerError: true});
   }
 
-  handleClick() {
-    getUserTimeline()
+  getTweets() {
+    twitter.getUserTimeline()
       .then((data) => this.successCallback(data))
       .catch(() => this.failureCallback());
   }
 
   render() {
-    const isServerError = this.state.isServerError == true;
-    const hasNoTweets = this.state.hasNoTweets == true;
-    let component = chooseComponent(isServerError, hasNoTweets);
 
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
-      e("h1",{className: "TimelineHeader"}, "User Timeline"),
       e("button",
         {
           className: "getTimelineButton",
-          onClick: this.handleClick,
+          onClick: this.getTweets,
         },
         "Get User Timeline"
       ),
-      e(component, {tweets: this.state.tweets})
-    );
+      (this.state.isServerError ?
+        e(ServerError, null) :
+        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}): e(NoTweets))
+      )
+    )
   }
 }
 
@@ -278,8 +408,8 @@ function TweetContent(props) {
   return e(
     "div",
     {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, formatDate(props.tweet.createdAt)),
-    e("a", {className: "tweetText", href: getTwitterLink(props.tweet), target: "_blank"},
+    e("div", {className: "timeDiv"}, twitter.formatDate(props.tweet.createdAt)),
+    e("a", {className: "tweetText", href: twitter.getTwitterLink(props.tweet), target: "_blank"},
       e("div", null, props.tweet.text)
     )
   );
