@@ -161,6 +161,7 @@ class PostTweet extends React.Component {
 
   render() {
     const maxTweetLength = 280;
+    const tweetTextLength = (this.state.tweetText ? this.state.tweetText.length : 0);
     return e(
       "div",
       {className: "PostTweet"},
@@ -171,12 +172,12 @@ class PostTweet extends React.Component {
           maxLength: maxTweetLength
         },
       ),
-      e("div", {className:"CharCount"}, this.state.tweetText.length),
+      e("div", {className:"CharCount"}, tweetTextLength),
       e(
         "button",
         {
           onClick: this.onClick,
-          disabled: !this.state.tweetText.length,
+          disabled: !tweetTextLength,
           className: "PostTweetButton"
         },
         "Post Tweet"
@@ -250,7 +251,7 @@ class HomeTimeline extends React.Component {
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}) : e(NoTweets))
       )
     );
   }
@@ -283,6 +284,7 @@ class SearchComponent extends React.Component {
   }
 
   render() {
+    const filterQueryLength = (this.state.filterQuery ? this.state.filterQuery.length : 0);
     return e(
       "span",
       {className: "SearchComponent"},
@@ -298,7 +300,7 @@ class SearchComponent extends React.Component {
       e(
         "button",
         {
-          disabled: !this.state.filterQuery.length,
+          disabled: !filterQueryLength,
           onClick: this.onClick,
           className: "FilterButton"
         },
@@ -354,9 +356,9 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}): e(NoTweets))
       )
-    );
+    )
   }
 }
 
