@@ -102,6 +102,11 @@ $post-tweet-height: 75px;
     &.failure {
       color: red;
     }
+
+    &:after {
+      display: block;
+      clear: both;
+    }
   }
 }
 

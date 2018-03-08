@@ -127,7 +127,7 @@ class Tab extends React.Component {
     return e(
       "button",
       {
-        className: "Tab " + (this.props.focusedTab == this.props.tabName ? "focused" : ""),
+        className: "Tab" + (this.props.focusedTab == this.props.tabName ? " focused" : ""),
         onClick: this.onClick
       },
       this.props.tabName
@@ -198,7 +198,7 @@ class PostTweet extends React.Component {
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {tweets: [], isServerError: false};
     this.getTweets();
 
     // Bind functions
@@ -211,7 +211,6 @@ class HomeTimeline extends React.Component {
   successCallback(tweets) {
     this.setState(
       {
-        hasNoTweets: false,
         tweets: tweets,
         isServerError: false
       }
@@ -219,12 +218,7 @@ class HomeTimeline extends React.Component {
   }
 
   failureCallback() {
-    this.setState(
-      {
-        isServerError: true,
-        hasNoTweets: false // explicitly set for readability, though shouldn't matter
-      }
-    );
+    this.setState({isServerError: true});
   }
 
   getTweets() {
@@ -237,16 +231,12 @@ class HomeTimeline extends React.Component {
     this.setState(
       {
         isServerError: false,
-        hasNoTweets: (tweets.length == 0 ? true : false),
         tweets: tweets
       }
     );
   }
 
   render() {
-    const isServerError = this.state.isServerError == true;
-    const hasNoTweets = this.state.hasNoTweets == true;
-
     return e(
       "div",
       {className: "TimelineContainer HomeTimeline"},
@@ -260,7 +250,7 @@ class HomeTimeline extends React.Component {
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.hasNoTweets ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
       )
     );
   }
@@ -275,7 +265,6 @@ class SearchComponent extends React.Component {
     this.state = {
       onClick: props.onClick,
       filterQuery: "",
-      failureCallback: props.failureCallback
     };
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -286,7 +275,7 @@ class SearchComponent extends React.Component {
       .then((data) => {
         this.state.onClick(data);
       })
-      .catch(() => this.state.failureCallback());
+      .catch(() => this.props.failureCallback());
   }
 
   onChange(e) {
@@ -325,7 +314,7 @@ class SearchComponent extends React.Component {
 class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {tweets: [], isServerError: false};
     this.getTweets();
 
     // Bind functions
@@ -337,8 +326,7 @@ class UserTimeline extends React.Component {
   successCallback(tweets) {
     this.setState({
       tweets: tweets,
-      isServerError: false,
-      hasNoTweets: (tweets.length == 0 ? true : false)
+      isServerError: false
     });
   }
 
@@ -353,8 +341,6 @@ class UserTimeline extends React.Component {
   }
 
   render() {
-    const isServerError = this.state.isServerError == true;
-    const hasNoTweets = this.state.hasNoTweets == true;
 
     return e(
       "div",
@@ -368,9 +354,8 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.hasNoTweets ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+        (this.state.tweets.length == 0 ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
       )
-      //e(component, {tweets: this.state.tweets})
     );
   }
 }
