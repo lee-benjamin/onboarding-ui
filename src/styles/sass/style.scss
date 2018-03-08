@@ -86,14 +86,17 @@ $post-tweet-height: 75px;
     float: right;
   }
 
-  .successMessage {
-    margin-right: 5px;
+  .resultMessage {
+    margin-right: 10px;
     font-size: small;
     float: right;
-    color: red;
 
-    &.green {
+    &.success {
       color: limegreen;
+    }
+
+    &.failure {
+      color: red;
     }
   }
 }

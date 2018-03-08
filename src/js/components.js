@@ -3,10 +3,17 @@ import * as _ from "lodash/core";
 
 const e = React.createElement; // syntatical shorthand
 
+/*
+ * A listener to render the default view on page load
+ */
 document.addEventListener("DOMContentLoaded", () =>
   ReactDOM.render(e(ReactContainer, null), document.getElementById("root"))
 );
 
+/*
+ * Root React component that renders the NavBar and
+ * whatever the focused component View is (User, Home, Post, etc)
+ */
 class ReactContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +53,9 @@ class ReactContainer extends React.Component {
   }
 }
 
+/*
+ * An enum to define the labels of each view
+ */
 const Views = Object.freeze(
   {
     HomeTimeline: "Home Timeline",
@@ -54,6 +64,9 @@ const Views = Object.freeze(
   }
 );
 
+/*
+ * The NavBar is the root navigational element and contains the Tabs
+ */
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -86,6 +99,11 @@ class NavBar extends React.Component {
   }
 }
 
+/*
+ * This component passes its name back to NavBar then to the
+ * root component in order to dynamically render the focused
+ * tab.
+ */
 class Tab extends React.Component {
   constructor(props) {
     super(props);
@@ -108,32 +126,27 @@ class Tab extends React.Component {
   }
 }
 
+/*
+ * Represents the Post Tweet view
+ */
 class PostTweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweetText:"", successMessage: ""};
+    this.state = {tweetText:"", resultMessage: ""};
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.getMessageClass = this.getMessageClass.bind(this);
   }
 
   onClick() {
     twitter.postTweet(this.state.tweetText)
-      .then((data) => this.setState({successMessage: "Post successful!"}))
-      .catch((error) => this.setState({successMessage: "Unable to post tweet."}));
-  }
-
-  getMessageClass() {
-    if (this.state.successMessage == "Unable to post tweet.") {
-      return "";
-    }
-    return "green"
+      .then((data) => this.setState({resultMessage: "success"}))
+      .catch((error) => this.setState({resultMessage: "failure"}));
   }
 
   onChange(e) {
     this.setState({
       tweetText: e.target.value,
-      successMessage: "",
+      resultMessage: "",
     });
   }
 
@@ -161,24 +174,18 @@ class PostTweet extends React.Component {
       ),
       e(
         "span",
-        {className: "successMessage " + this.getMessageClass()},
-        this.state.successMessage
+        {className: "resultMessage " + this.state.resultMessage},
+        (this.state.resultMessage == "" ?
+          "" :(this.state.resultMessage == "success" ? "Post successful!" : "Unable to post tweet.")
+        )
       )
     );
   }
 }
 
-const chooseComponent = (isServerError, hasNoTweets) => {
-  if (isServerError) {
-    return ServerError;
-  }
-
-  if (hasNoTweets) {
-    return NoTweets;
-  }
-  return Timeline;
-}
-
+/*
+ * Component for the Home Timeline view
+ */
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
@@ -193,11 +200,22 @@ class HomeTimeline extends React.Component {
   }
 
   successCallback(tweets) {
-    this.setState({tweets: tweets, isServerError: false});
+    this.setState(
+      {
+        hasNoTweets: false,
+        tweets: tweets,
+        isServerError: false
+      }
+    );
   }
 
   failureCallback() {
-    this.setState({isServerError: true});
+    this.setState(
+      {
+        isServerError: true,
+        hasNoTweets: false // explicitly set for readability, though shouldn't matter
+      }
+    );
     this.state.parentCallback(true);
   }
 
@@ -208,22 +226,18 @@ class HomeTimeline extends React.Component {
   }
 
   handleFilter(tweets) {
-    if (tweets.length == 0) {
-      this.setState({hasNoTweets: true});
-    }
-    else {
-      this.setState({
+    this.setState(
+      {
         isServerError: false,
-        hasNoTweets: false,
+        hasNoTweets: (tweets.length == 0 ? true : false),
         tweets: tweets
-      });
-    }
+      }
+    );
   }
 
   render() {
     const isServerError = this.state.isServerError == true;
     const hasNoTweets = this.state.hasNoTweets == true;
-    let component = chooseComponent(isServerError, hasNoTweets);
 
     return e(
       "div",
@@ -236,11 +250,17 @@ class HomeTimeline extends React.Component {
         "Get Home Timeline"
       ),
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
-      e(component, {tweets: this.state.tweets})
+      (this.state.isServerError ?
+        e(ServerError, null) :
+        (this.state.hasNoTweets ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+      )
     );
   }
 }
 
+/*
+ * Component that adds filtering to the HomeTimeline View
+ */
 class SearchComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -291,6 +311,9 @@ class SearchComponent extends React.Component {
   }
 }
 
+/*
+ * Component that represents the User Timeline view
+ */
 class UserTimeline extends React.Component {
   constructor(props) {
     super(props);
@@ -324,7 +347,6 @@ class UserTimeline extends React.Component {
   render() {
     const isServerError = this.state.isServerError == true;
     const hasNoTweets = this.state.hasNoTweets == true;
-    let component = chooseComponent(isServerError, hasNoTweets);
 
     return e(
       "div",
@@ -336,7 +358,11 @@ class UserTimeline extends React.Component {
         },
         "Get User Timeline"
       ),
-      e(component, {tweets: this.state.tweets})
+      (this.state.isServerError ?
+        e(ServerError, null) :
+        (this.state.hasNoTweets ? e(NoTweets, null) : Timeline({tweets: this.state.tweets}))
+      )
+      //e(component, {tweets: this.state.tweets})
     );
   }
 }
