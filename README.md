@@ -3,7 +3,7 @@
 #### How to Run
 
 ##### Running with Gulp
-You will need npm. You can get it at [npmjs.com](https://www.npmjs.com/). 
+You will need npm. You can get it at [npmjs.com](https://www.npmjs.com/).
 
 Once you have it, run `npm install` to install the dependencies this project relies on.
 
