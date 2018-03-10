@@ -403,15 +403,35 @@ function Avatar(props) {
   );
 }
 
-function TweetContent(props) {
-  return e(
-    "div",
-    {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, twitter.formatDate(props.tweet.createdAt)),
-    e("a", {className: "tweetText", href: twitter.getTwitterLink(props.tweet), target: "_blank"},
-      e("div", null, props.tweet.text)
-    )
-  );
+class TweetContent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleReply() {
+    console.log("reply clicked");
+    this.handleReply = this.handleReply.bind(this);
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "TweetContent"},
+      e("div", {className: "timeDiv"}, twitter.formatDate(this.props.tweet.createdAt)),
+      e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
+        e("div", null, this.props.tweet.text)
+      ),
+      e(
+        "input",
+        {
+          type: "image",
+          className: "replyButton",
+          onClick: this.handleReply,
+          src: "../assets/reply_button.png"
+        },
+      )
+    );
+  }
 }
 
 function Timeline(props) {
@@ -426,12 +446,6 @@ function Timeline(props) {
 class Tweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.handleReply = this.handleReply.bind(this);
-  }
-
-  handleReply() {
-    console.log("reply clicked");
   }
 
   render() {
@@ -443,15 +457,6 @@ class Tweet extends React.Component {
       },
       e(Avatar, {user: this.props.tweet.user}),
       e(TweetContent, {tweet: this.props.tweet}),
-      e(
-        "button",
-        {
-          className: "replyButton",
-          onClick: this.handleReply,
-          src: "/app/assets/replyButton.png"
-        },
-        "Reply"
-      )
     );
   }
 }
