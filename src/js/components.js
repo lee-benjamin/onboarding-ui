@@ -343,7 +343,6 @@ class UserTimeline extends React.Component {
   }
 
   render() {
-
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
@@ -415,8 +414,12 @@ function TweetContent(props) {
   );
 }
 
-export function Timeline(props) {
-  let tweets = _.map(props.tweets, Tweet);
+function Timeline(props) {
+  //let tweets = _.map(props.tweets, (tweet) => e(Tweet, {tweet: tweet}));
+  let tweets = [];
+  for (let i=0; i<props.tweets.length; i++) {
+    tweets.push(e(Tweet, {tweet: props.tweets[i]}));
+  }
 
   return e(
     "div",
@@ -425,14 +428,34 @@ export function Timeline(props) {
   );
 }
 
-export function Tweet(props) {
-  return e (
-    "div",
-    {
-      className: "Tweet",
-      key: props.id
-    },
-    e(Avatar, {user: props.user}),
-    e(TweetContent, {tweet: props}),
-  );
+class Tweet extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.handleReply = this.handleReply.bind(this);
+  }
+
+  handleReply() {
+    console.log("reply clicked");
+  }
+
+  render() {
+    return e(
+      "div",
+      {
+        className: "Tweet",
+        key: this.props.tweet.id
+      },
+      e(Avatar, {user: this.props.tweet.user}),
+      e(TweetContent, {tweet: this.props.tweet}),
+      e(
+        "button",
+        {
+          className: "replyButton",
+          onClick: this.handleReply
+        },
+        "Reply"
+      )
+    );
+  }
 }
