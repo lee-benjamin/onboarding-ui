@@ -415,12 +415,7 @@ function TweetContent(props) {
 }
 
 function Timeline(props) {
-  //let tweets = _.map(props.tweets, (tweet) => e(Tweet, {tweet: tweet}));
-  let tweets = [];
-  for (let i=0; i<props.tweets.length; i++) {
-    tweets.push(e(Tweet, {tweet: props.tweets[i]}));
-  }
-
+  let tweets = _.map(props.tweets, (tweet) => e(Tweet, {key: tweet.id, tweet: tweet}));
   return e(
     "div",
     {className: "Timeline"},
@@ -444,7 +439,7 @@ class Tweet extends React.Component {
       "div",
       {
         className: "Tweet",
-        key: this.props.tweet.id
+        key: this.props.id
       },
       e(Avatar, {user: this.props.tweet.user}),
       e(TweetContent, {tweet: this.props.tweet}),
@@ -452,7 +447,8 @@ class Tweet extends React.Component {
         "button",
         {
           className: "replyButton",
-          onClick: this.handleReply
+          onClick: this.handleReply,
+          src: "/app/assets/replyButton.png"
         },
         "Reply"
       )
