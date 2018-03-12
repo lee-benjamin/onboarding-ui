@@ -207,13 +207,25 @@ class HomeTimeline extends React.Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
+    this.openReplyModal = this.openReplyModal.bind(this);
+    this.closeReplyModal = this.closeReplyModal.bind(this);
+    this.chooseComponent = this.chooseComponent.bind(this);
+  }
+
+  openReplyModal(tweet) {
+    this.setState({isReplyModalOpen: true, replyTweet: tweet});
+  }
+
+  closeReplyModal() {
+    this.setState({isReplyModalOpen: false});
   }
 
   successCallback(tweets) {
     this.setState(
       {
         tweets: tweets,
-        isServerError: false
+        isServerError: false,
+        isReplyModalOpen: false
       }
     );
   }
@@ -237,6 +249,21 @@ class HomeTimeline extends React.Component {
     );
   }
 
+  chooseComponent() { // returns proper component based on state flags
+    if (this.state.isServerError) {
+      return e(ServerError);
+    }
+    if (this.state.tweets && this.state.tweets.length) {
+      return Timeline(
+        {
+          openReplyModal: this.openReplyModal,
+          closeReplyModal: this.closeReplyModal,
+          tweets: this.state.tweets
+        });
+    }
+    return e(NoTweets);
+  }
+
   render() {
     return e(
       "div",
@@ -249,9 +276,14 @@ class HomeTimeline extends React.Component {
         "Get Home Timeline"
       ),
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
-      (this.state.isServerError ?
-        e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}) : e(NoTweets))
+      this.chooseComponent(), // The Timeline or an error page
+      e(
+        ReplyModal,
+        {
+          onClose: this.closeReplyModal,
+          isOpen: this.state.isReplyModalOpen,
+          tweet: this.state.replyTweet
+        }
       )
     );
   }
@@ -406,11 +438,7 @@ function Avatar(props) {
 class TweetContent extends React.Component {
   constructor(props) {
     super(props);
-    this.handleReply = this.handleReply.bind(this);
-  }
-
-  handleReply() {
-    console.log("reply clicked");
+    this.state = {isReplyModalOpen: false}
   }
 
   render() {
@@ -421,9 +449,44 @@ class TweetContent extends React.Component {
       e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
         e("div", null, this.props.tweet.text)
       ),
-      e("div",
-        {onClick: this.handleReply},
+      e(
+        "div",
+        {onClick: this.openReplyModal},
         e("i",{className: "fas fa-reply replyButton"})
+      ),
+   );
+  }
+}
+
+class ReplyModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.close = this.close.bind(this);
+  }
+
+  close(e) {
+    e.preventDefault();
+
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
+  render() {
+    if (!this.props.isOpen) {
+      return null;
+    }
+
+    return e(
+      "div",
+      {className: "ReplyModal"},
+      e(PostTweet),
+      e(
+        "div",
+        {
+          className: "backdrop",
+          onClick: this.close
+        }
       )
     );
   }
