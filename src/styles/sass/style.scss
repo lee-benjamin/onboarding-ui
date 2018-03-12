@@ -129,6 +129,10 @@ $post-tweet-height: 75px;
     .screenName {
       visibility: hidden;
     }
+
+    .replyButton {
+      visibility: hidden;
+    }
   }
 
   &.HomeTimeline {
