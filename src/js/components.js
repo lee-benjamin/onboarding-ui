@@ -199,7 +199,12 @@ class PostTweet extends React.Component {
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: [], isServerError: false};
+    this.state =
+      {
+        tweets: [],
+        isServerError: false,
+        isReplyModalOpen: false
+      };
     this.getTweets();
 
     // Bind functions
@@ -213,7 +218,9 @@ class HomeTimeline extends React.Component {
   }
 
   openReplyModal(tweet) {
+    console.log("open Modal");
     this.setState({isReplyModalOpen: true, replyTweet: tweet});
+    console.log(this.state.replyTweet);
   }
 
   closeReplyModal() {
@@ -224,8 +231,7 @@ class HomeTimeline extends React.Component {
     this.setState(
       {
         tweets: tweets,
-        isServerError: false,
-        isReplyModalOpen: false
+        isServerError: false
       }
     );
   }
@@ -283,7 +289,7 @@ class HomeTimeline extends React.Component {
         {
           onClose: this.closeReplyModal,
           isOpen: this.state.isReplyModalOpen,
-          tweet: this.state.replyTweet
+          replyTweet: this.state.replyTweet
         }
       )
     );
@@ -410,88 +416,6 @@ function NoTweets(props) {
   );
 }
 
-function Avatar(props) {
-  return e(
-    "figure",
-    { className: "Avatar" },
-    e(
-      "img",
-      { className: "ProfilePic",
-        src: props.user.profileImageURL
-      }),
-    e(
-      "figcaption",
-      null,
-      e(
-        "div",
-        { className: "imageCaption" },
-        props.user.name,
-        e(
-          "div",
-          { className: "screenName" },
-          props.user.screenName
-        )
-      )
-    )
-  );
-}
-
-class TweetContent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {isReplyModalOpen: false}
-  }
-
-  render() {
-    return e(
-      "div",
-      {className: "TweetContent"},
-      e("div", {className: "timeDiv"}, twitter.formatDate(this.props.tweet.createdAt)),
-      e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
-        e("div", null, this.props.tweet.text)
-      ),
-      e(
-        "div",
-        {onClick: this.openReplyModal},
-        e("i",{className: "fas fa-reply replyButton"})
-      ),
-   );
-  }
-}
-
-class ReplyModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.close = this.close.bind(this);
-  }
-
-  close(e) {
-    e.preventDefault();
-
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
-  }
-
-  render() {
-    if (!this.props.isOpen) {
-      return null;
-    }
-
-    return e(
-      "div",
-      {className: "ReplyModal"},
-      e(PostTweet),
-      e(
-        "div",
-        {
-          className: "backdrop",
-          onClick: this.close
-        }
-      )
-    );
-  }
-}
 
 class Timeline extends React.Component {
   constructor(props) {
@@ -500,7 +424,7 @@ class Timeline extends React.Component {
       e(
         Tweet,
         {
-          openReplyModal: props.OpenReplyModal,
+          openReplyModal: props.openReplyModal,
           closeReplyModal: props.closeReplyModal,
           key: tweet.id,
           tweet: tweet
@@ -533,7 +457,103 @@ class Tweet extends React.Component {
         key: this.props.id
       },
       e(Avatar, {user: this.props.tweet.user}),
-      e(TweetContent, {tweet: this.props.tweet}),
+      e(
+        TweetContent,
+        {
+          tweet: this.props.tweet,
+          openReplyModal: this.props.openReplyModal,
+          closeReplyModal: this.props.closeReplyModal
+        }
+      )
+    );
+  }
+}
+
+function Avatar(props) {
+  return e(
+    "figure",
+    { className: "Avatar" },
+    e(
+      "img",
+      { className: "ProfilePic",
+        src: props.user.profileImageURL
+      }),
+    e(
+      "figcaption",
+      null,
+      e(
+        "div",
+        { className: "imageCaption" },
+        props.user.name,
+        e(
+          "div",
+          { className: "screenName" },
+          props.user.screenName
+        )
+      )
+    )
+  );
+}
+
+class TweetContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.openReplyModal(this.props.tweet);
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "TweetContent"},
+      e("div", {className: "timeDiv"}, twitter.formatDate(this.props.tweet.createdAt)),
+      e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
+        e("div", null, this.props.tweet.text)
+      ),
+      e(
+        "div",
+        //{onClick: this.props.openReplyModal(this.props.tweet)},
+        {onClick: this.handleClick},
+        e("i",{className: "fas fa-reply replyButton"})
+      ),
+   );
+  }
+}
+
+class ReplyModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.close = this.close.bind(this);
+  }
+
+  close(e) {
+    e.preventDefault();
+
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
+  render() {
+    if (!this.props.isOpen) {
+      return null;
+    }
+
+    return e(
+      "div",
+      {className: "ReplyModal"},
+      e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
+      e(PostTweet),
+      e(
+        "div",
+        {
+          className: "backdrop",
+          onClick: this.close
+        }
+      )
     );
   }
 }
