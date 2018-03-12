@@ -220,6 +220,12 @@ $post-tweet-height: 75px;
 
       .modalContent {
         @include tweet-styling;
+        .Tweet {
+          .Avatar {
+            margin-right: 20px;
+          }
+          width: 650px;
+        }
         animation-duration: 1s;
         animation-name: slide-in;
         position: fixed;
@@ -227,7 +233,7 @@ $post-tweet-height: 75px;
         right: 0;
         z-index: 9999;
         background: #fff;
-        width: 65%;
+        width: 650px;
         height: 100%;
 
         .close {

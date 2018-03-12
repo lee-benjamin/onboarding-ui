@@ -507,7 +507,6 @@ class TweetContent extends React.Component {
   }
 
   handleClick() {
-    console.log(this.props.canReply);
     if (this.props.canReply) {
       // Calls HomeTimeline's openReplyModal,
       // passing this tweet as the tweet to be replied to
