@@ -143,17 +143,19 @@ class PostTweet extends React.Component {
     super(props);
     this.state = {tweetText:"", resultMessage: ""};
     this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.postTweet = this.postTweet.bind(this);
   }
 
-  onClick() {
-    if (!this.props.onClick) { // no onClick passed in
-      twitter.postTweet(this.state.tweetText)
+  postTweet() {
+    if (this.props.replyTweet) { // a tweet to reply to has been passed in
+      twitter.replyToTweet(this.props.replyTweet.id, this.state.tweetText)
         .then((data) => this.setState({resultMessage: "success"}))
         .catch((error) => this.setState({resultMessage: "failure"}));
     }
-    else { // passed in by ReplyModal
-      this.props.onClick();
+    else { // Post normally in absence of a replyTweet
+      twitter.postTweet(this.state.tweetText)
+        .then((data) => this.setState({resultMessage: "success"}))
+        .catch((error) => this.setState({resultMessage: "failure"}));
     }
   }
 
@@ -181,7 +183,7 @@ class PostTweet extends React.Component {
       e(
         "button",
         {
-          onClick: this.onClick,
+          onClick: this.postTweet,
           disabled: !tweetTextLength,
           className: "PostTweetButton"
         },
@@ -555,7 +557,7 @@ class ReplyModal extends React.Component {
         e("div", {onClick: this.close, className: "close"}, "×"),
         e("h2", {className: "modalHeader"}, "Reply to " + this.props.replyTweet.user.name),
         e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
-        e(PostTweet, {onClick: () => alert("To be implemented.")}),
+        e(PostTweet, {replyTweet: this.props.replyTweet}),
       ),
       e(
         "div",
