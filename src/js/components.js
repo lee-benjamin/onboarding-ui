@@ -555,6 +555,8 @@ class ReplyModal extends React.Component {
       e(
         "div",
         {className: "modalContent"},
+        e("div", {onClick: this.close, className: "close"}, "×"),
+        e("h2", {className: "modalHeader"}, "Reply to " + this.props.replyTweet.user.name),
         e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
         e(PostTweet, {onClick: () => alert("To be implemented.")}),
       ),
