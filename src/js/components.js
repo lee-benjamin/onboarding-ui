@@ -537,11 +537,12 @@ class ReplyModal extends React.Component {
   }
 
   render() {
-    console.log(this.props.replyTweet);
     if (!this.props.isOpen) {
+      console.log("not displaying modal");
       return null;
     }
 
+    console.log(this.props.replyTweet);
     return e(
       "div",
       {className: "ReplyModal"},
