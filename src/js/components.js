@@ -399,7 +399,7 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length ? e(Timeline,{tweets: this.state.tweets}): e(NoTweets))
+        (this.state.tweets && this.state.tweets.length ? e(Timeline,{canReply: false, tweets: this.state.tweets}): e(NoTweets))
       )
     )
   }
@@ -507,9 +507,11 @@ class TweetContent extends React.Component {
   }
 
   handleClick() {
-    // Calls HomeTimeline's openReplyModal,
-    // passing this tweet as the tweet to be replied to
-    this.props.openReplyModal(this.props.tweet);
+    if (this.props.canReply) {
+      // Calls HomeTimeline's openReplyModal,
+      // passing this tweet as the tweet to be replied to
+      this.props.openReplyModal(this.props.tweet);
+    }
   }
 
   render() {
