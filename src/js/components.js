@@ -269,7 +269,7 @@ class HomeTimeline extends React.Component {
         Timeline,
         {
           openReplyModal: this.openReplyModal,
-          closeReplyModal: this.closeReplyModal,
+          canReply: true,
           tweets: this.state.tweets
         });
     }
@@ -430,9 +430,9 @@ class Timeline extends React.Component {
         Tweet,
         {
           openReplyModal: props.openReplyModal,
-          closeReplyModal: props.closeReplyModal,
           key: tweet.id,
-          tweet: tweet
+          tweet: tweet,
+          canReply: this.props.canReply
         }
       )
     );
@@ -467,7 +467,7 @@ class Tweet extends React.Component {
         {
           tweet: this.props.tweet,
           openReplyModal: this.props.openReplyModal,
-          closeReplyModal: this.props.closeReplyModal
+          canReply: this.props.canReply
         }
       )
     );
@@ -507,6 +507,7 @@ class TweetContent extends React.Component {
   }
 
   handleClick() {
+    console.log(this.props.canReply);
     if (this.props.canReply) {
       // Calls HomeTimeline's openReplyModal,
       // passing this tweet as the tweet to be replied to
