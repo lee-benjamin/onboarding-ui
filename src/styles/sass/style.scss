@@ -208,9 +208,20 @@ $post-tweet-height: 75px;
 
     .ReplyModal {
 
+      @keyframes slide-in {
+        from {
+          margin-right: -100%;
+        }
+
+        to {
+          margin-right: 0px;
+        }
+      }
 
       .modalContent {
         @include tweet-styling;
+        animation-duration: 1s;
+        animation-name: slide-in;
         position: absolute;
         top: 50px;
         right: 10px;
