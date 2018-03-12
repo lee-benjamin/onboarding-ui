@@ -152,7 +152,7 @@ class PostTweet extends React.Component {
         .then((data) => this.setState({resultMessage: "success"}))
         .catch((error) => this.setState({resultMessage: "failure"}));
     }
-    else { // passed in by ReplayModal
+    else { // passed in by ReplyModal
       this.props.onClick();
     }
   }
