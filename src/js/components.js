@@ -147,9 +147,14 @@ class PostTweet extends React.Component {
   }
 
   onClick() {
-    twitter.postTweet(this.state.tweetText)
-      .then((data) => this.setState({resultMessage: "success"}))
-      .catch((error) => this.setState({resultMessage: "failure"}));
+    if (!this.props.onClick) { // no onClick passed in
+      twitter.postTweet(this.state.tweetText)
+        .then((data) => this.setState({resultMessage: "success"}))
+        .catch((error) => this.setState({resultMessage: "failure"}));
+    }
+    else { // passed in by ReplayModal
+      this.props.onClick();
+    }
   }
 
   onChange(e) {
@@ -551,7 +556,7 @@ class ReplyModal extends React.Component {
         "div",
         {className: "modalContent"},
         e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
-        e(PostTweet),
+        e(PostTweet, {onClick: () => alert("To be implemented.")}),
       ),
       e(
         "div",
