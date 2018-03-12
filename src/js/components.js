@@ -223,7 +223,6 @@ class HomeTimeline extends React.Component {
   }
 
   openReplyModal(tweet) {
-    console.log("open Modal");
     this.setState({isReplyModalOpen: true, replyTweet: tweet});
   }
 
@@ -544,11 +543,9 @@ class ReplyModal extends React.Component {
 
   render() {
     if (!this.props.isOpen) {
-      console.log("not displaying modal");
       return null;
     }
 
-    console.log(this.props.replyTweet);
     return e(
       "div",
       {className: "ReplyModal"},
