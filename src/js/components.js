@@ -501,6 +501,8 @@ class TweetContent extends React.Component {
   }
 
   handleClick() {
+    // Calls HomeTimeline's openReplyModal,
+    // passing this tweet as the tweet to be replied to
     this.props.openReplyModal(this.props.tweet);
   }
 
@@ -514,7 +516,6 @@ class TweetContent extends React.Component {
       ),
       e(
         "div",
-        //{onClick: this.props.openReplyModal(this.props.tweet)},
         {onClick: this.handleClick},
         e("i",{className: "fas fa-reply replyButton"})
       ),
@@ -546,8 +547,12 @@ class ReplyModal extends React.Component {
     return e(
       "div",
       {className: "ReplyModal"},
-      e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
-      e(PostTweet),
+      e(
+        "div",
+        {className: "modalContent"},
+        e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
+        e(PostTweet),
+      ),
       e(
         "div",
         {
