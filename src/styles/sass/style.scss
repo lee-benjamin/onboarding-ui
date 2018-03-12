@@ -210,6 +210,10 @@ $post-tweet-height: 75px;
           width: 20px;
           margin-top: 20px;
         }
+
+        .replyButton:hover {
+          color: darkgray;
+        }
       }
     }
   }

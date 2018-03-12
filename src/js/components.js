@@ -406,11 +406,11 @@ function Avatar(props) {
 class TweetContent extends React.Component {
   constructor(props) {
     super(props);
+    this.handleReply = this.handleReply.bind(this);
   }
 
   handleReply() {
     console.log("reply clicked");
-    this.handleReply = this.handleReply.bind(this);
   }
 
   render() {
@@ -421,14 +421,9 @@ class TweetContent extends React.Component {
       e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
         e("div", null, this.props.tweet.text)
       ),
-      e(
-        "input",
-        {
-          type: "image",
-          className: "replyButton",
-          onClick: this.handleReply,
-          src: "../assets/reply_button.png"
-        },
+      e("div",
+        {onClick: this.handleReply},
+        e("i",{className: "fas fa-reply replyButton"})
       )
     );
   }
