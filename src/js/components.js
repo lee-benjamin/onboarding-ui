@@ -254,7 +254,8 @@ class HomeTimeline extends React.Component {
       return e(ServerError);
     }
     if (this.state.tweets && this.state.tweets.length) {
-      return Timeline(
+      return e(
+        Timeline,
         {
           openReplyModal: this.openReplyModal,
           closeReplyModal: this.closeReplyModal,
@@ -387,7 +388,7 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}): e(NoTweets))
+        (this.state.tweets && this.state.tweets.length ? e(Timeline,{tweets: this.state.tweets}): e(NoTweets))
       )
     )
   }
@@ -492,13 +493,31 @@ class ReplyModal extends React.Component {
   }
 }
 
-function Timeline(props) {
-  let tweets = _.map(props.tweets, (tweet) => e(Tweet, {key: tweet.id, tweet: tweet}));
-  return e(
-    "div",
-    {className: "Timeline"},
-    tweets
-  );
+class Timeline extends React.Component {
+  constructor(props) {
+    super(props)
+    let tweetComponents = _.map(props.tweets, (tweet) =>
+      e(
+        Tweet,
+        {
+          openReplyModal: props.OpenReplyModal,
+          closeReplyModal: props.closeReplyModal,
+          key: tweet.id,
+          tweet: tweet
+        }
+      )
+    );
+    this.state = {tweetComponents: tweetComponents};
+  }
+
+
+  render() {
+    return e(
+      "div",
+      {className: "Timeline"},
+      this.state.tweetComponents
+    );
+  }
 }
 
 class Tweet extends React.Component {
