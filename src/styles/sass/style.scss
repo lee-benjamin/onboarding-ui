@@ -28,6 +28,51 @@ $post-tweet-height: 75px;
   }
 }
 
+@mixin tweet-styling() {
+  .Tweet {
+    border-bottom: 1px $border-color solid;
+
+    .Avatar {
+      width: 140px;
+      text-align: center;
+      display: inline-block;
+      margin: 1em 50px 1em 10px;
+
+      .ProfilePic {
+        border-radius: 50%;
+        height: 60px;
+        width: 60px;
+      }
+
+      .imageCaption {
+        font-size: 15pt;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .screenName {
+        font-size: 10pt;
+        font-weight: normal;
+      }
+    }
+
+    .TweetContent {
+      width: 70%;
+      display: inline-block;
+      position: relative;
+      top: 5px;
+
+      .timeDiv {
+        font-style: italic;
+        font-size: 10pt;
+        margin: 20px 0 5px;
+      }
+    }
+  }
+}
+
+
+
 .ServerError, .NoTweets {
   text-align: left;
   margin: $margin;
@@ -163,18 +208,23 @@ $post-tweet-height: 75px;
 
     .ReplyModal {
 
+
       .modalContent {
+        @include tweet-styling;
         position: absolute;
         top: 50px;
         right: 10px;
-        //transform: translate(-50%, -50%);
         z-index: 9999;
         background: #fff;
         width: 60%;
-        height: 60%;
+        height: 45%;
 
         .replyButton {
           visibility: hidden;
+        }
+
+        .PostTweet {
+          margin-top: 30px;
         }
       }
 
@@ -198,56 +248,16 @@ $post-tweet-height: 75px;
     margin: $margin;
     border: 1px black solid;
 
-    .Tweet {
-      border-bottom: 1px $border-color solid;
+    @include tweet-styling;
+    .replyButton {
+      height: 20px;
+      width: 20px;
+      margin-top: 20px;
+    }
 
-      .Avatar {
-        width: 140px;
-        text-align: center;
-        display: inline-block;
-        margin: 1em 50px 1em 10px;
-
-        .ProfilePic {
-          border-radius: 50%;
-          height: 60px;
-          width: 60px;
-        }
-
-        .imageCaption {
-          font-size: 15pt;
-          font-weight: bold;
-          text-align: center;
-        }
-
-        .screenName {
-          font-size: 10pt;
-          font-weight: normal;
-        }
-      }
-
-      .TweetContent {
-        width: 70%;
-        display: inline-block;
-        position: relative;
-        top: 5px;
-
-        .timeDiv {
-          font-style: italic;
-          font-size: 10pt;
-          margin: 20px 0 5px;
-        }
-
-        .replyButton {
-          height: 20px;
-          width: 20px;
-          margin-top: 20px;
-        }
-
-        .replyButton:hover {
-          cursor: pointer;
-          color: darkgray;
-        }
-      }
+    .replyButton:hover {
+      cursor: pointer;
+      color: darkgray;
     }
   }
 }
