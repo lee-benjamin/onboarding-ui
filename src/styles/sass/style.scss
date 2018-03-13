@@ -10,6 +10,7 @@ $tab-hover-color: #ddd;
 $tab-color: #f1f1f1;
 $post-tweet-width: 500px;
 $post-tweet-height: 75px;
+$modal-width: 650px;
 
 
 .title {
@@ -224,7 +225,7 @@ $post-tweet-height: 75px;
           .Avatar {
             margin-right: 20px;
           }
-          width: 650px;
+          width: $modal-width;
         }
         animation-duration: 1s;
         animation-name: slide-in;
@@ -233,7 +234,7 @@ $post-tweet-height: 75px;
         right: 0;
         z-index: 9999;
         background: #fff;
-        width: 650px;
+        width: $modal-width;
         height: 100%;
 
         .close {
