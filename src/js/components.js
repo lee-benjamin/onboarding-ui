@@ -30,7 +30,7 @@ class ReactContainer extends React.Component {
       case Views.UserTimeline:
         focusedComponent = UserTimeline;
         break;
-      case "Post Tweet":
+      case Views.PostTweet:
         focusedComponent = PostTweet;
         break;
       default:
@@ -60,7 +60,8 @@ const Views = Object.freeze(
   {
     HomeTimeline: "Home Timeline",
     UserTimeline: "User Timeline",
-    PostTweet: "Post Tweet"
+    PostTweet: "Post Tweet",
+    Reply: "Reply"
   }
 );
 
@@ -141,7 +142,7 @@ class Tab extends React.Component {
 class PostTweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweetText:"", resultMessage: ""};
+    this.state = {tweetText:"", resultMessage: "", buttonText: "Post Tweet"};
     this.onChange = this.onChange.bind(this);
     this.postTweet = this.postTweet.bind(this);
   }
@@ -187,7 +188,7 @@ class PostTweet extends React.Component {
           disabled: !tweetTextLength,
           className: "PostTweetButton"
         },
-        "Post Tweet"
+        (this.props.replyTweet ? Views.Reply : Views.PostTweet)
       ),
       e(
         "span",

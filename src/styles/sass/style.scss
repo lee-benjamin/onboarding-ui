@@ -227,10 +227,11 @@ $modal-width: 650px;
           }
           width: $modal-width;
         }
+
         animation-duration: 1s;
         animation-name: slide-in;
         position: fixed;
-        top: 0px;
+        top: 0;
         right: 0;
         z-index: 9999;
         background: #fff;
