@@ -1,4 +1,4 @@
-$font-stack: "Times New Roman", Arial, sans-serif;
+$font-stack: Gotham, Arial, sans-serif;
 $Home-light: #e9e9e9;
 $Home-dark: #e8f5fd;
 $User-light:#1da1f2;
@@ -10,6 +10,7 @@ $tab-hover-color: #ddd;
 $tab-color: #f1f1f1;
 $post-tweet-width: 500px;
 $post-tweet-height: 75px;
+$modal-width: 650px;
 
 
 .title {
@@ -27,6 +28,51 @@ $post-tweet-height: 75px;
     background-color: $light-color;
   }
 }
+
+@mixin tweet-styling() {
+  .Tweet {
+    border-bottom: 1px $border-color solid;
+
+    .Avatar {
+      width: 140px;
+      text-align: center;
+      display: inline-block;
+      margin: 1em 50px 1em 10px;
+
+      .ProfilePic {
+        border-radius: 50%;
+        height: 60px;
+        width: 60px;
+      }
+
+      .imageCaption {
+        font-size: 15pt;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .screenName {
+        font-size: 10pt;
+        font-weight: normal;
+      }
+    }
+
+    .TweetContent {
+      width: 70%;
+      display: inline-block;
+      position: relative;
+      top: 5px;
+
+      .timeDiv {
+        font-style: italic;
+        font-size: 10pt;
+        margin: 20px 0 5px;
+      }
+    }
+  }
+}
+
+
 
 .ServerError, .NoTweets {
   text-align: left;
@@ -129,6 +175,10 @@ $post-tweet-height: 75px;
     .screenName {
       visibility: hidden;
     }
+
+    .replyButton {
+      visibility: hidden;
+    }
   }
 
   &.HomeTimeline {
@@ -157,6 +207,75 @@ $post-tweet-height: 75px;
       }
     }
 
+    .ReplyModal {
+
+      @keyframes slide-in {
+        from {
+          margin-right: -100%;
+        }
+
+        to {
+          margin-right: 0px;
+        }
+      }
+
+      .modalContent {
+        @include tweet-styling;
+        .Tweet {
+          .Avatar {
+            margin-right: 20px;
+          }
+          width: $modal-width;
+        }
+
+        animation-duration: 1s;
+        animation-name: slide-in;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 9999;
+        background: #fff;
+        width: $modal-width;
+        height: 100%;
+
+        .close {
+          font-size: 16pt;
+          text-align: right;
+          margin-right: 10px;
+          margin-top: 5px;
+          cursor: pointer;
+        }
+
+        .modalHeader {
+          text-align: center;
+          font-family: $font-stack;
+        }
+
+        .Tweet {
+          background-color: white;
+          border-bottom: none;
+        }
+
+        .replyButton {
+          visibility: hidden;
+        }
+
+        .PostTweet {
+          margin-top: 30px;
+        }
+      }
+
+      .backdrop {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        z-index: 9998;
+        background: rgba(0, 0, 0, 0.6);
+      }
+    }
+
     .Tweet {
       @include tweet-color($Home-light, $Home-dark);
     }
@@ -166,45 +285,16 @@ $post-tweet-height: 75px;
     margin: $margin;
     border: 1px black solid;
 
-    .Tweet {
-      border-bottom: 1px $border-color solid;
+    @include tweet-styling;
+    .replyButton {
+      height: 20px;
+      width: 20px;
+      margin-top: 20px;
+    }
 
-      .Avatar {
-        width: 140px;
-        text-align: center;
-        display: inline-block;
-        margin: 1em 50px 1em 10px;
-
-        .ProfilePic {
-          border-radius: 50%;
-          height: 60px;
-          width: 60px;
-        }
-
-        .imageCaption {
-          font-size: 15pt;
-          font-weight: bold;
-          text-align: center;
-        }
-
-        .screenName {
-          font-size: 10pt;
-          font-weight: normal;
-        }
-      }
-
-      .TweetContent {
-        width: 70%;
-        position: relative;
-        top: -35px;
-        display: inline-block;
-
-        .timeDiv {
-          font-style: italic;
-          font-size: 10pt;
-          margin: 20px 0 5px;
-        }
-      }
+    .replyButton:hover {
+      cursor: pointer;
+      color: darkgray;
     }
   }
 }

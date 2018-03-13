@@ -30,7 +30,7 @@ class ReactContainer extends React.Component {
       case Views.UserTimeline:
         focusedComponent = UserTimeline;
         break;
-      case "Post Tweet":
+      case Views.PostTweet:
         focusedComponent = PostTweet;
         break;
       default:
@@ -60,7 +60,8 @@ const Views = Object.freeze(
   {
     HomeTimeline: "Home Timeline",
     UserTimeline: "User Timeline",
-    PostTweet: "Post Tweet"
+    PostTweet: "Post Tweet",
+    Reply: "Reply"
   }
 );
 
@@ -141,15 +142,22 @@ class Tab extends React.Component {
 class PostTweet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweetText:"", resultMessage: ""};
+    this.state = {tweetText:"", resultMessage: "", buttonText: "Post Tweet"};
     this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.postTweet = this.postTweet.bind(this);
   }
 
-  onClick() {
-    twitter.postTweet(this.state.tweetText)
-      .then((data) => this.setState({resultMessage: "success"}))
-      .catch((error) => this.setState({resultMessage: "failure"}));
+  postTweet() {
+    if (this.props.replyTweet) { // a tweet to reply to has been passed in
+      twitter.replyToTweet(this.props.replyTweet.id, this.state.tweetText)
+        .then((data) => this.setState({resultMessage: "success"}))
+        .catch((error) => this.setState({resultMessage: "failure"}));
+    }
+    else { // Post normally in absence of a replyTweet
+      twitter.postTweet(this.state.tweetText)
+        .then((data) => this.setState({resultMessage: "success"}))
+        .catch((error) => this.setState({resultMessage: "failure"}));
+    }
   }
 
   onChange(e) {
@@ -176,11 +184,11 @@ class PostTweet extends React.Component {
       e(
         "button",
         {
-          onClick: this.onClick,
+          onClick: this.postTweet,
           disabled: !tweetTextLength,
           className: "PostTweetButton"
         },
-        "Post Tweet"
+        (this.props.replyTweet ? Views.Reply : Views.PostTweet)
       ),
       e(
         "span",
@@ -199,7 +207,12 @@ class PostTweet extends React.Component {
 class HomeTimeline extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets: [], isServerError: false};
+    this.state =
+      {
+        tweets: [],
+        isServerError: false,
+        isReplyModalOpen: false
+      };
     this.getTweets();
 
     // Bind functions
@@ -207,6 +220,17 @@ class HomeTimeline extends React.Component {
     this.handleFilter = this.handleFilter.bind(this);
     this.successCallback = this.successCallback.bind(this);
     this.failureCallback = this.failureCallback.bind(this);
+    this.openReplyModal = this.openReplyModal.bind(this);
+    this.closeReplyModal = this.closeReplyModal.bind(this);
+    this.chooseComponent = this.chooseComponent.bind(this);
+  }
+
+  openReplyModal(tweet) {
+    this.setState({isReplyModalOpen: true, replyTweet: tweet});
+  }
+
+  closeReplyModal() {
+    this.setState({isReplyModalOpen: false});
   }
 
   successCallback(tweets) {
@@ -237,6 +261,22 @@ class HomeTimeline extends React.Component {
     );
   }
 
+  chooseComponent() { // returns proper component based on state flags
+    if (this.state.isServerError) {
+      return e(ServerError);
+    }
+    if (this.state.tweets && this.state.tweets.length) {
+      return e(
+        Timeline,
+        {
+          openReplyModal: this.openReplyModal,
+          canReply: true,
+          tweets: this.state.tweets
+        });
+    }
+    return e(NoTweets);
+  }
+
   render() {
     return e(
       "div",
@@ -249,9 +289,14 @@ class HomeTimeline extends React.Component {
         "Get Home Timeline"
       ),
       e(SearchComponent, {failureCallback: this.failureCallback, onClick: this.handleFilter}),
-      (this.state.isServerError ?
-        e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}) : e(NoTweets))
+      this.chooseComponent(), // The Timeline or an error page
+      e(
+        ReplyModal,
+        {
+          onClose: this.closeReplyModal,
+          isOpen: this.state.isReplyModalOpen,
+          replyTweet: this.state.replyTweet
+        }
       )
     );
   }
@@ -343,7 +388,6 @@ class UserTimeline extends React.Component {
   }
 
   render() {
-
     return e(
       "div",
       {className: "TimelineContainer UserTimeline"},
@@ -356,7 +400,7 @@ class UserTimeline extends React.Component {
       ),
       (this.state.isServerError ?
         e(ServerError, null) :
-        (this.state.tweets && this.state.tweets.length ? Timeline({tweets: this.state.tweets}): e(NoTweets))
+        (this.state.tweets && this.state.tweets.length ? e(Timeline,{canReply: false, tweets: this.state.tweets}): e(NoTweets))
       )
     )
   }
@@ -376,6 +420,57 @@ function NoTweets(props) {
     {className: "NoTweets"},
     "Sorry, there are no tweets to be displayed."
   );
+}
+
+
+class Timeline extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    let tweetComponents = _.map(this.props.tweets, (tweet) =>
+      e(
+        Tweet,
+        {
+          openReplyModal: this.props.openReplyModal,
+          key: tweet.id,
+          tweet: tweet,
+          canReply: this.props.canReply
+        }
+      )
+    );
+    return e(
+      "div",
+      {className: "Timeline"},
+      tweetComponents
+    );
+  }
+}
+
+class Tweet extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return e(
+      "div",
+      {
+        className: "Tweet",
+        key: this.props.id
+      },
+      e(Avatar, {user: this.props.tweet.user}),
+      e(
+        TweetContent,
+        {
+          tweet: this.props.tweet,
+          openReplyModal: this.props.openReplyModal,
+          canReply: this.props.canReply
+        }
+      )
+    );
+  }
 }
 
 function Avatar(props) {
@@ -404,35 +499,74 @@ function Avatar(props) {
   );
 }
 
-function TweetContent(props) {
-  return e(
-    "div",
-    {className: "TweetContent"},
-    e("div", {className: "timeDiv"}, twitter.formatDate(props.tweet.createdAt)),
-    e("a", {className: "tweetText", href: twitter.getTwitterLink(props.tweet), target: "_blank"},
-      e("div", null, props.tweet.text)
-    )
-  );
+class TweetContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    if (this.props.canReply) {
+      // Calls HomeTimeline's openReplyModal,
+      // passing this tweet as the tweet to be replied to
+      this.props.openReplyModal(this.props.tweet);
+    }
+  }
+
+  render() {
+    return e(
+      "div",
+      {className: "TweetContent"},
+      e("div", {className: "timeDiv"}, twitter.formatDate(this.props.tweet.createdAt)),
+      e("a", {className: "tweetText", href: twitter.getTwitterLink(this.props.tweet), target: "_blank"},
+        e("div", null, this.props.tweet.text)
+      ),
+      e(
+        "div",
+        {onClick: this.handleClick},
+        e("i",{className: "fas fa-reply replyButton"})
+      ),
+   );
+  }
 }
 
-export function Timeline(props) {
-  let tweets = _.map(props.tweets, Tweet);
+class ReplyModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.close = this.close.bind(this);
+  }
 
-  return e(
-    "div",
-    {className: "Timeline"},
-    tweets
-  );
-}
+  close(e) {
+    e.preventDefault();
 
-export function Tweet(props) {
-  return e (
-    "div",
-    {
-      className: "Tweet",
-      key: props.id
-    },
-    e(Avatar, {user: props.user}),
-    e(TweetContent, {tweet: props}),
-  );
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
+  render() {
+    if (!this.props.isOpen) {
+      return null;
+    }
+
+    return e(
+      "div",
+      {className: "ReplyModal"},
+      e(
+        "div",
+        {className: "modalContent"},
+        e("div", {onClick: this.close, className: "close"}, "×"),
+        e("h2", {className: "modalHeader"}, "Reply to " + this.props.replyTweet.user.name),
+        e(Tweet, {id: this.props.replyTweet.id, tweet: this.props.replyTweet}),
+        e(PostTweet, {replyTweet: this.props.replyTweet}),
+      ),
+      e(
+        "div",
+        {
+          className: "backdrop",
+          onClick: this.close
+        }
+      )
+    );
+  }
 }

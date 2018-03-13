@@ -41,6 +41,29 @@ export const postTweet = (tweet) => {
   });
 }
 
+export const replyToTweet = (inReplyToStatusId, tweet) => {
+   return new Promise((resolve, reject) => {
+    const url = "http://localhost:8080/api/1.0/twitter/tweet/reply";
+    const params = {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({"message": tweet, "inReplyToStatusId": inReplyToStatusId})
+    }
+    return fetch(url, params)
+       .then((data) => {
+        if (data.status == 200) {
+           resolve(data.json());
+        }
+        else {
+          reject();
+        }
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
+}
+
 export const getHomeTimeline = () => {
   return new Promise((resolve, reject) => {
     const url = "http://localhost:8080/api/1.0/twitter/timeline/home";
