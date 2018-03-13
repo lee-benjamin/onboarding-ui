@@ -425,26 +425,24 @@ function NoTweets(props) {
 class Timeline extends React.Component {
   constructor(props) {
     super(props)
-    let tweetComponents = _.map(props.tweets, (tweet) =>
+  }
+
+  render() {
+    let tweetComponents = _.map(this.props.tweets, (tweet) =>
       e(
         Tweet,
         {
-          openReplyModal: props.openReplyModal,
+          openReplyModal: this.props.openReplyModal,
           key: tweet.id,
           tweet: tweet,
           canReply: this.props.canReply
         }
       )
     );
-    this.state = {tweetComponents: tweetComponents};
-  }
-
-
-  render() {
     return e(
       "div",
       {className: "Timeline"},
-      this.state.tweetComponents
+      tweetComponents
     );
   }
 }
